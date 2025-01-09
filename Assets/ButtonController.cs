@@ -3,8 +3,14 @@ using UnityEngine;
 public class ButtonController : MonoBehaviour
 {
     [SerializeField] GameObject PausePanel;
-    
+    [SerializeField] GameObject SettingsMenu;
+    [SerializeField] GameObject ControlsPanel;
+    [SerializeField] GameObject AudioPanel;
+
     bool _IsPaused;
+    bool _SM_IsActive;
+    bool _Cs_IsActive = false;
+    bool _Ao_IsActive = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,15 +26,13 @@ public class ButtonController : MonoBehaviour
             {
                 PauseGame();
             }
-            
         }
-        else if (_IsPaused)
+        else if (_IsPaused && !_SM_IsActive)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 UnpauseGame();
             }
-            
         }
     }
     public void PauseGame()
@@ -38,14 +42,44 @@ public class ButtonController : MonoBehaviour
         Time.timeScale = 0.0f;
         FirstPersonController.Instance.ResetLockstate();
     }
-
     public void UnpauseGame()
     {
-        PausePanel.SetActive(false);
-        _IsPaused = false;
-        Time.timeScale = 1.0f;
-        FirstPersonController.Instance.ResetLockstate();
+        if (!_SM_IsActive)
+        {
+            PausePanel.SetActive(false);
+            _IsPaused = false;
+            Time.timeScale = 1.0f;
+            FirstPersonController.Instance.ResetLockstate();
+        }
     }
-
-
+    public void OpenSettingsMenu()
+    {
+        SettingsMenu.SetActive(true);
+        _SM_IsActive = true;
+    }
+    public void CloseSettingsMenu()
+    {
+        SettingsMenu.SetActive(false);
+        _SM_IsActive = false;
+    }
+    public void ControlsSetting_Type()
+    {
+        if(_Ao_IsActive && !_Cs_IsActive)
+        {
+            ControlsPanel.SetActive(true);  
+            _Cs_IsActive = true;
+            AudioPanel.SetActive(false);
+            _Ao_IsActive = false;
+        }
+    }
+    public void AudioSetting_Type()
+    {
+        if(_Cs_IsActive && !_Ao_IsActive)
+        {
+            AudioPanel.SetActive(true);
+            _Ao_IsActive = true;
+            ControlsPanel.SetActive(false);
+            _Cs_IsActive = false;
+        }
+    }
 }
