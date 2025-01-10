@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class StaminaController : MonoBehaviour
 {
-    public float maxStamina = 100f;
-    public float sprintStaminaCost = 0.5f;
-    public float jumpStaminaCost = 20f;
-    public float staminaRegenRate;
+    private float maxStamina = 100f;
+    private float sprintStaminaCost = 12f;
+    private float jumpStaminaCost = 4f;
+    private float staminaRegenRate;
 
     public Slider staminaBar;
 
