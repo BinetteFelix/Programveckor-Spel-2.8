@@ -35,24 +35,19 @@ public class FPSCameraController : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         if (bikeControl.isRidden)
         {
-           
             yRotation += mouseX;
             yRotation = Mathf.Clamp(yRotation, -120f, 120f);
-
             transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-          
         }
         else 
         {
             transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
             playerBody.Rotate(Vector3.up * mouseX);
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         }
-
-
     }
     public void ResetLockstate()
     {
