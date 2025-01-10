@@ -21,11 +21,11 @@ public class POPUP : MonoBehaviour
     public void OpenPopUp()
     {
         _IsActive = true; // Say that the pop-up is active
-        popuptext = Instantiate(PopUpText, FindAnyObjectByType<Canvas>().transform).GetComponent<TextMeshProUGUI>(); // Instantiate pop-up prefab
+        popuptext = Instantiate(PopUpText, FindFirstObjectByType<Canvas>().transform).GetComponent<TextMeshProUGUI>(); // Instantiate pop-up prefab
     }
     public void ClosePopUp()
     {
         _IsActive = false; // Sa that the pop-up is inactive
-        Destroy(gameObject);
+        Destroy(popuptext);
     }
 }
