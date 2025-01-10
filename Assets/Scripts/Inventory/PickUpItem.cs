@@ -1,16 +1,12 @@
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class PickUpItem : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public ItemProfile Item; // Specified item (Is specified per item)
+    public void PickUp()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        InventoryManager.Instance.Add(Item); // Add Item to inventory list
+        Destroy(gameObject); // Delete Item from scene
     }
 }
