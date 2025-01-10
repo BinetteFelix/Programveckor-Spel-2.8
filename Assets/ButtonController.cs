@@ -40,7 +40,7 @@ public class ButtonController : MonoBehaviour
         PausePanel.SetActive(true);
         _IsPaused = true;
         Time.timeScale = 0.0f;
-        FirstPersonController.Instance.ResetLockstate();
+        FPSCameraController.Instance.ResetLockstate();
     }
     public void UnpauseGame()
     {
@@ -49,7 +49,7 @@ public class ButtonController : MonoBehaviour
             PausePanel.SetActive(false);
             _IsPaused = false;
             Time.timeScale = 1.0f;
-            FirstPersonController.Instance.ResetLockstate();
+            FPSCameraController.Instance.ResetLockstate();
         }
     }
     public void OpenSettingsMenu()
