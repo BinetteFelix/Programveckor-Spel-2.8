@@ -15,10 +15,11 @@ public class PlayerMovement : MonoBehaviour
     protected float standingHeight = 2f;
     protected float crouchTransitionSpeed = 5f;
 
-    //camera, Stamina script and character controller referens
+    //camera, Stamina script, Bikecontrols script and character controller referens
     public Transform cameraHolder;
     private StaminaController staminaController;
     private CharacterController controller;
+    public BikeControls bikeControls;
 
     //other
     protected Vector3 velocity;
@@ -31,14 +32,18 @@ public class PlayerMovement : MonoBehaviour
         //get ref for character cont and stamina
         controller = GetComponent<CharacterController>();
         staminaController = GetComponent<StaminaController>();
+        
 
         currentSpeed = walkSpeed;
     }
 
     void Update()
     {
-        HandleMovement();
-        HandleCrouch();
+        if (bikeControls.isRidden == false)
+        {
+            HandleMovement();
+            HandleCrouch();
+        }
     }
 
     private void HandleMovement()
