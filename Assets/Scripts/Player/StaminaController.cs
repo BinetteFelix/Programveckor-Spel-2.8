@@ -22,7 +22,6 @@ public class StaminaController : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
     }
 
-
     void Update()
     {
         HandleStaminaRegen();
