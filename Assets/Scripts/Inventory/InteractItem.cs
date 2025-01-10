@@ -35,6 +35,7 @@ public class InteractItem : MonoBehaviour
         {
             if (Interactable != null) // Íf collision is with Interactable
             {
+                Debug.Log("Was Interacted with!");
                 Interactable.OpenPopUp(); // Activate pop-up
                 _IsInteractable = true; // Set Collision type to Interactable
             }

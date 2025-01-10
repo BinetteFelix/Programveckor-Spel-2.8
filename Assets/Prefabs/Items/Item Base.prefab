@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3861f63bf17e57a4385520b5fd7af3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PopUpText: {fileID: 0}
+  PopUpText: {fileID: 1940278220248388379, guid: b59842a3a77dc0d49b0b6390d0684f3d, type: 3}
 --- !u!114 &183081938367603341
 MonoBehaviour:
   m_ObjectHideFlags: 0
