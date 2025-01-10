@@ -33,12 +33,12 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         staminaController = GetComponent<StaminaController>();
         
-
         currentSpeed = walkSpeed;
     }
 
     void Update()
     {
+        //player shouldn't be able to move when on bike...
         if (bikeControls.isRidden == false)
         {
             HandleMovement();
