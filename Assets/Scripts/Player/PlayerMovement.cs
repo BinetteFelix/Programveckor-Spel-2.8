@@ -1,6 +1,6 @@
 using UnityEngine;
-
 [RequireComponent(typeof(CharacterController))]
+
 public class PlayerMovement : MonoBehaviour
 {
     //fpr movement
