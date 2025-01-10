@@ -3,10 +3,10 @@ using UnityEngine;
 public class FPSFOVController : MonoBehaviour
 {
     public Camera playerCamera;
-    public int defaultFOV = 70;
-    public int sprintFOV = 90;
-    public int crouchingFOV = 55;
-    public float fovTransitionSpeed = 2f;
+    protected int defaultFOV = 70;
+    protected int sprintFOV = 90;
+    protected int crouchingFOV = 55;
+    protected float fovTransitionSpeed = 2f;
 
     private PlayerMovement playerMovement;
 

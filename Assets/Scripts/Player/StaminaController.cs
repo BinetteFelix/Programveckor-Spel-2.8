@@ -9,12 +9,10 @@ public class StaminaController : MonoBehaviour
     private float staminaRegenRate;
 
     public Slider staminaBar;
-
-    public float currentStamina;
+    [HideInInspector] public float currentStamina;
     private PlayerMovement playerMovement;
-
-    public bool canSprint;
-    public bool canJump;
+    [HideInInspector] public bool canSprint;
+    [HideInInspector] public bool canJump;
 
     void Start()
     {

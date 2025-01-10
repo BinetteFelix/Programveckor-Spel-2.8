@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BikeControls : MonoBehaviour
 {
+    [HideInInspector]
     public bool isRidden = false; // Om cykeln används
     public Transform seatPosition; // Positionen där spelaren "sitter" på cykeln
     private GameObject currentPlayer; // Referens till spelaren som hoppar på

@@ -1,30 +1,31 @@
+// 10/01/2025 AI-Tag
+// This was created with assistance from Muse, a Unity Artificial Intelligence product
+
 using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
 public class CloudManager : MonoBehaviour
 {
     public ParticleSystem cloudParticleSystem;
-    public float cloudSpeed = 0.01f; // Speed of cloud movement
-
-    private ParticleSystem.MainModule _mainModule;
-    private ParticleSystem.VelocityOverLifetimeModule _velocityModule;
+    public float cloudSpeed = 0.01f;
+    public float particleSize = 1.0f;
+    public float spawnRate = 10.0f;
+    public float clumpSize = 2.0f;
 
     void Start()
     {
-        if (cloudParticleSystem == null)
-        {
-            cloudParticleSystem = GetComponent<ParticleSystem>();
-        }
+        var mainModule = cloudParticleSystem.main;
+        mainModule.startSize = particleSize;
+        var emissionModule = cloudParticleSystem.emission;
+        emissionModule.rateOverTime = spawnRate;
+    }
 
-        // Configure particle system settings
-        _mainModule = cloudParticleSystem.main;
-        _mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
+    void Update()
+    {
+        // Update particle speed
+        var mainModule = cloudParticleSystem.main;
+        mainModule.simulationSpeed = cloudSpeed;
 
-        _velocityModule = cloudParticleSystem.velocityOverLifetime;
-        _velocityModule.enabled = true;
-        _velocityModule.space = ParticleSystemSimulationSpace.World;
-
-        // Set cloud movement speed
-        _velocityModule.x = cloudSpeed;
+        // Implement custom logic for clumping
+        // This could involve modifying particle positions
     }
 }

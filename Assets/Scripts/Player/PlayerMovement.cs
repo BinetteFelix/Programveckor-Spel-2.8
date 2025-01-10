@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     //fpr movement
     protected float walkSpeed = 5f;
-    public float sprintSpeed = 10f;
+    [HideInInspector] public float sprintSpeed = 10f;
     protected float crouchSpeed = 2.5f;
     protected float jumpHeight = 1.2f;
     protected float gravity = -20f;
@@ -23,8 +23,8 @@ public class PlayerMovement : MonoBehaviour
 
     //other
     protected Vector3 velocity;
-    public bool isGrounded;
-    public float currentSpeed;
+    [HideInInspector] public bool isGrounded;
+    [HideInInspector] public float currentSpeed;
     public bool isCrouching { get; private set; }
 
     void Start()

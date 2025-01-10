@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class FPSCameraController : MonoBehaviour
 {
-    public static FPSCameraController Instance;
-    public float mouseSensitivity = 175f;
+    [HideInInspector] public static FPSCameraController Instance;
+    [HideInInspector] public float mouseSensitivity = 175f;
     public Transform playerBody;
 
     private float xRotation = 0f;
