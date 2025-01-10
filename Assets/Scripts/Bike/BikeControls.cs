@@ -1,10 +1,13 @@
+using System.Threading;
 using UnityEngine;
 
 public class BikeControls : MonoBehaviour
 {
-    [HideInInspector] public bool isRidden = false; // Om cykeln används
-    public Transform seatPosition; // Positionen där spelaren "sitter" på cykeln
-    private GameObject currentPlayer; // Referens till spelaren som hoppar på
+    [HideInInspector]
+    public bool isRidden = false; // looking if bike is being used
+    public bool startTimer = false; // Starts a timer
+    public Transform seatPosition; // The position for the player
+    private GameObject currentPlayer;
 
     public float speed = 0f;
     public float maxSpeed = 20f;
@@ -12,14 +15,20 @@ public class BikeControls : MonoBehaviour
     public float deceleration = 10f;
     public float turnSpeed = 50f;
 
+    private float timer = 1f;
+
     void Update()
     {
         if (isRidden)
         {
+            if (startTimer && timer >0)
+            {
+                timer -= Time.deltaTime;
+            }
             HandleBicycleControls();
 
-            // Låt spelaren hoppa av cykeln
-            if (Input.GetKeyDown(KeyCode.E) && isRidden)
+            // Lets the player jump of the bike
+            if (Input.GetKeyDown(KeyCode.E) && timer <= 0)
             {
                 Dismount();
             }
@@ -27,50 +36,52 @@ public class BikeControls : MonoBehaviour
     }
     void HandleBicycleControls()
     {
-        // Hantera trampning
         if (Input.GetKey(KeyCode.W))
         {
             Pedal();
         }
 
-        // Hantera bromsning
         if (Input.GetKey(KeyCode.S))
         {
             Brake();
         }
 
-        // Hantera svängning
+
         float turn = Input.GetAxis("Horizontal") * turnSpeed * Time.deltaTime;
         if (turn != 0)
         {
             Turn(turn);
         }
 
-        // Naturlig inbromsning
+
         if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             NaturalDeceleration();
         }
 
-        // Flytta cykeln framåt
+        // moves the bike forward
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
     public void Mount(GameObject player)
     {
         isRidden = true;
         currentPlayer = player;
+        startTimer = true;
 
-        // Placera spelaren på cykeln
+        // Puts the player on the bike
         player.transform.position = seatPosition.position;
         player.transform.parent = transform;
+      //  player.transform.TransformVector = seatPosition.rotation;
     }
     public void Dismount()
     {
         if (currentPlayer != null)
         {
             isRidden = false;
+            startTimer = false;
+            timer = 1f;
 
-            // Placera spelaren bredvid cykeln
+            // Puts the player besides the bike
             currentPlayer.transform.position = transform.position + transform.right * 2f;
 
             currentPlayer = null;
@@ -98,6 +109,7 @@ public class BikeControls : MonoBehaviour
     {
         transform.Rotate(0, turnAmount, 0);
     }
+
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
