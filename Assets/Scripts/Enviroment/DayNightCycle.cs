@@ -15,10 +15,10 @@ public class DayNightCycle : MonoBehaviour
         _timeOfDay = 0;
     }
 
-    public void UpdateCycle(float deltaTime)
+    void Update()
     {
         // Progress time
-        _timeOfDay += deltaTime / _dayDurationInSeconds;
+        _timeOfDay += Time.deltaTime / _dayDurationInSeconds;
         if (_timeOfDay > 1.0f) _timeOfDay -= 1.0f;
 
         // Update lights

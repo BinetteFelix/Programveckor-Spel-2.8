@@ -1,48 +1,30 @@
 using UnityEngine;
 
+[RequireComponent(typeof(ParticleSystem))]
 public class CloudManager : MonoBehaviour
 {
-    public GameObject cloudPrefab; // Prefab for the clouds
-    public int cloudCount = 10;    // Number of clouds to spawn
-    public Vector3 cloudSpawnArea = new Vector3(100, 50, 100); // Area to spawn clouds
+    public ParticleSystem cloudParticleSystem;
+    public float cloudSpeed = 0.01f; // Speed of cloud movement
 
-    private GameObject[] _clouds;
+    private ParticleSystem.MainModule _mainModule;
+    private ParticleSystem.VelocityOverLifetimeModule _velocityModule;
 
     void Start()
     {
-        SpawnClouds();
-    }
-
-    public void UpdateClouds(float deltaTime)
-    {
-        foreach (GameObject cloud in _clouds)
+        if (cloudParticleSystem == null)
         {
-            if (cloud != null)
-            {
-                cloud.transform.position += new Vector3(0.01f, 0, 0) * deltaTime;
-
-                // Wrap around if cloud moves out of bounds
-                if (cloud.transform.position.x > cloudSpawnArea.x / 2)
-                {
-                    cloud.transform.position = new Vector3(-cloudSpawnArea.x / 2, cloud.transform.position.y, cloud.transform.position.z);
-                }
-            }
+            cloudParticleSystem = GetComponent<ParticleSystem>();
         }
-    }
 
-    void SpawnClouds()
-    {
-        _clouds = new GameObject[cloudCount];
+        // Configure particle system settings
+        _mainModule = cloudParticleSystem.main;
+        _mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
 
-        for (int i = 0; i < cloudCount; i++)
-        {
-            Vector3 randomPosition = new Vector3(
-                Random.Range(-cloudSpawnArea.x / 2, cloudSpawnArea.x / 2),
-                Random.Range(0, cloudSpawnArea.y),
-                Random.Range(-cloudSpawnArea.z / 2, cloudSpawnArea.z / 2)
-            );
+        _velocityModule = cloudParticleSystem.velocityOverLifetime;
+        _velocityModule.enabled = true;
+        _velocityModule.space = ParticleSystemSimulationSpace.World;
 
-            _clouds[i] = Instantiate(cloudPrefab, randomPosition, Quaternion.identity);
-        }
+        // Set cloud movement speed
+        _velocityModule.x = cloudSpeed;
     }
 }
