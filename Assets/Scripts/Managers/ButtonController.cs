@@ -45,7 +45,14 @@ public class ButtonController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            OpenInventory();
+            if (_Inv_IsActive)
+            {
+                CloseInventory();
+            }
+            else if (!_Inv_IsActive)
+            {
+                OpenInventory();
+            }
         }
     }
     public void PauseGame()
