@@ -15,7 +15,7 @@ public class BikeControls : MonoBehaviour
     public float deceleration = 10f;
     public float turnSpeed = 50f;
 
-    private float timer = 1f;
+    private float timer = 0.1f;
 
     void Update()
     {
@@ -54,7 +54,7 @@ public class BikeControls : MonoBehaviour
         }
 
 
-        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S) && currentPlayer == null)
         {
             NaturalDeceleration();
         }
@@ -70,8 +70,9 @@ public class BikeControls : MonoBehaviour
 
         // Puts the player on the bike
         player.transform.position = seatPosition.position;
+        player.transform.rotation = transform.rotation;
         player.transform.parent = transform;
-      //  player.transform.TransformVector = seatPosition.rotation;
+     
     }
     public void Dismount()
     {
@@ -79,10 +80,13 @@ public class BikeControls : MonoBehaviour
         {
             isRidden = false;
             startTimer = false;
-            timer = 1f;
+            timer = 0.1f;
 
-            // Puts the player besides the bike
+            // Puts the player besides the bike, rotates the player corect and removes the player from being a child of the bike.
             currentPlayer.transform.position = transform.position + transform.right * 2f;
+            currentPlayer.transform.rotation = transform.rotation;
+            currentPlayer.transform.parent = null;
+
 
             currentPlayer = null;
         }
