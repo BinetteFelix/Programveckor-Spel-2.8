@@ -42,7 +42,9 @@ public class CameraController : MonoBehaviour
             {
                 yRotation += mouseX;
                 yRotation = Mathf.Clamp(yRotation, -120f, 120f);  // Clamp horizontal rotation for bike
-                transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+                xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+                transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f); 
+
             }
             else
             {

@@ -21,7 +21,7 @@ public class BikeControls : MonoBehaviour
     {
         if (isRidden)
         {
-            if (startTimer && timer >0)
+            if (startTimer && timer > 0)
             {
                 timer -= Time.deltaTime;
             }
@@ -33,6 +33,7 @@ public class BikeControls : MonoBehaviour
                 Dismount();
             }
         }
+
     }
     void HandleBicycleControls()
     {
@@ -46,15 +47,16 @@ public class BikeControls : MonoBehaviour
             Brake();
         }
 
-
-        float turn = Input.GetAxis("Horizontal") * turnSpeed * Time.deltaTime;
-        if (turn != 0)
+        if (speed > 0.5)
         {
-            Turn(turn);
+            float turn = Input.GetAxis("Horizontal") * turnSpeed * Time.deltaTime;
+            if (turn != 0)
+            {
+                Turn(turn);
+            }
         }
 
-
-        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S) && currentPlayer == null)
+        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             NaturalDeceleration();
         }
@@ -81,6 +83,7 @@ public class BikeControls : MonoBehaviour
             isRidden = false;
             startTimer = false;
             timer = 0.1f;
+            speed = 0;
 
             // Puts the player besides the bike, rotates the player corect and removes the player from being a child of the bike.
             currentPlayer.transform.position = transform.position + transform.right * 2f;
