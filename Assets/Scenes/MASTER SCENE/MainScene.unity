@@ -466,7 +466,7 @@ MonoBehaviour:
   currentTimeString: 
   sunLight: {fileID: 1102420168}
   sunPosition: -11.98
-  sunIntensity: 1000
+  sunIntensity: 20
   sunIntensityMultiplier:
     serializedVersion: 2
     m_Curve:
@@ -595,6 +595,7 @@ MonoBehaviour:
   bikeControl: {fileID: 417482359}
   mouseSensitivity: 175
   playerBody: {fileID: 1170512706}
+  _LockState_Locked: 0
 --- !u!1 &541174195
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,6 +1318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprintSpeed: 10
   cameraHolder: {fileID: 485026401}
+  controller: {fileID: 1170512702}
   bikeControls: {fileID: 417482359}
   isGrounded: 0
   currentSpeed: 0

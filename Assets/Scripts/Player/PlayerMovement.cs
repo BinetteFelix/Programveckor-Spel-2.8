@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     // References for the camera holder, stamina controller, and character controller
     public Transform cameraHolder;
     private StaminaController staminaController;
-    private CharacterController controller;
+    public CharacterController controller;
     public BikeControls bikeControls;
 
     protected Vector3 velocity;
@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        controller.center = new Vector3(0f, 1f, 0f); // Center of the character's collider
+        controller.center = new Vector3(0f, 0f, 0f); // Center of the character's collider
         controller.height = 2f; // Height of the character controller
 
         // Set the camera's initial position relative to the player.

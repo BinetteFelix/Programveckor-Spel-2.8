@@ -301,6 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprintSpeed: 10
   cameraHolder: {fileID: 1589977848}
+  controller: {fileID: 768961659}
   bikeControls: {fileID: 231604014}
   isGrounded: 0
   currentSpeed: 0
@@ -863,6 +864,7 @@ MonoBehaviour:
   bikeControl: {fileID: 231604014}
   mouseSensitivity: 175
   playerBody: {fileID: 768961663}
+  _LockState_Locked: 0
 --- !u!1 &1644712867
 GameObject:
   m_ObjectHideFlags: 0
