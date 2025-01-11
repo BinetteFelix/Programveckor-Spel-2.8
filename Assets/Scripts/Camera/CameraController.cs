@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class FPSCameraController : MonoBehaviour
 {
-
     public BikeControls bikeControl;
 
     [HideInInspector] public static FPSCameraController Instance;
@@ -10,8 +9,8 @@ public class FPSCameraController : MonoBehaviour
     public Transform playerBody;
 
     private float xRotation = 0f;
-    private float yRotation = 0f;    
-    bool _LockState_Locked = false;
+    private float yRotation = 0f;
+    [HideInInspector] public bool _LockState_Locked = false;
 
     private void Awake()
     {
@@ -31,22 +30,25 @@ public class FPSCameraController : MonoBehaviour
 
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-
-        xRotation -= mouseY;
-
-        if (bikeControl.isRidden)
+        if (_LockState_Locked)
         {
-            yRotation += mouseX;
-            yRotation = Mathf.Clamp(yRotation, -120f, 120f);
-            transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        }
-        else 
-        {
-            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            playerBody.Rotate(Vector3.up * mouseX);
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+            xRotation -= mouseY;
+
+            if (bikeControl.isRidden)
+            {
+                yRotation += mouseX;
+                yRotation = Mathf.Clamp(yRotation, -120f, 120f);
+                transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+            }
+            else
+            {
+                transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+                playerBody.Rotate(Vector3.up * mouseX);
+                xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            }
         }
     }
     public void ResetLockstate()

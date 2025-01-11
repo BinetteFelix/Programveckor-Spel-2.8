@@ -1,55 +1,58 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class InteractItem : MonoBehaviour
 {
-    bool _IsItem = false; // Bool for collision type
-    bool _IsActive = false; // Bool for collision states
+    private bool _IsActive = false;
+    private bool _IsInRange = false;
 
-    private GameObject Player; // Player object
-    private POPUP Item; // Pop-up text for Item
-    private PickUpItem pickup; // Object to reference picking up items
+    private GameObject Player;
 
-    // Update is called once per frame
-    void Update()
+    POPUP popUpUI;
+    PickUpItem pickUpItem;
+
+    private void Update()
     {
-        if (_IsActive) // If colliding with object
+        if (_IsActive)
         {
-            if (Input.GetKeyDown(KeyCode.E)) // If Player hits the 'E' key
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                _IsActive = false; // Reset collision state to false
-                if (_IsItem) // If the collision is with an Item
+                _IsActive = false;
+                if (_IsInRange)
                 {
-                    pickup.PickUp(); // Pick up item
-                    Item.ClosePopUp(); // Destroy PopUp text
-                    _IsItem = false; // Reset collision type
+                    pickUpItem.PickUp();
+                    popUpUI.ClosePopUp();
+                    _IsInRange = false;
                 }
             }
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Player = collision.gameObject; // Sets Player object to collision with gameObject
-        Item = Player.GetComponent<POPUP>(); // Sets interactable object to collision with gameObject
-        pickup = Player.GetComponent<PickUpItem>(); // Sets pickup object to collision with gamObject
+        Player = other.gameObject;
+        popUpUI = other.GetComponent<POPUP>();
+        pickUpItem = other.GetComponent<PickUpItem>();
 
-        if (Item != null) // Íf collision is with Item
+        if (popUpUI != null)
         {
-            Debug.Log("Was Interacted with!");
-            Item.OpenPopUp(); // Activate pop-up
-            _IsItem = true; // Set Collision type to Item
+            popUpUI.OpenPopUp();
+            _IsInRange = true;
         }
-        _IsActive = true; // Active collision
+        _IsActive = true;
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit(Collider other)
     {
-        Player = collision.gameObject; // Sets Player object to collision with gameObject
-        Item = Player.GetComponent<POPUP>(); // Sets Item object to collision with gameObject
+        Player = other.gameObject;
+        popUpUI = Player.GetComponent<POPUP>();
+        pickUpItem = Player.GetComponent<PickUpItem>();
 
-        if (Item != null) // If collision was with an Item
+        //For when you Leave ItemObject's Range/Exit the IsTrigger collider
+        if (popUpUI != null)
         {
-            Item.ClosePopUp(); // Deactivate pop-up
-            _IsItem = false; // Reset collision type
+            popUpUI.ClosePopUp();
+            _IsInRange = false;
         }
-        _IsActive = false; // No active collision
+        _IsActive = false;
     }
+
 }

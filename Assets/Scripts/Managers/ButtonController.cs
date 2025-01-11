@@ -2,25 +2,34 @@ using UnityEngine;
 
 public class ButtonController : MonoBehaviour
 {
+    [HideInInspector] public static ButtonController Instance;
+
     [SerializeField] GameObject PausePanel;
     [SerializeField] GameObject SettingsMenu;
     [SerializeField] GameObject ControlsPanel;
     [SerializeField] GameObject AudioPanel;
+    [SerializeField] GameObject InventoryPanel;
 
     bool _IsPaused;
     bool _SM_IsActive;
     bool _Cs_IsActive = false;
     bool _Ao_IsActive = true;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    bool _Inv_IsActive = false;
+    private void Awake()
     {
-        
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
-
     // Update is called once per frame
     void Update()
     {
-        if (!_IsPaused)
+        if (!_IsPaused && !_Inv_IsActive)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -34,6 +43,10 @@ public class ButtonController : MonoBehaviour
                 UnpauseGame();
             }
         }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            OpenInventory();
+        }
     }
     public void PauseGame()
     {
@@ -44,7 +57,7 @@ public class ButtonController : MonoBehaviour
     }
     public void UnpauseGame()
     {
-        if (!_SM_IsActive)
+        if (!_SM_IsActive && _IsPaused)
         {
             PausePanel.SetActive(false);
             _IsPaused = false;
@@ -80,6 +93,26 @@ public class ButtonController : MonoBehaviour
             _Ao_IsActive = true;
             ControlsPanel.SetActive(false);
             _Cs_IsActive = false;
+        }
+    }
+    public void OpenInventory()
+    {
+        if (!_IsPaused && !_Inv_IsActive)
+        {
+            InventoryManager.Instance.ArrangeItems();
+            FPSCameraController.Instance.ResetLockstate();
+            InventoryPanel.SetActive(true);
+            _Inv_IsActive = true;
+        }
+    }
+    public void CloseInventory()
+    {
+        if (_Inv_IsActive)
+        {
+            InventoryManager.Instance.ArrangeItems();
+            FPSCameraController.Instance.ResetLockstate();
+            InventoryPanel.SetActive(false);
+            _Inv_IsActive = false;
         }
     }
 }
