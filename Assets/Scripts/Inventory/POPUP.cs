@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class POPUP : MonoBehaviour
@@ -20,12 +21,19 @@ public class POPUP : MonoBehaviour
     }
     public void OpenPopUp()
     {
-        _IsActive = true; // Say that the pop-up is active
-        popuptext = Instantiate(PopUpText, FindAnyObjectByType<Canvas>().transform).GetComponent<TextMeshProUGUI>(); // Instantiate pop-up prefab
+        if(!_IsActive)
+        {
+            _IsActive = true; // Say that the pop-up is active
+            popuptext = Instantiate(PopUpText, FindAnyObjectByType<Canvas>().transform).GetComponent<TextMeshProUGUI>(); // Instantiate pop-up prefab
+        }
+        
     }
     public void ClosePopUp()
     {
-        _IsActive = false; // Sa that the pop-up is inactive
-        Destroy(gameObject);
+        if (_IsActive)
+        {
+            _IsActive = false; // Say that the pop-up is inactive
+            Destroy(popuptext);
+        }
     }
 }
