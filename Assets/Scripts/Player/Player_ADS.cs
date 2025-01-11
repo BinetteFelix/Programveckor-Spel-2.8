@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player_ADS : MonoBehaviour
 {
-    public FPSCameraController cameraController;
+    public CameraController cameraController;
     [SerializeField] GameObject Weapon;
     [SerializeField] Transform ADSPosition;
     [SerializeField] Transform DefaultPos;

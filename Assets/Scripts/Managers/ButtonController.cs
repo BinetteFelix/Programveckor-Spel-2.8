@@ -53,7 +53,7 @@ public class ButtonController : MonoBehaviour
         PausePanel.SetActive(true);
         _IsPaused = true;
         Time.timeScale = 0.0f;
-        FPSCameraController.Instance.ResetLockstate();
+        CameraController.Instance.ResetLockstate();
     }
     public void UnpauseGame()
     {
@@ -62,7 +62,7 @@ public class ButtonController : MonoBehaviour
             PausePanel.SetActive(false);
             _IsPaused = false;
             Time.timeScale = 1.0f;
-            FPSCameraController.Instance.ResetLockstate();
+            CameraController.Instance.ResetLockstate();
         }
     }
     public void OpenSettingsMenu()
@@ -100,7 +100,7 @@ public class ButtonController : MonoBehaviour
         if (!_IsPaused && !_Inv_IsActive)
         {
             InventoryManager.Instance.ArrangeItems();
-            FPSCameraController.Instance.ResetLockstate();
+            CameraController.Instance.ResetLockstate();
             InventoryPanel.SetActive(true);
             _Inv_IsActive = true;
         }
@@ -110,7 +110,7 @@ public class ButtonController : MonoBehaviour
         if (_Inv_IsActive)
         {
             InventoryManager.Instance.ArrangeItems();
-            FPSCameraController.Instance.ResetLockstate();
+            CameraController.Instance.ResetLockstate();
             InventoryPanel.SetActive(false);
             _Inv_IsActive = false;
         }

@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class FPSCameraController : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     public BikeControls bikeControl;
 
-    [HideInInspector] public static FPSCameraController Instance;
+    [HideInInspector] public static CameraController Instance;
     [HideInInspector] public float mouseSensitivity = 175f;
     public Transform playerBody;
 
@@ -23,6 +23,7 @@ public class FPSCameraController : MonoBehaviour
             Instance = this;
         }
     }
+
     void Start()
     {
         ResetLockstate();
@@ -40,17 +41,18 @@ public class FPSCameraController : MonoBehaviour
             if (bikeControl.isRidden)
             {
                 yRotation += mouseX;
-                yRotation = Mathf.Clamp(yRotation, -120f, 120f);
+                yRotation = Mathf.Clamp(yRotation, -120f, 120f);  // Clamp horizontal rotation for bike
                 transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
             }
             else
             {
                 transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-                playerBody.Rotate(Vector3.up * mouseX);
-                xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+                playerBody.Rotate(Vector3.up * mouseX);  // Rotate only the player body on the Y-axis
+                xRotation = Mathf.Clamp(xRotation, -90f, 90f);  // Clamp vertical rotation
             }
         }
     }
+
     public void ResetLockstate()
     {
         if (_LockState_Locked)

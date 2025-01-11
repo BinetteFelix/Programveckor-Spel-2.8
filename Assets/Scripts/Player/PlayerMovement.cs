@@ -1,27 +1,25 @@
 using UnityEngine;
-[RequireComponent(typeof(CharacterController))]
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    //fpr movement
     protected float walkSpeed = 5f;
     [HideInInspector] public float sprintSpeed = 10f;
     protected float crouchSpeed = 2.5f;
     protected float jumpHeight = 1.2f;
     protected float gravity = -20f;
 
-    //Crouch
+    // Crouch
     protected float crouchHeight = 1f;
     protected float standingHeight = 2f;
     protected float crouchTransitionSpeed = 5f;
 
-    //camera, Stamina script, Bikecontrols script and character controller referens
+    // Camera, Stamina script, Bike controls script, and character controller references
     public Transform cameraHolder;
     private StaminaController staminaController;
     private CharacterController controller;
     public BikeControls bikeControls;
 
-    //other
     protected Vector3 velocity;
     [HideInInspector] public bool isGrounded;
     [HideInInspector] public float currentSpeed;
@@ -29,17 +27,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        //get ref for character cont and stamina
         controller = GetComponent<CharacterController>();
         staminaController = GetComponent<StaminaController>();
-        
         currentSpeed = walkSpeed;
     }
 
     void Update()
     {
-        //player shouldn't be able to move when on bike...
-        if (bikeControls.isRidden == false)
+        if (!bikeControls.isRidden)
         {
             HandleMovement();
             HandleCrouch();
@@ -54,18 +49,18 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
-        //getting input here
+        // Getting input here
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
+        Vector3 move = cameraHolder.right * moveX + cameraHolder.forward * moveZ; // Transform the input to be relative to camera orientation
 
-        //prevent diagonall movement from being faster
+        // Prevent diagonal movement from being faster
         if (move.magnitude > 1f)
         {
             move.Normalize();
         }
 
-        //checks if the character should be sprinting and sets the speed to sprint speed
+        // Sprint and crouch handling
         if (Input.GetKey(KeyCode.LeftShift) && !isCrouching && staminaController.canSprint)
         {
             currentSpeed = sprintSpeed;
@@ -79,38 +74,30 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = isCrouching ? crouchSpeed : walkSpeed;
         }
 
-        //Move
+        // Move the character with the desired speed
         controller.Move(move * currentSpeed * Time.deltaTime);
 
-        //hmmm what does this one do? oh yeah it says JUMP for the get button down....... maybe jump?
+        // Jumping logic
         if (Input.GetButton("Jump") && isGrounded && staminaController.canJump)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        // gravi
+        // Apply gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
     private void HandleCrouch()
     {
-        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-        {
-            isCrouching = true;
-        }
-        else
-        {
-            isCrouching = false;
-        }
+        bool shouldCrouch = Input.GetKey(KeyCode.LeftControl);
+        isCrouching = shouldCrouch;
 
-        //set value for isCrouching
-        isCrouching = Input.GetKey(KeyCode.LeftControl);
-
-        // Adjust height and camera position
+        // Adjust height based on crouch state
         float targetHeight = isCrouching ? crouchHeight : standingHeight;
         controller.height = Mathf.Lerp(controller.height, targetHeight, Time.deltaTime * crouchTransitionSpeed);
 
+        // Adjust camera position smoothly
         Vector3 targetPosition = new Vector3(cameraHolder.localPosition.x, targetHeight / 2, cameraHolder.localPosition.z);
         cameraHolder.localPosition = Vector3.Lerp(cameraHolder.localPosition, targetPosition, Time.deltaTime * crouchTransitionSpeed);
     }

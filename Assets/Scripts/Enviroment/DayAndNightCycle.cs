@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 public class DayAndNightCycle : MonoBehaviour
 {
-    [Range(0f, 20f)]
+    [Range(0f, 24f)]
     public float currentTime;
     public float timeSpeed = 1f;
 
@@ -51,7 +51,8 @@ public class DayAndNightCycle : MonoBehaviour
 
         if (sunLightData != null )
         {
-            sunLightData.intensity = intensityCurve * sunIntensity;
+            float i = intensityCurve * sunIntensity;
+            sunLightData.intensity = i;
         }
     }
 }
