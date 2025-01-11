@@ -14,6 +14,7 @@ public class StaminaController : MonoBehaviour
     [HideInInspector] public bool canSprint;
     [HideInInspector] public bool canJump;
 
+    [SerializeField] private AudioSource SprintingSound;
     void Start()
     {
         currentStamina = maxStamina;
@@ -25,6 +26,19 @@ public class StaminaController : MonoBehaviour
         HandleStaminaRegen();
         HandleStamina();
         UpdateUI();
+
+        if (currentStamina > 25f)
+        {
+            SprintingSound.Play();
+        }
+        if (ButtonController.Instance._IsPaused)
+        {
+            SprintingSound.Pause();
+        }
+        else if (!ButtonController.Instance._IsPaused)
+        {
+            SprintingSound.UnPause();
+        }
     }
 
     private void HandleStamina()
@@ -39,9 +53,14 @@ public class StaminaController : MonoBehaviour
         if (currentStamina > 10f)
         {
             canSprint = true;
+            
         }
         else
+        {
             canSprint = false;
+        }
+        
+            
 
         if (Input.GetButton("Jump") && playerMovement.isGrounded && !playerMovement.isCrouching)
         {
@@ -97,7 +116,7 @@ public class StaminaController : MonoBehaviour
         if(playerMovement.isCrouching) 
         {
             staminaRegenRate = 12f;
-        }
+        } 
         else
         {
             staminaRegenRate = 4f;

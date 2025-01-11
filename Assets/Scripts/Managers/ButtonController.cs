@@ -10,7 +10,7 @@ public class ButtonController : MonoBehaviour
     [SerializeField] GameObject AudioPanel;
     [SerializeField] GameObject InventoryPanel;
 
-    bool _IsPaused;
+    public bool _IsPaused;
     bool _SM_IsActive;
     bool _Cs_IsActive = false;
     bool _Ao_IsActive = true;
