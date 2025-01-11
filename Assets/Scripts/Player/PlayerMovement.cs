@@ -4,10 +4,10 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     protected float walkSpeed = 5f;
-    [HideInInspector] public float sprintSpeed = 10f;
+    [HideInInspector] public float sprintSpeed = 7f;
     protected float crouchSpeed = 2.5f;
-    protected float jumpHeight = 1.2f;
-    protected float gravity = -20f;
+    protected float jumpHeight = 1.5f;
+    protected float gravity = -30f;
 
     // Crouch parameters
     protected float crouchHeight = 1f;
