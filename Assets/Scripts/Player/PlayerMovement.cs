@@ -9,12 +9,12 @@ public class PlayerMovement : MonoBehaviour
     protected float jumpHeight = 1.2f;
     protected float gravity = -20f;
 
-    // Crouch
+    // Crouch parameters
     protected float crouchHeight = 1f;
     protected float standingHeight = 2f;
     protected float crouchTransitionSpeed = 5f;
 
-    // Camera, Stamina script, Bike controls script, and character controller references
+    // References for the camera holder, stamina controller, and character controller
     public Transform cameraHolder;
     private StaminaController staminaController;
     private CharacterController controller;
@@ -27,6 +27,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        controller.center = new Vector3(0f, 1f, 0f); // Center of the character's collider
+        controller.height = 2f; // Height of the character controller
+
+        // Set the camera's initial position relative to the player.
+        cameraHolder.localPosition = new Vector3(0f, standingHeight / 2f, 0f); // Adjust based on camera height
+        cameraHolder.localRotation = Quaternion.identity;
+
         controller = GetComponent<CharacterController>();
         staminaController = GetComponent<StaminaController>();
         currentSpeed = walkSpeed;
@@ -49,10 +56,12 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
-        // Getting input here
+        // Getting input for movement
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
-        Vector3 move = cameraHolder.right * moveX + cameraHolder.forward * moveZ; // Transform the input to be relative to camera orientation
+
+        // Calculate movement direction relative to camera rotation
+        Vector3 move = cameraHolder.right * moveX + cameraHolder.forward * moveZ;
 
         // Prevent diagonal movement from being faster
         if (move.magnitude > 1f)
@@ -74,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = isCrouching ? crouchSpeed : walkSpeed;
         }
 
-        // Move the character with the desired speed
+        // Move the character based on the calculated movement direction
         controller.Move(move * currentSpeed * Time.deltaTime);
 
         // Jumping logic
