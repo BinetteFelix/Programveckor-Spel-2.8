@@ -353,6 +353,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprintSpeed: 10
   cameraHolder: {fileID: 1734566989}
+  controller: {fileID: 74026278}
   bikeControls: {fileID: 1615579200}
   isGrounded: 0
   currentSpeed: 0
