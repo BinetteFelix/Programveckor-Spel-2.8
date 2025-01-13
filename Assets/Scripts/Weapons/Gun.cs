@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class Guns : MonoBehaviour
+public class Gun : MonoBehaviour
 {
-    [Header("Gun Settings")]
     [SerializeField] private GunData gunData;
     [SerializeField] private Transform muzzle;
+    [SerializeField] private GameObject projectilePrefab;
 
     private float timeSinceLastShot;
 
@@ -13,33 +13,35 @@ public class Guns : MonoBehaviour
     {
         if (gunData.currentAmmo > 0 && CanShoot())
         {
-            if (Physics.Raycast(muzzle.position, muzzle.forward, out RaycastHit hitInfo, gunData.maxDistance))
-            {
-                //DELEAT LATER!
-                Debug.Log($"Hit: {hitInfo.transform.name}");
+            //Spawn and fix the projectile according to the GUN DATA
+            GameObject projectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+            Rigidbody rb = projectile.GetComponent<Rigidbody>();
 
-                Damageable target = hitInfo.collider.GetComponent<Damageable>();
-                if (target != null)
-                {
-                    bool isHeadshot = hitInfo.collider.CompareTag("Head");
-                    float damage = isHeadshot ? gunData.damage * gunData.headshotMultiplier : gunData.damage;
+            Vector3 initialVelocity = muzzle.forward * gunData.projectileSpeed;
+            initialVelocity.y += gunData.bulletArc;
 
-                    target.TakeDamage(damage);
+            //bullet spread for ADS or not ADS (aim down sights)
+            float spread = gunData.canAimDownSights && Input.GetButton("Fire2")
+                ? gunData.aimDownSightsSpread
+                : gunData.hipFireSpread;
 
-                    //Check if bs/hs works REMOVE LATER
-                    Debug.Log(isHeadshot ? "Headshot!" : "Body hit");
-                }
-            }
+            initialVelocity += new Vector3(
+                Random.Range(-spread, spread),
+                Random.Range(-spread, spread),
+                Random.Range(-spread, spread)
+            );
+
+            rb.linearVelocity = initialVelocity;
 
             gunData.currentAmmo--;
             timeSinceLastShot = 0;
+
+            //SHOOT SOUND FX HERE!
+
         }
         else
         {
-            //NO AMMO LEFT SFX HERE!
-
-            //Remove this later, maybe replace with text or some kind of notification
-            Debug.Log("Out of ammo! Reload required.");
+            //No ammo player notification here maybe?
         }
     }
 
@@ -47,13 +49,12 @@ public class Guns : MonoBehaviour
 
     public IEnumerator Reload()
     {
-        //RELOAD SFX HERE!
-
         gunData.reloading = true;
-        Debug.Log("Reloading...");
+
+        //RELOAD SOUND FX HEREE!
+
         yield return new WaitForSeconds(gunData.reloadTime);
         gunData.currentAmmo = gunData.magSize;
         gunData.reloading = false;
-        Debug.Log("Reload complete!");
     }
 }
