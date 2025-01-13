@@ -1275,7 +1275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTime: 12
-  timeSpeed: 0
+  timeSpeed: 1
   currentTimeString: 
   sunLight: {fileID: 1102420168}
   sunLatitude: 65.6
@@ -1741,7 +1741,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456301523}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.033968884, y: 0.96470594, z: 0.20857681, w: -0.15711239}
+  m_LocalRotation: {x: -0.20482254, y: 0.24059416, z: 0.052018285, w: 0.9473417}
   m_LocalPosition: {x: 280.32364, y: 965.34326, z: 258.44937}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
