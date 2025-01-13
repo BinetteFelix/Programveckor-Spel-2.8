@@ -75,7 +75,7 @@ public class DayAndNightCycle : MonoBehaviour
     {
         float sunRotation = currentTime / 24f * 360f;
         sunLight.transform.localRotation = (Quaternion.Euler(sunLatitude - 90, sunLongitude, 0) * Quaternion.Euler(0, sunRotation, 0));
-        moonLight.transform.localRotation = (Quaternion.Euler(90 - moonLatitude, moonLongitude, 0) * Quaternion.Euler(0, sunRotation, 0));
+        moonLight.transform.localRotation = (Quaternion.Euler(90 - moonLatitude, moonLongitude - 170, 0) * Quaternion.Euler(0, sunRotation, 0));
 
         float normalizedTime = currentTime / 24f;
         float sunIntensityCurve = sunIntensityMultiplier.Evaluate(normalizedTime);
@@ -161,7 +161,7 @@ public class DayAndNightCycle : MonoBehaviour
         volumeProfile.TryGet<PhysicallyBasedSky>(out skySettings);
         skySettings.spaceEmissionMultiplier.value = starCurve.Evaluate(currentTime / 24f) * starIntensity;
 
-        skySettings.spaceRotation.value = (Quaternion.Euler(90 - polarstarLatitude, polarstarLongitude, 0) * Quaternion.Euler(0, currentTime / 24 * 360, 0)).eulerAngles;
+        skySettings.spaceRotation.value = (Quaternion.Euler(90 - polarstarLatitude, polarstarLongitude - 190, 0) * Quaternion.Euler(0, currentTime / 24 * 360, 0)).eulerAngles;
     }
 
 }
