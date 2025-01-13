@@ -461,8 +461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521535bb541e50443966955196f347eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTime: 24
-  timeSpeed: 2
+  currentTime: 4.5
+  timeSpeed: 0.1
   currentTimeString: 
   sunLight: {fileID: 1102420168}
   sunLatitude: 65.6
@@ -632,7 +632,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   volumeProfile: {fileID: 11400000, guid: 447e276e954d1f048bba324ac2970475, type: 2}
-  starIntensity: 3
+  starIntensity: 4
   starCurve:
     serializedVersion: 2
     m_Curve:
@@ -866,7 +866,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.1999953
+  m_Intensity: 0.8768624
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -909,7 +909,7 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 10000
+  m_ColorTemperature: 7685.3247
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -928,7 +928,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456301523}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20857681, y: -0.15711243, z: 0.033968873, w: -0.96470594}
+  m_LocalRotation: {x: -0.07054168, y: -0.6540189, z: 0.19920354, w: 0.7263616}
   m_LocalPosition: {x: 280.32364, y: 965.34326, z: 258.44937}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1568,7 +1568,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0
+  m_Intensity: 2.221841
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1611,7 +1611,7 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 5000.8877
+  m_ColorTemperature: 11299.094
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -1630,7 +1630,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1102420166}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20857681, y: -0.15711243, z: -0.033968873, w: -0.96470594}
+  m_LocalRotation: {x: -0.19229738, y: 0.66659606, z: -0.08763497, w: 0.7148367}
   m_LocalPosition: {x: -29.541351, y: -0.5663457, z: -11.439639}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
