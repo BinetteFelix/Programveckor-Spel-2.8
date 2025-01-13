@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float lifeTime = 5f;
-    private float damage;
+    public float lifeTime = 5f; // How long the projectile exists before being destroyed
+    private GunData gunData;
 
-    public void Initialize(float projectileDamage)
+    public void Initialize(GunData data)
     {
-        damage = projectileDamage;
+        gunData = data;
     }
 
     private void Start()
@@ -17,15 +17,13 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Damageable target = collision.gameObject.GetComponent<Damageable>();
+        Debug.Log($"Projectile hit: {collision.gameObject.name}");
+
+        IDamageable target = collision.gameObject.GetComponent<IDamageable>();
         if (target != null)
         {
-            //COLLISSION SFX TARGET
-            target.TakeDamage(damage);
-        }
-        else if (target == null)
-        {
-            //SFX BASED ON THING HIT
+            target.TakeDamage(gunData.damage);
+            Debug.Log($"Dealt {gunData.damage} damage to {collision.gameObject.name}");
         }
 
         Destroy(gameObject);

@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   gunName: Pistol
-  damage: 1
-  fireRate: 800
-  magSize: 80
-  reloadTime: 5
-  maxDistance: 17
-  currentAmmo: 0
-  reloading: 0
-  projectileSpeed: 30
-  bulletArc: 1
+  isAutomatic: 0
+  damage: 5
+  magSize: 16
+  ammoInMag: 0
+  fireRate: 0.1
+  reloadTime: 3
+  maxDistance: 250
+  projectileSpeed: 60
+  bulletArc: 0
   canAimDownSights: 1
   aimDownSightsSpread: 0.1
   hipFireSpread: 0.5

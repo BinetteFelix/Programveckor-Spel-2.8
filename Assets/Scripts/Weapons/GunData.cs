@@ -4,13 +4,14 @@ using UnityEngine;
 public class GunData : ScriptableObject
 {
     public string gunName;
+    public bool isAutomatic;
     public float damage;
-    public float fireRate;
     public int magSize;
+    public int ammoInMag;
+    public float fireRate;
     public float reloadTime;
-    public float maxDistance;
-    public int currentAmmo;
-    public bool reloading;
+
+    public float maxDistance;   
     public float projectileSpeed = 30f;
     public float bulletArc = 0f;  
     public bool canAimDownSights = true;

@@ -1,39 +1,27 @@
 using UnityEngine;
 
-public class EnemyHP : MonoBehaviour
+public class EnemyHP : MonoBehaviour, IDamageable
 {
+    public float health = 100f;
 
-    public int HP = 100;
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void TakeDamage(float amount)
     {
+        // DMG SFX HERE
 
-        
-    }
+        health -= amount;
+        Debug.Log($"{gameObject.name} took {amount} damage. Remaining health: {health}");
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (HP <= 0)
+        if (health <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
     }
 
-    void TakeDamage()
+    private void Die()
     {
-        HP -= 5;
+        //die SFX HERE
+
+        Debug.Log($"{gameObject.name} has died.");
+        Destroy(gameObject);
     }
-
-
-    void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player") && Input.GetMouseButtonDown(0))
-        {
-            TakeDamage();
-        }
-    }
-
 }

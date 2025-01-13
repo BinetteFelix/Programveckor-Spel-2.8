@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2844296860791818484}
   - component: {fileID: 729921079669415642}
   - component: {fileID: 3106605054699183017}
-  - component: {fileID: 8466571348563425459}
+  - component: {fileID: 9075188623675233290}
   m_Layer: 0
   m_Name: BulletPrefab
   m_TagString: Untagged
@@ -137,7 +137,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8466571348563425459
+--- !u!114 &9075188623675233290
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

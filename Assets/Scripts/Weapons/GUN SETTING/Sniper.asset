@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Sniper
   m_EditorClassIdentifier: 
   gunName: Sniper
+  isAutomatic: 0
   damage: 100
-  fireRate: 20
   magSize: 6
+  ammoInMag: 3
+  fireRate: 2
   reloadTime: 4
   maxDistance: 400
-  currentAmmo: 7
-  reloading: 0
   projectileSpeed: 80
   bulletArc: 0
   canAimDownSights: 1
