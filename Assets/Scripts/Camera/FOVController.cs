@@ -17,7 +17,7 @@ public class FPSFOVController : MonoBehaviour
             playerCamera = GetComponent<Camera>();
         }
 
-        playerMovement = FindObjectOfType<PlayerMovement>();
+        playerMovement = Object.FindFirstObjectByType<PlayerMovement>();
 
         playerCamera.fieldOfView = defaultFOV;
     }

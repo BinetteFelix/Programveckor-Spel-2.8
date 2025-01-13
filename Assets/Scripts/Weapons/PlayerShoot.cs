@@ -9,6 +9,7 @@ public class PlayerShoot : MonoBehaviour
         if (Input.GetButton("Fire1"))
         {
             equippedGun.Shoot();
+            Debug.Log("Fire1 pressed!");
         }
 
         if (Input.GetKeyDown(KeyCode.R))

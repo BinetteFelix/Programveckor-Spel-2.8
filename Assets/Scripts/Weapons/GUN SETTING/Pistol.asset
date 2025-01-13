@@ -12,12 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d96c39de06f77de4e9186a7a2b3a96e6, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  gunName: 
-  damage: 0
-  fireRate: 0
-  magSize: 0
-  reloadTime: 0
-  maxDistance: 0
+  gunName: Pistol
+  damage: 1
+  fireRate: 800
+  magSize: 80
+  reloadTime: 5
+  maxDistance: 17
   currentAmmo: 0
-  headshotMultiplier: 2
   reloading: 0
+  projectileSpeed: 30
+  bulletArc: 1
+  canAimDownSights: 1
+  aimDownSightsSpread: 0.1
+  hipFireSpread: 0.5
+  headshotMultiplier: 2
+  shootSFX: {fileID: 8300000, guid: e33913a460937f240817bba540bee661, type: 3}
+  reloadSFX: {fileID: 8300000, guid: a8252b5c05bbe8b4db5cd3152e66195e, type: 3}

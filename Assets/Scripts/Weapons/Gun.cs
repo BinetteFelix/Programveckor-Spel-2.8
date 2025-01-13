@@ -8,11 +8,16 @@ public class Gun : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
 
     private float timeSinceLastShot;
-
+    private void Update()
+    {
+        timeSinceLastShot += Time.deltaTime; // Increment time since last shot
+    }
     public void Shoot()
     {
         if (gunData.currentAmmo > 0 && CanShoot())
         {
+            Debug.Log("Shooting!");
+
             //Spawn and fix the projectile according to the GUN DATA
             GameObject projectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
@@ -41,11 +46,21 @@ public class Gun : MonoBehaviour
         }
         else
         {
+            Debug.Log("Cannot shoot! Ammo: " + gunData.currentAmmo + ", CanShoot: " + CanShoot());
+
             //No ammo player notification here maybe?
         }
     }
 
-    public bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
+    public bool CanShoot()
+    {
+        Debug.Log($"Reloading: {gunData.reloading}");
+        Debug.Log($"Time Since Last Shot: {timeSinceLastShot}");
+        Debug.Log($"Required Time Between Shots: {1f / (gunData.fireRate / 60f)}");
+
+        return !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
+    }
+
 
     public IEnumerator Reload()
     {
