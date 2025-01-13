@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float sprintSpeed = 7f;
     protected float crouchSpeed = 2.5f;
     protected float jumpHeight = 1.5f;
-    protected float gravity = -30f;
+    protected float gravity = -20f;
 
     // Crouch parameters
     protected float crouchHeight = 1f;
@@ -87,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(move * currentSpeed * Time.deltaTime);
 
         // Jumping logic
-        if (Input.GetButton("Jump") && isGrounded && staminaController.canJump)
+        if (Input.GetButtonDown("Jump") && isGrounded && staminaController.canJump)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
