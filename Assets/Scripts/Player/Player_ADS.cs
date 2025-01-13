@@ -9,15 +9,9 @@ public class Player_ADS : MonoBehaviour
     [SerializeField] Transform DefaultPos;
     private float AnimationSpeed = 9.5f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (cameraController._LockState_Locked == true)
+        if (cameraController._LockStateLocked == true)
         {
             if (Input.GetMouseButton(1))
             {

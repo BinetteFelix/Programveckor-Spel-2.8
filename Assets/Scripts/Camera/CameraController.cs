@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
 
     private float xRotation = 0f;
     private float yRotation = 0f;
-    [HideInInspector] public bool _LockState_Locked = false;
+    [HideInInspector] public bool _LockStateLocked = false;
 
     private void Awake()
     {
@@ -29,9 +29,9 @@ public class CameraController : MonoBehaviour
         ResetLockstate();
     }
 
-    void Update()
+    void LateUpdate()
     {
-        if (_LockState_Locked)
+        if (_LockStateLocked)
         {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -40,8 +40,9 @@ public class CameraController : MonoBehaviour
 
             if (bikeControl.isRidden)
             {
+                //player shouldn't be able to turn 360 degrees on bike
                 yRotation += mouseX;
-                yRotation = Mathf.Clamp(yRotation, -120f, 120f);  // Clamp horizontal rotation for bike
+                yRotation = Mathf.Clamp(yRotation, -120f, 120f);
                 xRotation = Mathf.Clamp(xRotation, -90f, 90f);
                 transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f); 
 
@@ -49,23 +50,23 @@ public class CameraController : MonoBehaviour
             else
             {
                 transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-                playerBody.Rotate(Vector3.up * mouseX);  // Rotate only the player body on the Y-axis
-                xRotation = Mathf.Clamp(xRotation, -90f, 90f);  // Clamp vertical rotation
+                playerBody.Rotate(Vector3.up * mouseX);
+                xRotation = Mathf.Clamp(xRotation, -90f, 90);
             }
         }
     }
 
     public void ResetLockstate()
     {
-        if (_LockState_Locked)
+        if (_LockStateLocked)
         {
             Cursor.lockState = CursorLockMode.None;
-            _LockState_Locked = false;
+            _LockStateLocked = false;
         }
-        else if (!_LockState_Locked)
+        else if (!_LockStateLocked)
         {
             Cursor.lockState = CursorLockMode.Locked;
-            _LockState_Locked = true;
+            _LockStateLocked = true;
         }
     }
 }

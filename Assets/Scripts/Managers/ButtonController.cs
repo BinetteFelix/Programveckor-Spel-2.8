@@ -26,7 +26,7 @@ public class ButtonController : MonoBehaviour
             Instance = this;
         }
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (!_IsPaused && !_Inv_IsActive)
