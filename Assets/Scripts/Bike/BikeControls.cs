@@ -13,7 +13,13 @@ public class BikeControls : MonoBehaviour
     public float maxSpeed = 20f;
     public float acceleration = 5f;
     public float deceleration = 10f;
-    public float turnSpeed = 50f;
+    public float turnSpeed = 30f;
+    public float tiltAmount = 5f;
+    public float smoothTiltSpeed = 5f;
+    public float smoothTurnSpeed = 10f;
+
+    private float currentTilt = 0f;
+    private float targetRotationY = 0f;
 
     private float timer = 0.1f;
 
@@ -54,15 +60,25 @@ public class BikeControls : MonoBehaviour
             {
                 Turn(turn);
             }
+            else  
+                ResetTilt();
+            
         }
+        else
+            ResetTilt();
 
         if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             NaturalDeceleration();
         }
 
-        // moves the bike forward
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+    
+        Vector3 forwardMovement = transform.forward;
+        forwardMovement.y = 0; // Se till att y-axeln inte påverkar rörelsen
+        forwardMovement.Normalize();
+        transform.position += forwardMovement * speed * Time.deltaTime;
+
+        SmoothRotation();
     }
     public void Mount(GameObject player)
     {
@@ -112,9 +128,27 @@ public class BikeControls : MonoBehaviour
             speed = Mathf.Max(speed, 0);
         }
     }
+
     void Turn(float turnAmount)
     {
-        transform.Rotate(0, turnAmount, 0);
+        // Justera målrotationen för horisontalplanet
+        targetRotationY += turnAmount;
+
+        // Luta cykeln vid svängning
+        currentTilt = Mathf.Lerp(currentTilt, -Mathf.Sign(turnAmount) * tiltAmount, Time.deltaTime * smoothTiltSpeed);
+    }
+
+    // Funktion för att återställa lutning
+    void ResetTilt()
+    {
+        currentTilt = Mathf.Lerp(currentTilt, 0, Time.deltaTime * smoothTiltSpeed); // Jämna ut lutningen
+    }
+
+    // Funktion för att applicera smidig rotation
+    void SmoothRotation()
+    {
+        Quaternion targetRotation = Quaternion.Euler(0, targetRotationY, currentTilt);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * smoothTurnSpeed);
     }
 
     void OnTriggerStay(Collider other)
