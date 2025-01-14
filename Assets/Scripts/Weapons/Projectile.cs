@@ -5,11 +5,13 @@ public class Projectile : MonoBehaviour
 {
     public float lifeTime = 5f; // Time before the projectile is destroyed
     private float damage; // Damage value for the projectile
+    private float headshotMultiplier;
     private bool isInitialized;
 
-    public void Initialize(float projectileDamage)
+    public void Initialize(float projectileDamage, float headMultiplier)
     {
         damage = projectileDamage;
+        headshotMultiplier = headMultiplier;
         isInitialized = true;
     }
 
@@ -28,8 +30,17 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<IDamageable>(out var target))
         {
-            target.TakeDamage(damage);
-            Debug.Log($"Dealt {damage} damage to {collision.gameObject.name}");
+            float finalDamage = damage;
+            
+            // Check for headshot (you'll need to tag the head collider or use a layer)
+            if (collision.gameObject.CompareTag("Head"))
+            {
+                finalDamage *= headshotMultiplier;
+                Debug.Log("Headshot!");
+            }
+
+            target.TakeDamage(finalDamage);
+            Debug.Log($"Dealt {finalDamage} damage to {collision.gameObject.name}");
         }
         Destroy(gameObject);
     }

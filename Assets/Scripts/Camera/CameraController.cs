@@ -37,21 +37,18 @@ public class CameraController : MonoBehaviour
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
             xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
             if (bikeControl.isRidden)
             {
-                //player shouldn't be able to turn 360 degrees on bike
                 yRotation += mouseX;
                 yRotation = Mathf.Clamp(yRotation, -120f, 120f);
-                xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-                transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f); 
-
+                transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
             }
             else
             {
+                transform.parent.Rotate(Vector3.up * mouseX);
                 transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-                playerBody.Rotate(Vector3.up * mouseX);
-                xRotation = Mathf.Clamp(xRotation, -90f, 90);
             }
         }
     }

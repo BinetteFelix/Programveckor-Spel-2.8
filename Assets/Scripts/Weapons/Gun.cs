@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 //andv�nd GunLibrary.Instance.EquipGun("GunName") f�r att lyckas equippa en ny pistol...
 
@@ -12,6 +13,8 @@ public class Gun : MonoBehaviour
     private Vector3 aimPoint;
     private float timeSinceLastShot;
     private GunData gunData;
+    private bool isAiming = false;
+    [SerializeField] private MuzzleFlash muzzleFlash;
 
     private void Start()
     {
@@ -37,9 +40,14 @@ public class Gun : MonoBehaviour
         aimPoint = GetAimPoint();
         weapon.LookAt(aimPoint);
         timeSinceLastShot += Time.deltaTime;
+
+        //check aiming state
+        isAiming = Input.GetButton("Fire2") && gunData.canAimDownSights;
     }
     public void Shoot()
     {
+        //Shoot SFX HERE!
+
         if (!CanShoot())
         {
             if (gunData.ammoInMag <= 0 && !reloading)
@@ -49,27 +57,39 @@ public class Gun : MonoBehaviour
             return;
         }
 
+        // Trigger muzzle flash
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Flash();
+        }
+
         Vector3 aimPoint = GetAimPoint();
-        GameObject projectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+        
+        // Apply spread
+        float currentSpread = isAiming ? gunData.aimDownSightsSpread : gunData.hipFireSpread;
+        Quaternion randomRotation = Quaternion.Euler(
+            Random.Range(-currentSpread, currentSpread),
+            Random.Range(-currentSpread, currentSpread),
+            0f
+        );
+
+        // Apply the spread to the muzzle rotation
+        Quaternion finalRotation = muzzle.rotation * randomRotation;
+        
+        GameObject projectile = Instantiate(projectilePrefab, muzzle.position, finalRotation);
 
         if (projectile.TryGetComponent<Projectile>(out var projectileComponent))
         {
-            projectileComponent.Initialize(gunData.damage);
+            projectileComponent.Initialize(gunData.damage, gunData.headshotMultiplier);
         }
 
         if (projectile.TryGetComponent<Rigidbody>(out var rb))
         {
-            rb.linearVelocity = muzzle.forward * gunData.projectileSpeed;
+            rb.linearVelocity = finalRotation * Vector3.forward * gunData.projectileSpeed;
         }
 
-        gunData.ammoInMag--;
+        gunData.ammoInMag -= 1;
         timeSinceLastShot = 0;
-
-        if (gunData.shootSFX != null)
-        {
-            //No ammo player notification here maybe?
-
-        }
     }
 
     public bool CanShoot()

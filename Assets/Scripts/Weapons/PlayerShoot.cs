@@ -31,13 +31,13 @@ public class PlayerShoot : MonoBehaviour
     {
         if (gunData == null) return;
 
-        if ((gunData.isAutomatic && Input.GetButton("Fire1")) ||
-            (!gunData.isAutomatic && Input.GetButtonDown("Fire1")))
+        if ((gunData.isAutomatic && Input.GetButton("Fire1") && gunData.ammoInMag > 0) ||
+            (!gunData.isAutomatic && Input.GetButtonDown("Fire1") && gunData.ammoInMag > 0))
         {
             equippedGun.Shoot();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) || gunData.ammoInMag <= 0)
         {
             StartCoroutine(equippedGun.Reload());
         }

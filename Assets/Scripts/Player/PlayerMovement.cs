@@ -3,10 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private LayerMask groundMask;
     protected float walkSpeed = 5f;
     [HideInInspector] public float sprintSpeed = 7f;
     protected float crouchSpeed = 2.5f;
-    protected float jumpHeight = 1.5f;
+    protected float jumpHeight = 7f;
     protected float gravity = -20f;
 
     protected float crouchHeight = 1f;
@@ -44,38 +45,26 @@ public class PlayerMovement : MonoBehaviour
         {
             HandleMovement();
             HandleCrouch();
-            HandleRotation();
-        }
-    }
-    private void HandleRotation()
-    {
-        // Rotate the player to match the camera's direction, ignoring vertical rotation
-        Vector3 cameraForward = cameraHolder.forward;
-        cameraForward.y = 0; // Remove the vertical component
-        cameraForward.Normalize();
-
-        if (cameraForward != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(cameraForward);
         }
     }
 
     private void HandleMovement()
     {
-        isGrounded = controller.isGrounded;
+        isGrounded = IsGrounded();
+        
+        // Reset velocity when grounded
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
 
-        //input
+        // Horizontal movement
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
 
-        //movement direction
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
-
-        //prevent diagonal movement from being faster
+        Vector3 move = cameraHolder.right * moveX + cameraHolder.forward * moveZ;
+        move.y = 0;
+        
         if (move.magnitude > 1f)
         {
             move.Normalize();
@@ -95,15 +84,19 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = isCrouching ? crouchSpeed : walkSpeed;
         }
 
+        // Apply horizontal movement
         controller.Move(move * currentSpeed * Time.deltaTime);
 
+        // Jump
         if (Input.GetButtonDown("Jump") && isGrounded && staminaController.canJump)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            velocity.y = jumpHeight;
         }
 
-        //grav
+        // Apply gravity
         velocity.y += gravity * Time.deltaTime;
+        
+        // Apply vertical movement
         controller.Move(velocity * Time.deltaTime);
     }
 
@@ -119,5 +112,10 @@ public class PlayerMovement : MonoBehaviour
         //adjust camera position smoothly
         Vector3 targetPosition = new Vector3(cameraHolder.localPosition.x, targetHeight/2, cameraHolder.localPosition.z);
         cameraHolder.localPosition = Vector3.Lerp(cameraHolder.localPosition, targetPosition, Time.deltaTime * crouchTransitionSpeed);
+    }
+
+    private bool IsGrounded()
+    {
+        return controller.isGrounded;
     }
 }
