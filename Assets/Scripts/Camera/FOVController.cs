@@ -3,12 +3,14 @@ using UnityEngine;
 public class FPSFOVController : MonoBehaviour
 {
     public Camera playerCamera;
-    protected int defaultFOV = 70;
-    protected int sprintFOV = 90;
-    protected int crouchingFOV = 55;
-    protected float fovTransitionSpeed = 2f;
+    [Header("FOV Settings")]
+    [SerializeField] private float defaultFOV = 70f;
+    [SerializeField] private float sprintFOV = 80f;
+    [SerializeField] private float crouchingFOV = 65f;
+    [SerializeField] private float fovTransitionSpeed = 10f;
 
     private PlayerMovement playerMovement;
+    private GunData currentGunData;
 
     void Start()
     {
@@ -18,25 +20,58 @@ public class FPSFOVController : MonoBehaviour
         }
 
         playerMovement = Object.FindFirstObjectByType<PlayerMovement>();
-
         playerCamera.fieldOfView = defaultFOV;
+
+        // Subscribe to gun changes
+        if (GunLibrary.Instance != null)
+        {
+            GunLibrary.Instance.OnGunEquipped += UpdateGunData;
+            currentGunData = GunLibrary.Instance.GetEquippedGun();
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (GunLibrary.Instance != null)
+        {
+            GunLibrary.Instance.OnGunEquipped -= UpdateGunData;
+        }
+    }
+
+    private void UpdateGunData(GunData newGunData)
+    {
+        currentGunData = newGunData;
     }
 
     void Update()
     {
-        //adjust for sprinting
+        if (currentGunData == null) return;
+
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && playerMovement.currentSpeed == playerMovement.sprintSpeed;
-        float targetSprintFOV = isSprinting ? sprintFOV : defaultFOV;
+        bool isCrouching = playerMovement.isCrouching;
+        bool isAiming = Player_ADS.Instance.IsAiming;
 
-        //adjust for crouching
-        bool isCrouching = Input.GetKey(KeyCode.LeftControl) && playerMovement.isCrouching;
-        float targetCrouchFOV = isCrouching ? crouchingFOV : defaultFOV;
+        float targetFOV;
 
-        //prio
-        float targetFOV = isCrouching ? targetCrouchFOV : targetSprintFOV;
+        // Priority order: ADS > Crouching > Sprinting > Default
+        if (isAiming)
+        {
+            targetFOV = currentGunData.adsZoomFOV;  // Use gun-specific zoom
+        }
+        else if (isCrouching)
+        {
+            targetFOV = crouchingFOV;
+        }
+        else if (isSprinting)
+        {
+            targetFOV = sprintFOV;
+        }
+        else
+        {
+            targetFOV = defaultFOV;
+        }
 
-        //smoothly transition
+        // Smoothly transition FOV
         playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * fovTransitionSpeed);
-
     }
 }

@@ -14,17 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunName: Pistol
   isAutomatic: 0
-  damage: 5
-  magSize: 16
+  damage: 20
+  magSize: 14
   ammoInMag: 0
-  fireRate: 0.1
-  reloadTime: 3
+  fireRate: 0.13
+  reloadTime: 2.5
   maxDistance: 250
-  projectileSpeed: 60
+  projectileSpeed: 80
   bulletArc: 0
   canAimDownSights: 1
-  aimDownSightsSpread: 0.1
-  hipFireSpread: 0.5
+  adsZoomFOV: 55
+  aimDownSightsSpread: 0.3
+  hipFireSpread: 1
   headshotMultiplier: 2
   shootSFX: {fileID: 8300000, guid: e33913a460937f240817bba540bee661, type: 3}
   reloadSFX: {fileID: 8300000, guid: a8252b5c05bbe8b4db5cd3152e66195e, type: 3}

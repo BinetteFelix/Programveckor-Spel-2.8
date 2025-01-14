@@ -23,8 +23,9 @@ MonoBehaviour:
   projectileSpeed: 80
   bulletArc: 0
   canAimDownSights: 1
-  aimDownSightsSpread: 0.1
-  hipFireSpread: 0.5
+  adsZoomFOV: 20
+  aimDownSightsSpread: 0.001
+  hipFireSpread: 4
   headshotMultiplier: 3
   shootSFX: {fileID: 0}
   reloadSFX: {fileID: 0}

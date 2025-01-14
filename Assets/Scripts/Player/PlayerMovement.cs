@@ -3,10 +3,14 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement Speeds")]
+    [SerializeField] private float walkSpeed = 5f;
+    public float sprintSpeed { get; private set; } = 7f;
+    [SerializeField] private float crouchSpeed = 2.5f;
+    [SerializeField] private float adsWalkSpeed = 3f;    // New ADS walking speed
+    [SerializeField] private float adsCrouchSpeed = 1.5f; // New ADS crouching speed
+    
     [SerializeField] private LayerMask groundMask;
-    protected float walkSpeed = 5f;
-    [HideInInspector] public float sprintSpeed = 7f;
-    protected float crouchSpeed = 2.5f;
     protected float jumpHeight = 7f;
     protected float gravity = -20f;
 
@@ -70,19 +74,8 @@ public class PlayerMovement : MonoBehaviour
             move.Normalize();
         }
 
-        //Sprint and crouch
-        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching && staminaController.canSprint)
-        {
-            currentSpeed = sprintSpeed;
-        }
-        else if (staminaController.currentStamina <= 5f)
-        {
-            currentSpeed = walkSpeed;
-        }
-        else
-        {
-            currentSpeed = isCrouching ? crouchSpeed : walkSpeed;
-        }
+        // Updated speed selection
+        currentSpeed = DetermineMovementSpeed();
 
         // Apply horizontal movement
         controller.Move(move * currentSpeed * Time.deltaTime);
@@ -117,5 +110,24 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         return controller.isGrounded;
+    }
+
+    private float DetermineMovementSpeed()
+    {
+        bool isAiming = Player_ADS.Instance.IsAiming;
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && staminaController.canSprint;
+        
+        if (isSprinting && !isCrouching)
+        {
+            return sprintSpeed;
+        }
+        else if (isCrouching)
+        {
+            return isAiming ? adsCrouchSpeed : crouchSpeed;
+        }
+        else
+        {
+            return isAiming ? adsWalkSpeed : walkSpeed;
+        }
     }
 }

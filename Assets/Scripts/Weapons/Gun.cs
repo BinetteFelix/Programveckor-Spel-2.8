@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour
     private GunData gunData;
     private bool isAiming = false;
     [SerializeField] private MuzzleFlash muzzleFlash;
+    private float spreadMultiplier = 1f;
 
     private void Start()
     {
@@ -66,7 +67,7 @@ public class Gun : MonoBehaviour
         Vector3 aimPoint = GetAimPoint();
         
         // Apply spread
-        float currentSpread = isAiming ? gunData.aimDownSightsSpread : gunData.hipFireSpread;
+        float currentSpread = (Player_ADS.Instance.IsAiming ? gunData.aimDownSightsSpread : gunData.hipFireSpread) * spreadMultiplier;
         Quaternion randomRotation = Quaternion.Euler(
             Random.Range(-currentSpread, currentSpread),
             Random.Range(-currentSpread, currentSpread),
@@ -147,5 +148,10 @@ public class Gun : MonoBehaviour
     private void UpdateGunData(GunData newGunData)
     {
         gunData = newGunData;
+    }
+
+    public void SetSpreadMultiplier(float multiplier)
+    {
+        spreadMultiplier = multiplier;
     }
 }
