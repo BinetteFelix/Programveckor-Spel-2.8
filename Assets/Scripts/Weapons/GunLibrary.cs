@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GunLibrary : MonoBehaviour
 {
-    public List<GunData> availableGuns; // A list of all available GunData assets
-    private GunData equippedGun;
-
     public static GunLibrary Instance { get; private set; }
+    public event Action<GunData> OnGunEquipped;
+
+    public List<GunData> availableGuns;
+    private GunData equippedGun;
 
     private void Awake()
     {
@@ -16,23 +18,35 @@ public class GunLibrary : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject); // Optional: Keeps this object across scenes
+        DontDestroyOnLoad(gameObject);
     }
 
     public void EquipGun(string gunName)
     {
-        equippedGun = availableGuns.Find(gun => gun.gunName == gunName);
-        if (equippedGun == null)
+        GunData newGun = availableGuns.Find(gun => gun.gunName == gunName);
+        if (newGun == null)
         {
             Debug.LogError($"Gun with name {gunName} not found in GunLibrary!");
+            return;
         }
+
+        equippedGun = newGun;
+        OnGunEquipped?.Invoke(equippedGun);
     }
 
     public GunData GetEquippedGun()
     {
         if (equippedGun == null)
         {
-            Debug.LogError("No gun is equipped. Ensure a gun is equipped before accessing.");
+            Debug.LogWarning("No gun is equipped. Equipping first available gun.");
+            if (availableGuns.Count > 0)
+            {
+                EquipGun(availableGuns[0].gunName);
+            }
+            else
+            {
+                Debug.LogError("No guns available in the library!");
+            }
         }
         return equippedGun;
     }

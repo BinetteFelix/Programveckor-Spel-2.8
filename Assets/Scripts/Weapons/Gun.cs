@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
             enabled = false;
             return;
         }
-        
+
         gunData = GunLibrary.Instance.GetEquippedGun();
         if (gunData == null)
         {
@@ -51,15 +51,15 @@ public class Gun : MonoBehaviour
 
         Vector3 aimPoint = GetAimPoint();
         GameObject projectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
-        
+
         if (projectile.TryGetComponent<Projectile>(out var projectileComponent))
         {
             projectileComponent.Initialize(gunData.damage);
         }
-        
+
         if (projectile.TryGetComponent<Rigidbody>(out var rb))
         {
-            rb.velocity = muzzle.forward * gunData.projectileSpeed;
+            rb.linearVelocity = muzzle.forward * gunData.projectileSpeed;
         }
 
         gunData.ammoInMag--;
@@ -80,7 +80,7 @@ public class Gun : MonoBehaviour
     public IEnumerator Reload()
     {
         if (reloading) yield break;
-        
+
         reloading = true;
 
         //RELOAD SOUND FX HEREE!
@@ -106,5 +106,26 @@ public class Gun : MonoBehaviour
         {
             return ray.GetPoint(gunData.maxDistance); // Return a point far away if no object is hit
         }
+    }
+
+    private void OnEnable()
+    {
+        if (GunLibrary.Instance != null)
+        {
+            GunLibrary.Instance.OnGunEquipped += UpdateGunData;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GunLibrary.Instance != null)
+        {
+            GunLibrary.Instance.OnGunEquipped -= UpdateGunData;
+        }
+    }
+
+    private void UpdateGunData(GunData newGunData)
+    {
+        gunData = newGunData;
     }
 }
