@@ -11,6 +11,7 @@ public class FPSFOVController : MonoBehaviour
 
     private PlayerMovement playerMovement;
     private GunData currentGunData;
+    private WeaponSwitcher weaponSwitcher;
 
     void Start()
     {
@@ -20,9 +21,9 @@ public class FPSFOVController : MonoBehaviour
         }
 
         playerMovement = Object.FindFirstObjectByType<PlayerMovement>();
+        weaponSwitcher = Object.FindFirstObjectByType<WeaponSwitcher>();
         playerCamera.fieldOfView = defaultFOV;
 
-        // Subscribe to gun changes
         if (GunLibrary.Instance != null)
         {
             GunLibrary.Instance.OnGunEquipped += UpdateGunData;
@@ -49,14 +50,13 @@ public class FPSFOVController : MonoBehaviour
 
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && playerMovement.currentSpeed == playerMovement.sprintSpeed;
         bool isCrouching = playerMovement.isCrouching;
-        bool isAiming = Player_ADS.Instance.IsAiming;
+        bool isAiming = Player_ADS.Instance.IsAiming && weaponSwitcher.IsGunEquipped();
 
         float targetFOV;
 
-        // Priority order: ADS > Crouching > Sprinting > Default
-        if (isAiming)
+        if (isAiming && !weaponSwitcher.IsSwitching())
         {
-            targetFOV = currentGunData.adsZoomFOV;  // Use gun-specific zoom
+            targetFOV = currentGunData.adsZoomFOV;
         }
         else if (isCrouching)
         {
@@ -71,7 +71,6 @@ public class FPSFOVController : MonoBehaviour
             targetFOV = defaultFOV;
         }
 
-        // Smoothly transition FOV
         playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * fovTransitionSpeed);
     }
 }

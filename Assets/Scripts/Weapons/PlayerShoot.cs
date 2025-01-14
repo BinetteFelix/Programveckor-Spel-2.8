@@ -8,14 +8,33 @@ public class PlayerShoot : MonoBehaviour
     
     private GunData gunData;
     private PlayerMovement playerMovement;
+    private WeaponSwitcher weaponSwitcher;
 
     private void Start()
     {
+        weaponSwitcher = GetComponent<WeaponSwitcher>();
         playerMovement = GetComponent<PlayerMovement>();
+        
+        if (weaponSwitcher == null)
+        {
+            Debug.LogError("WeaponSwitcher not found on " + gameObject.name);
+            enabled = false;
+            return;
+        }
+
         if (GunLibrary.Instance != null)
         {
             gunData = GunLibrary.Instance.GetEquippedGun();
             GunLibrary.Instance.OnGunEquipped += UpdateGunData;
+            
+            if (weaponSwitcher.IsGunEquipped())
+            {
+                equippedGun = weaponSwitcher.GetCurrentWeaponObject().GetComponent<Gun>();
+            }
+        }
+        else
+        {
+            Debug.LogError("GunLibrary instance not found!");
         }
     }
 
@@ -30,16 +49,20 @@ public class PlayerShoot : MonoBehaviour
     private void UpdateGunData(GunData newGunData)
     {
         gunData = newGunData;
+        if (weaponSwitcher.IsGunEquipped())
+        {
+            equippedGun = weaponSwitcher.GetCurrentWeaponObject().GetComponent<Gun>();
+        }
     }
 
     private void Update()
     {
-        if (gunData == null) return;
+        if (gunData == null || equippedGun == null || !weaponSwitcher.IsGunEquipped() || weaponSwitcher.IsSwitching()) 
+            return;
 
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && playerMovement.currentSpeed == playerMovement.sprintSpeed;
         bool isJumping = !playerMovement.isGrounded;
 
-        // Apply spread multipliers based on state
         if (isSprinting)
         {
             equippedGun.SetSpreadMultiplier(sprintingSpreadMultiplier);
@@ -53,7 +76,6 @@ public class PlayerShoot : MonoBehaviour
             equippedGun.SetSpreadMultiplier(1f);
         }
 
-        // Allow shooting in all states
         if ((gunData.isAutomatic && Input.GetButton("Fire1") && gunData.ammoInMag > 0) ||
             (!gunData.isAutomatic && Input.GetButtonDown("Fire1") && gunData.ammoInMag > 0))
         {

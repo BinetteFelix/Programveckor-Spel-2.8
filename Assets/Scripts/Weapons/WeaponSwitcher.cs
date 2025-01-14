@@ -1,0 +1,172 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class WeaponSwitcher : MonoBehaviour
+{
+    [System.Serializable]
+    public enum WeaponType
+    {
+        Gun,
+        Knife,
+        Throwable
+    }
+
+    [System.Serializable]
+    public class WeaponSlot
+    {
+        public WeaponType type;
+        public GameObject weaponObject;
+        public KeyCode switchKey;
+        public string weaponName; // Used for guns to match GunData
+    }
+
+    [Header("References")]
+    [SerializeField] private Transform weaponHolder;  // Reference to the weapon holder object
+    [SerializeField] private List<WeaponSlot> weaponSlots = new List<WeaponSlot>();
+    [SerializeField] private float switchDelay = 0.5f;
+
+    private int currentWeaponIndex = 0;
+    private bool isSwitching = false;
+    private float lastSwitchTime;
+
+    private void Start()
+    {
+        InitializeWeapons();
+    }
+
+    private void InitializeWeapons()
+    {
+        // Set up guns from GunLibrary
+        if (GunLibrary.Instance != null)
+        {
+            foreach (var slot in weaponSlots)
+            {
+                if (slot.type == WeaponType.Gun)
+                {
+                    // Find matching GunData
+                    GunData gunData = GunLibrary.Instance.availableGuns.Find(g => g.gunName == slot.weaponName);
+                    if (gunData == null)
+                    {
+                        Debug.LogError($"No GunData found for weapon: {slot.weaponName}");
+                        continue;
+                    }
+                }
+            }
+        }
+
+        // Initialize all weapons to inactive except the first one
+        for (int i = 0; i < weaponSlots.Count; i++)
+        {
+            if (weaponSlots[i].weaponObject != null)
+            {
+                weaponSlots[i].weaponObject.SetActive(i == currentWeaponIndex);
+            }
+        }
+
+        // Set initial weapon
+        if (weaponSlots.Count > 0)
+        {
+            SwitchToWeapon(0);
+        }
+    }
+
+    private void Update()
+    {
+        if (isSwitching) return;
+
+        // Check number keys
+        for (int i = 0; i < weaponSlots.Count; i++)
+        {
+            if (Input.GetKeyDown(weaponSlots[i].switchKey))
+            {
+                SwitchToWeapon(i);
+                break;
+            }
+        }
+
+        // Check scroll wheel
+        float scrollWheel = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollWheel != 0f && Time.time >= lastSwitchTime + switchDelay)
+        {
+            if (scrollWheel > 0f)
+            {
+                SwitchToNextWeapon();
+            }
+            else
+            {
+                SwitchToPreviousWeapon();
+            }
+        }
+    }
+
+    private void SwitchToWeapon(int newIndex)
+    {
+        if (newIndex == currentWeaponIndex || isSwitching) return;
+        if (Time.time < lastSwitchTime + switchDelay) return;
+
+        // Deactivate current weapon
+        if (currentWeaponIndex < weaponSlots.Count && weaponSlots[currentWeaponIndex].weaponObject != null)
+        {
+            weaponSlots[currentWeaponIndex].weaponObject.SetActive(false);
+        }
+
+        currentWeaponIndex = newIndex;
+        isSwitching = true;
+        lastSwitchTime = Time.time;
+
+        WeaponSlot newWeapon = weaponSlots[currentWeaponIndex];
+
+        // Handle weapon type specific logic
+        switch (newWeapon.type)
+        {
+            case WeaponType.Gun:
+                GunLibrary.Instance?.EquipGun(newWeapon.weaponName);
+                break;
+            case WeaponType.Throwable:
+                // Future throwable logic here
+                break;
+        }
+
+        // Activate new weapon
+        if (newWeapon.weaponObject != null)
+        {
+            newWeapon.weaponObject.SetActive(true);
+        }
+
+        Invoke(nameof(FinishSwitch), switchDelay);
+    }
+
+    private void SwitchToNextWeapon()
+    {
+        int newIndex = (currentWeaponIndex + 1) % weaponSlots.Count;
+        SwitchToWeapon(newIndex);
+    }
+
+    private void SwitchToPreviousWeapon()
+    {
+        int newIndex = (currentWeaponIndex - 1 + weaponSlots.Count) % weaponSlots.Count;
+        SwitchToWeapon(newIndex);
+    }
+
+    private void FinishSwitch()
+    {
+        isSwitching = false;
+    }
+
+    public bool IsSwitching() => isSwitching;
+
+    public WeaponType GetCurrentWeaponType() => weaponSlots[currentWeaponIndex].type;
+
+    public string GetCurrentWeaponName() => weaponSlots[currentWeaponIndex].weaponName;
+
+    public bool IsGunEquipped() => GetCurrentWeaponType() == WeaponType.Gun;
+
+    public GameObject GetCurrentWeaponObject()
+    {
+        if (currentWeaponIndex < weaponSlots.Count)
+        {
+            return weaponSlots[currentWeaponIndex].weaponObject;
+        }
+        return null;
+    }
+} 
