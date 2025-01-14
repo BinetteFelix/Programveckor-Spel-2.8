@@ -3391,7 +3391,7 @@ GameObject:
   - component: {fileID: 1032686407}
   - component: {fileID: 1032686406}
   m_Layer: 0
-  m_Name: GunLibrary
+  m_Name: GunSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4221,7 +4221,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equippedGun: {fileID: 1411295442}
-  gunData: {fileID: 11400000, guid: d54ca8a5a51d8bf4aae827c5a00a9890, type: 2}
 --- !u!114 &1170512710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4550,7 +4549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzle: {fileID: 1634078689}
-  projectilePrefab: {fileID: 7692388538382621689, guid: 0b5b4b6a01916924989f8fb307f361ad, type: 3}
+  projectilePrefab: {fileID: 1542657807996038773, guid: 55856cbabae9e6d43ac736496bc0ca2d, type: 3}
   weapon: {fileID: 1411295441}
 --- !u!1 &1487348238
 GameObject:
@@ -4872,7 +4871,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -298, y: -186}
+  m_AnchoredPosition: {x: -810, y: -427}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1517450360
@@ -5204,7 +5203,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -293, y: -217}
+  m_AnchoredPosition: {x: -805, y: -458}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1600843604

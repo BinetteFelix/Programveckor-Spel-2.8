@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-//andvänd GunLibrary.Instance.EquipGun("GunName") för att lyckas equippa en ny pistol...
+//andvï¿½nd GunLibrary.Instance.EquipGun("GunName") fï¿½r att lyckas equippa en ny pistol...
 
 public class Gun : MonoBehaviour
 {
@@ -15,7 +15,20 @@ public class Gun : MonoBehaviour
 
     private void Start()
     {
+        if (GunLibrary.Instance == null)
+        {
+            Debug.LogError("GunLibrary instance not found!");
+            enabled = false;
+            return;
+        }
+
         gunData = GunLibrary.Instance.GetEquippedGun();
+        if (gunData == null)
+        {
+            Debug.LogError("No gun data available!");
+            enabled = false;
+            return;
+        }
     }
 
     private void Update()
@@ -27,29 +40,32 @@ public class Gun : MonoBehaviour
     }
     public void Shoot()
     {
-        if (gunData.ammoInMag > 0 && CanShoot())
+        if (!CanShoot())
         {
-            Debug.Log("Shooting!");
-
-            //Spawn and fix the projectile according to the GUN DATA
-            Vector3 aimPoint = GetAimPoint();
-            weapon.LookAt(aimPoint);
-
-            GameObject projectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
-            Rigidbody rb = projectile.GetComponent<Rigidbody>();
-            rb.linearVelocity = muzzle.forward * gunData.projectileSpeed;
-
-            gunData.ammoInMag -= 1;
-            timeSinceLastShot = 0;
-
-            //SHOOT SOUND FX HERE!
-
-        } 
-        else if(gunData.ammoInMag <= 0)
-        {
-            Reload();
+            if (gunData.ammoInMag <= 0 && !reloading)
+            {
+                StartCoroutine(Reload());
+            }
+            return;
         }
-        else
+
+        Vector3 aimPoint = GetAimPoint();
+        GameObject projectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+
+        if (projectile.TryGetComponent<Projectile>(out var projectileComponent))
+        {
+            projectileComponent.Initialize(gunData.damage);
+        }
+
+        if (projectile.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.linearVelocity = muzzle.forward * gunData.projectileSpeed;
+        }
+
+        gunData.ammoInMag--;
+        timeSinceLastShot = 0;
+
+        if (gunData.shootSFX != null)
         {
             //No ammo player notification here maybe?
 
@@ -63,6 +79,8 @@ public class Gun : MonoBehaviour
 
     public IEnumerator Reload()
     {
+        if (reloading) yield break;
+
         reloading = true;
 
         //RELOAD SOUND FX HEREE!
@@ -88,5 +106,26 @@ public class Gun : MonoBehaviour
         {
             return ray.GetPoint(gunData.maxDistance); // Return a point far away if no object is hit
         }
+    }
+
+    private void OnEnable()
+    {
+        if (GunLibrary.Instance != null)
+        {
+            GunLibrary.Instance.OnGunEquipped += UpdateGunData;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GunLibrary.Instance != null)
+        {
+            GunLibrary.Instance.OnGunEquipped -= UpdateGunData;
+        }
+    }
+
+    private void UpdateGunData(GunData newGunData)
+    {
+        gunData = newGunData;
     }
 }
