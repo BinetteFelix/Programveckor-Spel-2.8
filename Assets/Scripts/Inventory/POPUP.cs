@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class POPUP : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI PopUpText; // Pop-up text prefab
-    private TextMeshProUGUI popuptext; // Private reference object
+    [SerializeField] private GameObject PopUpText; // Pop-up text prefab
+    private GameObject popuptext; // Private reference object
 
     private Vector3 SpawnOffset = new Vector3(0, 20, 0); // Spawn offset for pop-up text
 
@@ -15,7 +15,7 @@ public class POPUP : MonoBehaviour
     {
         if (_IsActive) // If the pop-up is active
         {
-            popuptext.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position) + SpawnOffset; // set pop-up's position to the item object + an offset
+            PopUpText.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position) + SpawnOffset; // set pop-up's position to the item object + an offset
         }
     }
     public void OpenPopUp()
@@ -23,7 +23,7 @@ public class POPUP : MonoBehaviour
         if(!_IsActive)
         {
             _IsActive = true; // Say that the pop-up is active
-            popuptext = Instantiate(PopUpText, FindAnyObjectByType<Canvas>().transform).GetComponent<TextMeshProUGUI>(); // Instantiate pop-up prefab
+            PopUpText.SetActive(true);
         }
     }
     public void ClosePopUp()
@@ -31,7 +31,7 @@ public class POPUP : MonoBehaviour
         if (_IsActive)
         {
             _IsActive = false; // Say that the pop-up is inactive
-            Destroy(popuptext);
+            PopUpText.SetActive(false);
         }
     }
 }

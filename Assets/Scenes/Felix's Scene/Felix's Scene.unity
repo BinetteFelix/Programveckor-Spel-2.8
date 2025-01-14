@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 74026285}
   - component: {fileID: 74026286}
   - component: {fileID: 74026287}
+  - component: {fileID: 74026288}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -370,6 +371,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dffebfa9052270a4aa499a73946d73fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &74026288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74026276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd7fee86c877994a88323b155248cc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equippedGun: {fileID: 0}
 --- !u!4 &92192761 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1258583300404719692, guid: 23f6aa9b98388cf479a1c93b33303f55, type: 3}
@@ -4214,7 +4228,7 @@ MonoBehaviour:
   bikeControl: {fileID: 1615579200}
   mouseSensitivity: 175
   playerBody: {fileID: 74026283}
-  _LockState_Locked: 0
+  _LockStateLocked: 0
 --- !u!1 &1751571421
 GameObject:
   m_ObjectHideFlags: 0
@@ -4612,6 +4626,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7578451105091596149, guid: 85ce24cd5b3608f42944d4e04154929b, type: 3}
   m_PrefabInstance: {fileID: 3202488814354657938}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1979523046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979523044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20d0add73909d174fb43c0b93e8fe9ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  muzzle: {fileID: 0}
+  projectilePrefab: {fileID: 1542657807996038773, guid: 55856cbabae9e6d43ac736496bc0ca2d, type: 3}
+  weapon: {fileID: 1979523045}
 --- !u!1 &1992436781
 GameObject:
   m_ObjectHideFlags: 0
@@ -5380,7 +5409,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1040733137543955404, guid: 85ce24cd5b3608f42944d4e04154929b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1979523046}
   m_SourcePrefab: {fileID: 100100000, guid: 85ce24cd5b3608f42944d4e04154929b, type: 3}
 --- !u!64 &4024555841048660508
 MeshCollider:
