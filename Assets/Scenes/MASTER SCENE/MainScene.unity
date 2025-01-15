@@ -583,6 +583,12 @@ MonoBehaviour:
   fadeSpeed: 6
   meleeSpread: 5
   throwableSpread: 5
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  enemyColor: {r: 1, g: 0, b: 0, a: 1}
+  raycastRange: 100
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!225 &128962348
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3108,11 +3114,9 @@ GameObject:
   - component: {fileID: 767773523}
   - component: {fileID: 767773527}
   - component: {fileID: 767773526}
-  - component: {fileID: 767773525}
-  - component: {fileID: 767773528}
   - component: {fileID: 767773530}
   - component: {fileID: 767773529}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -3134,29 +3138,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1291935943}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &767773525
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 767773522}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &767773526
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3210,19 +3191,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767773522}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &767773528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 767773522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5811534f79d40d4388ba53057f05003, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 200
 --- !u!114 &767773529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4665,7 +4633,7 @@ GameObject:
   - component: {fileID: 1170512711}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5282,9 +5250,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1291935943}
-  m_Layer: 0
+  - component: {fileID: 1291935945}
+  - component: {fileID: 1291935944}
+  m_Layer: 6
   m_Name: ENEMYPLACEHOLDER
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5305,6 +5275,42 @@ Transform:
   - {fileID: 767773523}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1291935944
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291935942}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.022357
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.40031746, z: 0}
+--- !u!114 &1291935945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291935942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5811534f79d40d4388ba53057f05003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 200
 --- !u!1 &1356346345
 GameObject:
   m_ObjectHideFlags: 0
@@ -5588,6 +5594,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 1542657807996038773, guid: 55856cbabae9e6d43ac736496bc0ca2d, type: 3}
   weapon: {fileID: 1411295441}
   muzzleFlash: {fileID: 1243961482}
+  swayAmount: 0.02
+  smoothing: 8
+  maxSway: 0.06
 --- !u!1 &1487348238
 GameObject:
   m_ObjectHideFlags: 0

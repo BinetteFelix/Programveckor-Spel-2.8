@@ -18,6 +18,16 @@ public class CrosshairController : MonoBehaviour
     [SerializeField] private float meleeSpread = 5f;     // Small, fixed spread for knife
     [SerializeField] private float throwableSpread = 5f; // Small, fixed spread for throwables
 
+    [Header("Crosshair Colors")]
+    [SerializeField] private Color defaultColor = Color.white;
+    [SerializeField] private Color enemyColor = Color.red;
+    private Image crosshairTop;
+    private Image crosshairRight;
+    private Image crosshairBottom;
+    private Image crosshairLeft;
+    [SerializeField] private float raycastRange = 100f; // How far to check for enemies
+    [SerializeField] private LayerMask enemyLayer; // Set this to your enemy layer in inspector
+
     private GunData currentGunData;
     private float currentSpread;
     private float targetSpread;
@@ -41,6 +51,21 @@ public class CrosshairController : MonoBehaviour
             GunLibrary.Instance.OnGunEquipped += UpdateGunReference;
             currentGunData = GunLibrary.Instance.GetEquippedGun();
         }
+
+        // Find all crosshair images by name
+        crosshairTop = transform.Find("CrosshairTop").GetComponent<Image>();
+        crosshairRight = transform.Find("CrosshairRight").GetComponent<Image>();
+        crosshairBottom = transform.Find("CrosshairBottom").GetComponent<Image>();
+        crosshairLeft = transform.Find("CrosshairLeft").GetComponent<Image>();
+
+        if (crosshairTop == null || crosshairRight == null || 
+            crosshairBottom == null || crosshairLeft == null)
+        {
+            Debug.LogError("Could not find all crosshair images!");
+        }
+
+        // Initialize crosshair color
+        SetCrosshairColor(defaultColor);
     }
 
     private void Update()
@@ -60,6 +85,9 @@ public class CrosshairController : MonoBehaviour
         {
             UpdateCrosshairBasedOnWeaponType();
         }
+
+        // Add enemy detection
+        CheckForEnemy();
     }
 
     private void UpdateCrosshairBasedOnWeaponType()
@@ -112,5 +140,35 @@ public class CrosshairController : MonoBehaviour
     private void UpdateGunReference(GunData newGunData)
     {
         currentGunData = newGunData;
+    }
+
+    private void CheckForEnemy()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        if (Physics.Raycast(ray, out RaycastHit hit, raycastRange))
+        {
+            Debug.DrawLine(ray.origin, hit.point, Color.red, 0.1f);
+            Debug.Log($"Hit object: {hit.collider.gameObject.name}");
+
+            if (hit.collider.GetComponentInParent<EnemyHP>() != null)
+            {
+                Debug.Log("Enemy detected - changing color to red");
+                SetCrosshairColor(enemyColor);
+                return;
+            }
+        }
+        
+        SetCrosshairColor(defaultColor);
+    }
+
+    private void SetCrosshairColor(Color color)
+    {
+        Debug.Log($"Setting crosshair color to: {color}");
+        
+        // Set color for each crosshair part
+        crosshairTop.color = color;
+        crosshairRight.color = color;
+        crosshairBottom.color = color;
+        crosshairLeft.color = color;
     }
 } 
