@@ -58,12 +58,6 @@ public class CrosshairController : MonoBehaviour
         crosshairBottom = transform.Find("CrosshairBottom").GetComponent<Image>();
         crosshairLeft = transform.Find("CrosshairLeft").GetComponent<Image>();
 
-        if (crosshairTop == null || crosshairRight == null || 
-            crosshairBottom == null || crosshairLeft == null)
-        {
-            Debug.LogError("Could not find all crosshair images!");
-        }
-
         // Initialize crosshair color
         SetCrosshairColor(defaultColor);
     }
@@ -148,11 +142,9 @@ public class CrosshairController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, raycastRange))
         {
             Debug.DrawLine(ray.origin, hit.point, Color.red, 0.1f);
-            Debug.Log($"Hit object: {hit.collider.gameObject.name}");
 
             if (hit.collider.GetComponentInParent<EnemyHP>() != null)
             {
-                Debug.Log("Enemy detected - changing color to red");
                 SetCrosshairColor(enemyColor);
                 return;
             }

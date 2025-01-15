@@ -1,26 +1,29 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Gun Data", menuName = "Scriptable Objects/Gun Data")]
+[System.Serializable]
 public class GunData : ScriptableObject
 {
     public string gunName;
     public bool isAutomatic;
-    public float damage;
-    public int magSize;
-    public int ammoInMag;
-    public float fireRate;
-    public float reloadTime;
-
-    public float maxDistance;
-    public float projectileSpeed = 30f;
-    public float bulletArc = 0f;
     public bool canAimDownSights = true;
-    public float adsZoomFOV = 55f;
-    public float aimDownSightsSpread = 0.1f;
-    public float hipFireSpread = 0.5f;
-    public float headshotMultiplier = 2.0f;
-    
-    public AudioClip shootSFX;
-    public AudioClip reloadSFX;
+    public float adsZoomFOV = 1.5f;
 
+    public float damage = 10f;
+    public float headshotMultiplier = 2f;
+    
+    public float fireRate = 0.1f;
+    public float projectileSpeed = 100f;
+    public float maxDistance = 100f;
+    
+    public float hipFireSpread = 1f;
+    public float aimDownSightsSpread = 0.1f;
+    
+    
+    public int magSize = 30;
+    public float reloadTime = 1f;
+    public int ammoInMag;
+
+    public AudioClip[] shootSoundClips;
+    public AudioClip[] reloadSoundClips;
+    public AudioClip emptyMagSound;
 }

@@ -26,19 +26,6 @@ public class StaminaController : MonoBehaviour
         HandleStaminaRegen();
         HandleStamina();
         UpdateUI();
-
-        if (currentStamina > 25f)
-        {
-            AudioManager.Instance.PlayBreathingWhileSprinting(1);
-        }
-        if (ButtonController.Instance._IsPaused)
-        {
-            AudioManager.Instance.PlayBreathingWhileSprinting(2);
-        }
-        else if (!ButtonController.Instance._IsPaused)
-        {
-            AudioManager.Instance.PlayBreathingWhileSprinting(3);
-        }
     }
 
     private void HandleStamina()
