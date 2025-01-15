@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public class BikeControls : MonoBehaviour
 {
     [HideInInspector]
     public bool isRidden = false; // looking if bike is being used
+    private bool isDrifting = false;
     public bool startTimer = false; // Starts a timer
     public Transform seatPosition; // The position for the player
     private GameObject currentPlayer;
@@ -17,6 +19,9 @@ public class BikeControls : MonoBehaviour
     public float tiltAmount = 5f;
     public float smoothTiltSpeed = 5f;
     public float smoothTurnSpeed = 10f;
+    public float driftMultiplier = 3f;
+    public float driftDeceleration = 8f; 
+
 
     private float currentTilt = 0f;
     private float targetRotationY = 0f;
@@ -36,7 +41,10 @@ public class BikeControls : MonoBehaviour
             // Lets the player jump of the bike
             if (Input.GetKeyDown(KeyCode.E) && timer <= 0)
             {
-                Dismount();
+                currentTilt = Mathf.Lerp(currentTilt,0,0); // Resets the players tilt
+               
+                SmoothRotation();
+                 Dismount();
             }
         }
 
@@ -53,9 +61,27 @@ public class BikeControls : MonoBehaviour
             Brake();
         }
 
+        if (Input.GetKey(KeyCode.Space))
+        {
+            StartDrifting();
+        }
+        else
+        {
+            StopDrifting();
+        }
+
         if (speed > 0.5)
         {
             float turn = Input.GetAxis("Horizontal") * turnSpeed * Time.deltaTime;
+            if (isDrifting)
+            {
+                // turns faster when drifting
+                turn *= driftMultiplier;
+
+                // Adjusts the speed during drift
+                speed -= driftDeceleration * Time.deltaTime;
+                speed = Mathf.Max(speed, 0);
+            }
             if (turn != 0)
             {
                 Turn(turn);
@@ -74,7 +100,7 @@ public class BikeControls : MonoBehaviour
 
     
         Vector3 forwardMovement = transform.forward;
-        forwardMovement.y = 0; // Se till att y-axeln inte påverkar rörelsen
+        forwardMovement.y = 0; // Ensure the Y-axis does not affect the movement
         forwardMovement.Normalize();
         transform.position += forwardMovement * speed * Time.deltaTime;
 
@@ -101,11 +127,19 @@ public class BikeControls : MonoBehaviour
             timer = 0.1f;
             speed = 0;
 
+ 
+
             // Puts the player besides the bike, rotates the player corect and removes the player from being a child of the bike.
             currentPlayer.transform.position = transform.position + transform.right * 2f;
-            currentPlayer.transform.rotation = transform.rotation;
+            Quaternion uprightRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+            currentPlayer.transform.rotation = uprightRotation;
             currentPlayer.transform.parent = null;
 
+            // Reset the camera
+            if (CameraController.Instance != null)
+            {
+                CameraController.Instance.ResetCameraRotation(uprightRotation);
+            }
 
             currentPlayer = null;
         }
@@ -129,22 +163,40 @@ public class BikeControls : MonoBehaviour
         }
     }
 
+    void StartDrifting()
+    {
+        if (!isDrifting)
+        {
+            isDrifting = true;
+           
+        }
+    }
+
+    void StopDrifting()
+    {
+        if (isDrifting)
+        {
+            isDrifting = false;
+        }
+    }
+
+
     void Turn(float turnAmount)
     {
-        // Justera målrotationen för horisontalplanet
+        // Adjust the target rotation for horizontal alignment
         targetRotationY += turnAmount;
 
-        // Luta cykeln vid svängning
+        // Tilts the player while turning
         currentTilt = Mathf.Lerp(currentTilt, -Mathf.Sign(turnAmount) * tiltAmount, Time.deltaTime * smoothTiltSpeed);
     }
 
-    // Funktion för att återställa lutning
+    // Resets the players tilt
     void ResetTilt()
     {
-        currentTilt = Mathf.Lerp(currentTilt, 0, Time.deltaTime * smoothTiltSpeed); // Jämna ut lutningen
+        currentTilt = Mathf.Lerp(currentTilt, 0, Time.deltaTime * smoothTiltSpeed); 
     }
 
-    // Funktion för att applicera smidig rotation
+    // Rotates the bike more smooth
     void SmoothRotation()
     {
         Quaternion targetRotation = Quaternion.Euler(0, targetRotationY, currentTilt);

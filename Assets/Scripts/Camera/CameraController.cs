@@ -8,6 +8,8 @@ public class CameraController : MonoBehaviour
     [HideInInspector] public float mouseSensitivity = 175f;
     public Transform playerBody;
 
+    public Vector3 offset;
+
     private float xRotation = 0f;
     private float yRotation = 0f;
     [HideInInspector] public bool _LockStateLocked = false;
@@ -47,11 +49,30 @@ public class CameraController : MonoBehaviour
             }
             else
             {
+                
                 transform.parent.Rotate(Vector3.up * mouseX);
                 transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
             }
+
+            if (!bikeControl.isRidden)
+            {
+                Vector3 rotation = playerBody.eulerAngles;
+                transform.rotation = Quaternion.Euler(0, rotation.y, 0); // Ensures upright rotation
+                transform.parent.Rotate(Vector3.up * mouseX);
+                transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            }
+
         }
     }
+
+    public void ResetCameraRotation(Quaternion playerRotation)
+    {
+        // Align camera rotation with the player's upright rotation
+        xRotation = 0f; // Reset vertical rotation
+        yRotation = playerRotation.eulerAngles.y; // Align with the player's horizontal rotation
+        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
+    }
+
 
     public void ResetLockstate()
     {
