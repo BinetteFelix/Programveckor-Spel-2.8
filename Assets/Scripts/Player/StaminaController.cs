@@ -9,25 +9,36 @@ public class StaminaController : MonoBehaviour
     private float staminaRegenRate;
 
     public Slider staminaBar;
-
-    public float currentStamina;
+    [HideInInspector] public float currentStamina;
     private PlayerMovement playerMovement;
+    [HideInInspector] public bool canSprint;
+    [HideInInspector] public bool canJump;
 
-    public bool canSprint;
-    public bool canJump;
-
+    
     void Start()
     {
         currentStamina = maxStamina;
         playerMovement = GetComponent<PlayerMovement>();
     }
 
-
     void Update()
     {
         HandleStaminaRegen();
         HandleStamina();
         UpdateUI();
+
+        if (currentStamina > 25f)
+        {
+            AudioManager.Instance.PlayBreathingWhileSprinting(1);
+        }
+        if (ButtonController.Instance._IsPaused)
+        {
+            AudioManager.Instance.PlayBreathingWhileSprinting(2);
+        }
+        else if (!ButtonController.Instance._IsPaused)
+        {
+            AudioManager.Instance.PlayBreathingWhileSprinting(3);
+        }
     }
 
     private void HandleStamina()
@@ -42,11 +53,16 @@ public class StaminaController : MonoBehaviour
         if (currentStamina > 10f)
         {
             canSprint = true;
+            
         }
         else
+        {
             canSprint = false;
+        }
+        
+            
 
-        if (Input.GetButton("Jump") && playerMovement.isGrounded && !playerMovement.isCrouching)
+        if (Input.GetButtonDown("Jump") && playerMovement.isGrounded && !playerMovement.isCrouching)
         {
             UseStaminaForJump();
         }
@@ -100,7 +116,7 @@ public class StaminaController : MonoBehaviour
         if(playerMovement.isCrouching) 
         {
             staminaRegenRate = 12f;
-        }
+        } 
         else
         {
             staminaRegenRate = 4f;

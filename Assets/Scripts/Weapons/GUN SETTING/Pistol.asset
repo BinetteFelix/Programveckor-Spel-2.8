@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96c39de06f77de4e9186a7a2b3a96e6, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  gunName: Pistol
+  isAutomatic: 0
+  damage: 20
+  magSize: 14
+  ammoInMag: 1
+  fireRate: 0.13
+  reloadTime: 2.5
+  maxDistance: 250
+  projectileSpeed: 80
+  bulletArc: 0
+  canAimDownSights: 1
+  adsZoomFOV: 55
+  aimDownSightsSpread: 0.3
+  hipFireSpread: 1
+  headshotMultiplier: 2
+  shootSFX: {fileID: 8300000, guid: e33913a460937f240817bba540bee661, type: 3}
+  reloadSFX: {fileID: 8300000, guid: a8252b5c05bbe8b4db5cd3152e66195e, type: 3}

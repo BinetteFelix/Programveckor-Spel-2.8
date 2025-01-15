@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,12 +30,14 @@ public class InventoryManager : MonoBehaviour
         foreach (var item in Items) // finds each item in the list of item
         {
             GameObject ItemObject = Instantiate(InventoryItemBase, ItemContent); //adds/re-adds all items into inventory grid
-
+            
             var itemIcon = ItemObject.transform.Find("ItemImage").GetComponent<Image>(); // finds the image child in the specified item: 'item'
-            var itemName = ItemObject.transform.Find("ItemName").GetComponent<TextMeshProUGUI>(); // finds the name child in the specified item: 'item'
-
             itemIcon.sprite = item.InventoryImage; // sets the sprite/image of the inventory item
-            itemName.text = item.Name; // sets the text/name of the inventory item
+
+            var InventoryItemInformation = ItemObject.transform.Find("Information").GetComponent<Image>();
+            InventoryItemInformation.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.Name;
+            InventoryItemInformation.transform.Find("ItemDescription_TMPro").GetComponent<TextMeshProUGUI>().text = item.Description;
+            
         }
     }
 }
