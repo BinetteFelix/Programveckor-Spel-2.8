@@ -17,6 +17,14 @@ public class Gun : MonoBehaviour
     [SerializeField] private MuzzleFlash muzzleFlash;
     private float spreadMultiplier = 1f;
 
+    [Header("Weapon Sway")]
+    [SerializeField] private float swayAmount = 0.02f;
+    [SerializeField] private float smoothing = 8f;
+    [SerializeField] private float maxSway = 0.06f;
+    
+    private Vector3 initialWeaponPosition;
+    private Vector3 targetWeaponPosition;
+
     private void Start()
     {
         if (GunLibrary.Instance == null)
@@ -33,6 +41,9 @@ public class Gun : MonoBehaviour
             enabled = false;
             return;
         }
+
+        initialWeaponPosition = weapon.localPosition;
+        targetWeaponPosition = initialWeaponPosition;
     }
 
     private void Update()
@@ -44,6 +55,8 @@ public class Gun : MonoBehaviour
 
         //check aiming state
         isAiming = Input.GetButton("Fire2") && gunData.canAimDownSights;
+
+        HandleWeaponSway();
     }
     public void Shoot()
     {
@@ -153,5 +166,36 @@ public class Gun : MonoBehaviour
     public void SetSpreadMultiplier(float multiplier)
     {
         spreadMultiplier = multiplier;
+    }
+
+    private void HandleWeaponSway()
+    {
+        // Get mouse input
+        float mouseX = Input.GetAxisRaw("Mouse X") * swayAmount;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * swayAmount;
+
+        // Calculate target position
+        targetWeaponPosition = new Vector3(
+            Mathf.Clamp(mouseX, -maxSway, maxSway),
+            Mathf.Clamp(mouseY, -maxSway, maxSway),
+            initialWeaponPosition.z
+        );
+
+        // Apply sway with smoothing
+        weapon.localPosition = Vector3.Lerp(
+            weapon.localPosition, 
+            initialWeaponPosition + targetWeaponPosition, 
+            Time.deltaTime * smoothing
+        );
+
+        // Reduce sway while aiming
+        if (isAiming)
+        {
+            weapon.localPosition = Vector3.Lerp(
+                weapon.localPosition,
+                initialWeaponPosition,
+                Time.deltaTime * smoothing * 2
+            );
+        }
     }
 }
