@@ -20,10 +20,13 @@ public class WeaponSwitcher : MonoBehaviour
         public string weaponName; // Used for guns to match GunData
     }
 
-    [Header("References")]
     [SerializeField] private Transform weaponHolder;  // Reference to the weapon holder object
     [SerializeField] private List<WeaponSlot> weaponSlots = new List<WeaponSlot>();
     [SerializeField] private float switchDelay = 0.5f;
+    [SerializeField] private Vector3 hipPosition = new Vector3(0.2f, -0.1f, 0.4f);
+    [SerializeField] private Vector3 adsPosition = new Vector3(0f, -0.1f, 0.3f);
+    [SerializeField] private float positionSmoothing = 12f;
+    private Camera mainCamera;
 
     private int currentWeaponIndex = 0;
     private bool isSwitching = false;
@@ -31,6 +34,12 @@ public class WeaponSwitcher : MonoBehaviour
 
     private void Start()
     {
+        mainCamera = Camera.main;
+        if (mainCamera == null)
+        {
+            Debug.LogError("Main camera not found!");
+        }
+
         InitializeWeapons();
     }
 
@@ -72,6 +81,12 @@ public class WeaponSwitcher : MonoBehaviour
 
     private void Update()
     {
+        HandleWeaponSwitching();
+        UpdateWeaponPosition();
+    }
+
+    private void HandleWeaponSwitching()
+    {
         if (isSwitching) return;
 
         // Check number keys
@@ -97,6 +112,28 @@ public class WeaponSwitcher : MonoBehaviour
                 SwitchToPreviousWeapon();
             }
         }
+    }
+
+    private void UpdateWeaponPosition()
+    {
+        if (mainCamera == null || weaponHolder == null) return;
+
+        // Determine target position based on ADS state
+        Vector3 targetPos = hipPosition;
+        if (Player_ADS.Instance.IsAiming && IsGunEquipped() && !isSwitching)
+        {
+            targetPos = adsPosition;
+        }
+
+        // Calculate final position relative to camera
+        Vector3 targetPosition = mainCamera.transform.position +
+                               mainCamera.transform.right * targetPos.x +
+                               mainCamera.transform.up * targetPos.y +
+                               mainCamera.transform.forward * targetPos.z;
+
+        // Update position and rotation smoothly
+        weaponHolder.position = Vector3.Lerp(weaponHolder.position, targetPosition, Time.deltaTime * positionSmoothing);
+        weaponHolder.rotation = mainCamera.transform.rotation;
     }
 
     private void SwitchToWeapon(int newIndex)

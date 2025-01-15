@@ -19,7 +19,8 @@ public class GunData : ScriptableObject
     public float aimDownSightsSpread = 0.1f;
     public float hipFireSpread = 0.5f;
     public float headshotMultiplier = 2.0f;
-
+    
     public AudioClip shootSFX;
     public AudioClip reloadSFX;
+
 }

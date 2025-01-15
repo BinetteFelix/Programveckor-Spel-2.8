@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunName: Golden Pistol
   isAutomatic: 0
-  damage: 200
+  damage: 20
   magSize: 15
   ammoInMag: 15
   fireRate: 0.5

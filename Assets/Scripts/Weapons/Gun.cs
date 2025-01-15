@@ -17,13 +17,13 @@ public class Gun : MonoBehaviour
     [SerializeField] private MuzzleFlash muzzleFlash;
     private float spreadMultiplier = 1f;
 
-    [Header("Weapon Sway")]
     [SerializeField] private float swayAmount = 0.02f;
     [SerializeField] private float smoothing = 8f;
     [SerializeField] private float maxSway = 0.06f;
     
     private Vector3 initialWeaponPosition;
     private Vector3 targetWeaponPosition;
+    private Transform cameraHolder;
 
     private void Start()
     {
@@ -44,6 +44,9 @@ public class Gun : MonoBehaviour
 
         initialWeaponPosition = weapon.localPosition;
         targetWeaponPosition = initialWeaponPosition;
+        cameraHolder = transform.root.Find("CameraHolder");
+        if (cameraHolder == null)
+            Debug.LogError("CameraHolder not found!");
     }
 
     private void Update()
@@ -58,6 +61,7 @@ public class Gun : MonoBehaviour
 
         HandleWeaponSway();
     }
+
     public void Shoot()
     {
         //Shoot SFX HERE!
@@ -126,46 +130,19 @@ public class Gun : MonoBehaviour
         //inventory.currentAmmo - gunData.magSize;
         reloading = false;
     }
+
     private Vector3 GetAimPoint()
     {
-        // Create a ray from the center of the screen
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // Center of the screen
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
-        // Perform a raycast to detect objects in the aim path
         if (Physics.Raycast(ray, out RaycastHit hitInfo, gunData.maxDistance))
         {
-            return hitInfo.point; // Return the point where the ray hits an object
+            return hitInfo.point;
         }
         else
         {
-            return ray.GetPoint(gunData.maxDistance); // Return a point far away if no object is hit
+            return ray.GetPoint(gunData.maxDistance);
         }
-    }
-
-    private void OnEnable()
-    {
-        if (GunLibrary.Instance != null)
-        {
-            GunLibrary.Instance.OnGunEquipped += UpdateGunData;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (GunLibrary.Instance != null)
-        {
-            GunLibrary.Instance.OnGunEquipped -= UpdateGunData;
-        }
-    }
-
-    private void UpdateGunData(GunData newGunData)
-    {
-        gunData = newGunData;
-    }
-
-    public void SetSpreadMultiplier(float multiplier)
-    {
-        spreadMultiplier = multiplier;
     }
 
     private void HandleWeaponSway()
@@ -197,5 +174,31 @@ public class Gun : MonoBehaviour
                 Time.deltaTime * smoothing * 2
             );
         }
+    }
+
+    private void OnEnable()
+    {
+        if (GunLibrary.Instance != null)
+        {
+            GunLibrary.Instance.OnGunEquipped += UpdateGunData;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GunLibrary.Instance != null)
+        {
+            GunLibrary.Instance.OnGunEquipped -= UpdateGunData;
+        }
+    }
+
+    private void UpdateGunData(GunData newGunData)
+    {
+        gunData = newGunData;
+    }
+
+    public void SetSpreadMultiplier(float multiplier)
+    {
+        spreadMultiplier = multiplier;
     }
 }

@@ -699,7 +699,6 @@ MonoBehaviour:
   range: 2
   attackRate: 0.5
   knifeModel: {fileID: 1282585466}
-  positionOffset: {x: 0.2, y: -0.1, z: 0.4}
   rotationOffset: {x: 0, y: -90, z: 0}
   swingSpeed: 15
   swingRotation: {x: 45, y: -60, z: 30}
@@ -1447,6 +1446,8 @@ MonoBehaviour:
   tiltAmount: 5
   smoothTiltSpeed: 5
   smoothTurnSpeed: 10
+  driftMultiplier: 3
+  driftDeceleration: 8
 --- !u!65 &417482360
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1530,7 +1531,7 @@ Transform:
   m_GameObject: {fileID: 417482358}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 254.8, y: 1, z: 250}
+  m_LocalPosition: {x: 239.90001, y: 5.589999, z: 225.4}
   m_LocalScale: {x: 1, y: 1, z: 2.4166}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2364,6 +2365,7 @@ MonoBehaviour:
   bikeControl: {fileID: 417482359}
   mouseSensitivity: 175
   playerBody: {fileID: 1170512706}
+  offset: {x: 0, y: 0, z: 0}
   _LockStateLocked: 0
 --- !u!1 &492437320
 GameObject:
@@ -3131,8 +3133,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767773522}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.39, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4265,8 +4267,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1102158407}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.74650574, y: 0.40217495, z: 0.6711731}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4560,15 +4562,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1258583300404719692, guid: 23f6aa9b98388cf479a1c93b33303f55, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 251.4817
+      value: 236.58171
       objectReference: {fileID: 0}
     - target: {fileID: 1258583300404719692, guid: 23f6aa9b98388cf479a1c93b33303f55, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.24999511
+      value: 4.8399944
       objectReference: {fileID: 0}
     - target: {fileID: 1258583300404719692, guid: 23f6aa9b98388cf479a1c93b33303f55, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 258.67908
+      value: 234.07907
       objectReference: {fileID: 0}
     - target: {fileID: 1258583300404719692, guid: 23f6aa9b98388cf479a1c93b33303f55, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4788,7 +4790,7 @@ Transform:
   m_GameObject: {fileID: 1170512699}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 250, y: 1, z: 250}
+  m_LocalPosition: {x: 235.1, y: 7.999999, z: 225.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4809,10 +4811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14e6a9edaf1fc746b59da8cba66e788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraController: {fileID: 485026403}
-  Weapon: {fileID: 1411295440}
-  ADSPosition: {fileID: 289200620}
-  DefaultPos: {fileID: 1517450361}
+  cameraController: {fileID: 0}
 --- !u!114 &1170512708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4879,6 +4878,9 @@ MonoBehaviour:
     switchKey: 258
     weaponName: Knife
   switchDelay: 0.5
+  hipPosition: {x: -0.6, y: -0.1, z: 0.15}
+  adsPosition: {x: -0.835, y: -0.08, z: 0.1}
+  positionSmoothing: 20
 --- !u!1 &1243961481
 GameObject:
   m_ObjectHideFlags: 0
@@ -5268,7 +5270,7 @@ Transform:
   m_GameObject: {fileID: 1291935942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 249.8621, y: 1.4593612, z: 266.45}
+  m_LocalPosition: {x: 226.4, y: 10.7, z: 266.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7440,13 +7442,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 420405368}
+  - {fileID: 128962346}
   - {fileID: 1863568575}
   - {fileID: 1497560357}
   - {fileID: 1600843603}
   - {fileID: 507958267}
   - {fileID: 511524671}
   - {fileID: 1997726990}
-  - {fileID: 128962346}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
