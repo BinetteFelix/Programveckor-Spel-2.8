@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -29,6 +30,22 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float currentSpeed;
     public bool isCrouching { get; private set; }
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip[] footstepSounds;
+    [SerializeField] private AudioClip[] sprintFootstepSounds;
+    [SerializeField] private AudioClip[] jumpSounds;
+    [SerializeField] private AudioClip[] landingSounds;
+    [SerializeField] private AudioClip[] breathingSounds;
+    [SerializeField] private AudioClip[] exhaustedSounds;
+    
+    private float footstepTimer = 0f;
+    private float walkStepInterval = 0.5f;
+    private float sprintStepInterval = 0.3f;
+    private float breathingTimer = 2f;
+    private float breathingInterval = 2f;
+    private bool wasSprintingLastFrame;
+    private bool isCurrentlyBreathing;
+
     void Start()
     {
         controller.center = new Vector3(0f, 0f, 0f);
@@ -50,6 +67,8 @@ public class PlayerMovement : MonoBehaviour
             HandleMovement();
             HandleCrouch();
         }
+
+        HandleMovementSounds();
     }
 
     private void HandleMovement()
@@ -128,6 +147,80 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             return isAiming ? adsWalkSpeed : walkSpeed;
+        }
+    }
+
+    private void HandleMovementSounds()
+    {
+        bool isMoving = (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0);
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && staminaController.canSprint;
+
+        // Footsteps
+        if (isGrounded && isMoving)
+        {
+            footstepTimer += Time.deltaTime;
+            float currentStepInterval = isSprinting ? sprintStepInterval : walkStepInterval;
+
+            if (footstepTimer >= currentStepInterval)
+            {
+                if (footstepSounds != null && footstepSounds.Length > 0)
+                {
+                    SoundFXManager.instance.PlayRandomSoundFXclip(footstepSounds, transform, 0.7f);
+                }
+                footstepTimer = 0f;
+            }
+        }
+
+        // Handle Sprint Breathing
+        if (isSprinting && isMoving && !isCurrentlyBreathing)
+        {
+            StartCoroutine(HandleSprintBreathing());
+        }
+        else if (!isSprinting || !isMoving)
+        {
+            isCurrentlyBreathing = false;
+            breathingTimer = 0f;
+        }
+
+        // Exhausted sounds when stamina is depleted
+        if (staminaController.currentStamina <= 0 && wasSprintingLastFrame)
+        {
+            if (exhaustedSounds != null && exhaustedSounds.Length > 0)
+            {
+                SoundFXManager.instance.PlayRandomSoundFXclip(exhaustedSounds, transform, 1f);
+            }
+        }
+
+        wasSprintingLastFrame = isSprinting;
+    }
+
+    private void OnJump()
+    {
+        if (jumpSounds != null && jumpSounds.Length > 0)
+        {
+            SoundFXManager.instance.PlayRandomSoundFXclip(jumpSounds, transform, 1f);
+        }
+    }
+
+    private void OnLand()
+    {
+        if (landingSounds != null && landingSounds.Length > 0)
+        {
+            SoundFXManager.instance.PlayRandomSoundFXclip(landingSounds, transform, 1f);
+        }
+    }
+
+    private IEnumerator HandleSprintBreathing()
+    {
+        isCurrentlyBreathing = true;
+
+        while (isCurrentlyBreathing)
+        {
+            if (breathingSounds != null && breathingSounds.Length > 0)
+            {
+                SoundFXManager.instance.PlayRandomSoundFXclip(breathingSounds, transform, 0.5f);
+            }
+            yield return new WaitForSeconds(breathingInterval);
         }
     }
 }

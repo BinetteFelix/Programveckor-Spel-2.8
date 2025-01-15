@@ -64,15 +64,24 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        //Shoot SFX HERE!
-
         if (!CanShoot())
         {
             if (gunData.ammoInMag <= 0 && !reloading)
             {
+                // Play empty mag sound
+                if (gunData.emptyMagSound != null)
+                {
+                    SoundFXManager.instance.PlaySoundFXclip(gunData.emptyMagSound, transform, 1f);
+                }
                 StartCoroutine(Reload());
             }
             return;
+        }
+
+        // Play random shoot sound
+        if (gunData.shootSoundClips != null && gunData.shootSoundClips.Length > 0)
+        {
+            SoundFXManager.instance.PlayRandomSoundFXclip(gunData.shootSoundClips, transform, 1f);
         }
 
         // Trigger muzzle flash
@@ -121,13 +130,14 @@ public class Gun : MonoBehaviour
 
         reloading = true;
 
-        //RELOAD SOUND FX HEREE!
+        // Play random reload sound
+        if (gunData.reloadSoundClips != null && gunData.reloadSoundClips.Length > 0)
+        {
+            SoundFXManager.instance.PlayRandomSoundFXclip(gunData.reloadSoundClips, transform, 1f);
+        }
 
         yield return new WaitForSeconds(gunData.reloadTime);
         gunData.ammoInMag = gunData.magSize;
-
-        //when ammo is added as a resorsce this is where the subtraction will take place 
-        //inventory.currentAmmo - gunData.magSize;
         reloading = false;
     }
 

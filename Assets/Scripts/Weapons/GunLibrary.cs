@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunLibrary : MonoBehaviour
+public class GunLibrary : MonoBehaviour, ISaveable
 {
     public static GunLibrary Instance { get; private set; }
     public event Action<GunData> OnGunEquipped;
@@ -19,6 +19,19 @@ public class GunLibrary : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        SaveManager.Instance.RegisterSaveable(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.UnregisterSaveable(this);
+        }
     }
 
     public void EquipGun(string gunName)
@@ -49,5 +62,42 @@ public class GunLibrary : MonoBehaviour
             }
         }
         return equippedGun;
+    }
+
+    public void Save(SaveData saveData)
+    {
+        saveData.weaponData.equippedGunName = equippedGun.gunName;
+        
+        // Save ammo counts
+        saveData.weaponData.gunAmmoData.Clear();
+        foreach (var gun in availableGuns)
+        {
+            saveData.weaponData.gunAmmoData[gun.gunName] = gun.ammoInMag;
+        }
+    }
+
+    public void Load(SaveData saveData)
+    {
+        // Load equipped gun
+        GunData savedGun = GetGunByName(saveData.weaponData.equippedGunName);
+        if (savedGun != null)
+        {
+            EquipGun(savedGun.gunName);
+        }
+
+        // Load ammo counts
+        foreach (var gunAmmo in saveData.weaponData.gunAmmoData)
+        {
+            GunData gun = GetGunByName(gunAmmo.Key);
+            if (gun != null)
+            {
+                gun.ammoInMag = gunAmmo.Value;
+            }
+        }
+    }
+
+    public GunData GetGunByName(string gunName)
+    {
+        return availableGuns.Find(gun => gun.gunName == gunName);
     }
 }
