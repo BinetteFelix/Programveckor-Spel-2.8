@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 8258132818608333278, guid: 946ad571aa0a33646bc6c0949139179e, type: 3}
       propertyPath: PopUpText
       value: 
-      objectReference: {fileID: 1940278220248388379, guid: b59842a3a77dc0d49b0b6390d0684f3d, type: 3}
+      objectReference: {fileID: 3063366420292880313, guid: b59842a3a77dc0d49b0b6390d0684f3d, type: 3}
     - target: {fileID: 8312804225755125690, guid: 946ad571aa0a33646bc6c0949139179e, type: 3}
       propertyPath: m_Mesh
       value: 

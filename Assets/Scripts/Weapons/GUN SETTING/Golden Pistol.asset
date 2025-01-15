@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d96c39de06f77de4e9186a7a2b3a96e6, type: 3}
-  m_Name: Pistol
+  m_Name: Golden Pistol
   m_EditorClassIdentifier: 
-  gunName: Pistol
+  gunName: Golden Pistol
   isAutomatic: 0
-  damage: 20
-  magSize: 14
-  ammoInMag: 1
-  fireRate: 0.13
-  reloadTime: 2.5
-  maxDistance: 250
-  projectileSpeed: 80
+  damage: 0
+  magSize: 0
+  ammoInMag: 0
+  fireRate: 0
+  reloadTime: 0
+  maxDistance: 0
+  projectileSpeed: 30
   bulletArc: 0
   canAimDownSights: 1
   adsZoomFOV: 55
-  aimDownSightsSpread: 0.3
-  hipFireSpread: 1
+  aimDownSightsSpread: 0.1
+  hipFireSpread: 0.5
   headshotMultiplier: 2
-  shootSFX: {fileID: 8300000, guid: e33913a460937f240817bba540bee661, type: 3}
-  reloadSFX: {fileID: 8300000, guid: a8252b5c05bbe8b4db5cd3152e66195e, type: 3}
+  shootSFX: {fileID: 0}
+  reloadSFX: {fileID: 0}
