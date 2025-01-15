@@ -2847,6 +2847,12 @@ MonoBehaviour:
   fadeSpeed: 6
   meleeSpread: 5
   throwableSpread: 5
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  enemyColor: {r: 1, g: 0, b: 0, a: 1}
+  raycastRange: 100
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1023525776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3910,7 +3916,7 @@ Transform:
   m_GameObject: {fileID: 1348136398}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4036,6 +4042,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 1542657807996038773, guid: 55856cbabae9e6d43ac736496bc0ca2d, type: 3}
   weapon: {fileID: 1359616059}
   muzzleFlash: {fileID: 1359616057}
+  swayAmount: 0.02
+  smoothing: 8
+  maxSway: 0.06
 --- !u!1 &1368427627
 GameObject:
   m_ObjectHideFlags: 0
@@ -5089,7 +5098,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696167469}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

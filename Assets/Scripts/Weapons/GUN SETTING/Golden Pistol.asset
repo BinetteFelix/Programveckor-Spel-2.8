@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunName: Golden Pistol
   isAutomatic: 0
-  damage: 0
-  magSize: 0
-  ammoInMag: 0
-  fireRate: 0
-  reloadTime: 0
-  maxDistance: 0
-  projectileSpeed: 30
+  damage: 200
+  magSize: 15
+  ammoInMag: 15
+  fireRate: 0.5
+  reloadTime: 1
+  maxDistance: 300
+  projectileSpeed: 100
   bulletArc: 0
   canAimDownSights: 1
   adsZoomFOV: 55
-  aimDownSightsSpread: 0.1
+  aimDownSightsSpread: 0.2
   hipFireSpread: 0.5
   headshotMultiplier: 2
   shootSFX: {fileID: 0}
