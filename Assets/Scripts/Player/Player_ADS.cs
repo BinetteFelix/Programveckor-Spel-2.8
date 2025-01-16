@@ -7,7 +7,9 @@ public class Player_ADS : MonoBehaviour
     public event System.Action<bool> OnAimStateChanged;
 
     [SerializeField] private CameraController cameraController; // Reference to camera controller in inspector
+    [SerializeField] private GameObject ReticlePanel;
     private WeaponSwitcher weaponSwitcher;
+    
 
     private void Awake()
     {
@@ -55,8 +57,22 @@ public class Player_ADS : MonoBehaviour
 
             if (wasAiming != IsAiming)
             {
+                if (currentGun.gunName == "Sniper" && weaponSwitcher.weaponSlots[2].weaponObject.activeSelf == true)
+                {
+                    Invoke("HideSniperOnAim", 0.04f);
+                }
+                else if (currentGun.gunName == "Sniper" && weaponSwitcher.weaponSlots[2].weaponObject.activeSelf == false)
+                {
+                    weaponSwitcher.weaponSlots[2].weaponObject.SetActive(true);
+                    ReticlePanel.SetActive(false);
+                }
                 OnAimStateChanged?.Invoke(IsAiming);
             }
         }
+    }
+    public void HideSniperOnAim()
+    {
+        weaponSwitcher.weaponSlots[2].weaponObject.SetActive(false);
+        ReticlePanel.SetActive(true);
     }
 }

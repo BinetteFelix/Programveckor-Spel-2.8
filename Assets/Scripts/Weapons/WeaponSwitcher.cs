@@ -21,7 +21,7 @@ public class WeaponSwitcher : MonoBehaviour
     }
 
     [SerializeField] private Transform weaponHolder;  // Reference to the weapon holder object
-    [SerializeField] private List<WeaponSlot> weaponSlots = new List<WeaponSlot>();
+    [SerializeField] public List<WeaponSlot> weaponSlots = new List<WeaponSlot>();
     [SerializeField] private float switchDelay = 0.5f;
     [SerializeField] private Vector3 hipPosition = new Vector3(0.2f, -0.1f, 0.4f);
     [SerializeField] private Vector3 adsPosition = new Vector3(0f, -0.1f, 0.3f);
