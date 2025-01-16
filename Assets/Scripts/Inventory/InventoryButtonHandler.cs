@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ItemInformation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InventoryButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] GameObject Information;
-    // When highlighted with mouse.
+    // When highlighted with mouse pointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         Information.SetActive(true);
@@ -14,4 +14,7 @@ public class ItemInformation : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         Information.SetActive(false);
     }
+
+
+
 }

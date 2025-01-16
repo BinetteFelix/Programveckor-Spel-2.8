@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c38a856bff86b48a6d9fb6a9c73472, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  Type: 0
+  Type: Weapon
   Name: Pistol
-  Description: One Handed Pistol
+  Description: One Handed Single Fire Pistol
   InventoryImage: {fileID: 21300000, guid: ebbd3754405b7504cb51d22c5752efc4, type: 3}

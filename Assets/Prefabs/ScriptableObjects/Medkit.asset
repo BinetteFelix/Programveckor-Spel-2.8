@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c38a856bff86b48a6d9fb6a9c73472, type: 3}
   m_Name: Medkit
   m_EditorClassIdentifier: 
-  Type: 0
+  Type: Item
   Name: Medkit
   Description: A medkit that heals your health to max
   InventoryImage: {fileID: 0}

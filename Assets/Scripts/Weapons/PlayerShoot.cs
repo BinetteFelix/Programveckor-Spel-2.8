@@ -76,10 +76,14 @@ public class PlayerShoot : MonoBehaviour
             equippedGun.SetSpreadMultiplier(1f);
         }
 
-        if ((gunData.isAutomatic && Input.GetButton("Fire1") && gunData.ammoInMag > 0) ||
-            (!gunData.isAutomatic && Input.GetButtonDown("Fire1") && gunData.ammoInMag > 0))
+        if (!ButtonController.Instance._IsPaused && !ButtonController.Instance._Inv_IsActive)
         {
-            equippedGun.Shoot();
+            if ((gunData.isAutomatic && Input.GetButton("Fire1") && gunData.ammoInMag > 0) ||
+                (!gunData.isAutomatic && Input.GetButtonDown("Fire1") && gunData.ammoInMag > 0))
+            {
+
+                equippedGun.Shoot();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R) || gunData.ammoInMag <= 0)
