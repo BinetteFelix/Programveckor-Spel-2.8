@@ -1857,6 +1857,7 @@ MonoBehaviour:
   AudioPanel: {fileID: 1798977677}
   InventoryPanel: {fileID: 913361331}
   _IsPaused: 0
+  _Inv_IsActive: 0
 --- !u!4 &455015356
 Transform:
   m_ObjectHideFlags: 0
@@ -4099,6 +4100,12 @@ MonoBehaviour:
   bikeControls: {fileID: 231604014}
   isGrounded: 0
   currentSpeed: 0
+  footstepSounds: []
+  sprintFootstepSounds: []
+  jumpSounds: []
+  landingSounds: []
+  breathingSounds: []
+  exhaustedSounds: []
 --- !u!143 &1393917122
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4411,6 +4418,7 @@ MonoBehaviour:
   Items: []
   ItemContent: {fileID: 423898955}
   InventoryItemBase: {fileID: 1040138481671423709, guid: 7c283183802fb1348aa8682124f4e122, type: 3}
+  InventoryWeaponBase: {fileID: 1040138481671423709, guid: 5e130be1bac1c8442ac49c2d1a20d1c4, type: 3}
 --- !u!4 &1483903242
 Transform:
   m_ObjectHideFlags: 0

@@ -15,6 +15,8 @@ public class InventoryButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         Information.SetActive(false);
     }
 
-
-
+    public void EquipItem()
+    {
+        
+    }
 }
