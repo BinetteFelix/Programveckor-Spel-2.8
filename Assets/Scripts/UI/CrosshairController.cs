@@ -155,8 +155,6 @@ public class CrosshairController : MonoBehaviour
 
     private void SetCrosshairColor(Color color)
     {
-        Debug.Log($"Setting crosshair color to: {color}");
-        
         // Set color for each crosshair part
         crosshairTop.color = color;
         crosshairRight.color = color;
