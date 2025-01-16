@@ -34,18 +34,18 @@ public class ThrowGranade : MonoBehaviour
 
     private void ThrowSmokeBomb()
     {
-        // Look for a smoke bomb item in the inventory
-        ItemProfile GranadeItem = InventoryManager.Instance.Items.Find(item => item.Name == "Smoke Bomb");
+        // Look for a Granade item in the inventory
+        ItemProfile GranadeItem = InventoryManager.Instance.Items.Find(item => item.Name == "Granade");
 
         if (GranadeItem != null)
         {
-            // Instantiate the smoke bomb at the ThrowPoint
+            // Instantiate the Granade at the ThrowPoint
             GameObject Granade = Instantiate(GranadePrefab, ThrowPoint.position, ThrowPoint.rotation);
 
             // Calculate the throw direction based on the camera's angle
             Vector3 throwDirection = CalculateThrowDirection();
 
-            // Get the Rigidbody component of the smoke bomb
+            // Get the Rigidbody component of the Granade
             Rigidbody GranadeRb = Granade.GetComponent<Rigidbody>();
 
             if (GranadeRb != null)
@@ -68,7 +68,7 @@ public class ThrowGranade : MonoBehaviour
         }
         else
         {
-            // Log a message if there are no smoke bombs in the inventory
+            // Log a message if there are no Granade in the inventory
             Debug.Log("No Granades in inventory to throw!");
         }
     }
