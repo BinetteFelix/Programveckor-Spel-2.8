@@ -32,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Sound Effects")]
     [SerializeField] private AudioClip[] footstepSounds;
-    [SerializeField] private AudioClip[] sprintFootstepSounds;
     [SerializeField] private AudioClip[] jumpSounds;
     [SerializeField] private AudioClip[] landingSounds;
     [SerializeField] private AudioClip[] breathingSounds;
@@ -165,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (footstepSounds != null && footstepSounds.Length > 0)
                 {
-                    SoundFXManager.instance.PlayRandomSoundFXclip(footstepSounds, transform, 0.7f);
+                    SoundFXManager.instance.PlayRandomSoundFXclip(footstepSounds, transform, 0.01f);
                 }
                 footstepTimer = 0f;
             }
