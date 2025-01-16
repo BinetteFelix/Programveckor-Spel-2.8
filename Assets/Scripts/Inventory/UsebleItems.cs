@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class ThrowGranade : MonoBehaviour
 {
-    public GameObject SmokeBombPrefab; // Prefab for the smoke bomb
+    public GameObject GranadePrefab; // Prefab for the smoke bomb
     public Transform ThrowPoint; // Point from which the smoke bomb is thrown
     public float BaseThrowForce = 10f; // Base force for throwing the smoke bomb
     public float JumpThrowMultiplier = 1.5f; // Multiplier for throw force when jumping
     public float VerticalForceMultiplier = 2f; // Additional force based on camera's vertical angle
-    public float GroundCheckDistance = 0.1f; 
+    public float GroundCheckDistance = 0.1f;
     public LayerMask GroundLayer;
 
     public Health Health;
+
 
     private bool IsGrounded()
     {
@@ -28,25 +29,26 @@ public class ThrowGranade : MonoBehaviour
         {
             UseMedkit();
         }
+
     }
 
     private void ThrowSmokeBomb()
     {
         // Look for a smoke bomb item in the inventory
-        ItemProfile smokeBombItem = InventoryManager.Instance.Items.Find(item => item.Name == "Smoke Bomb");
+        ItemProfile GranadeItem = InventoryManager.Instance.Items.Find(item => item.Name == "Smoke Bomb");
 
-        if (smokeBombItem != null)
+        if (GranadeItem != null)
         {
             // Instantiate the smoke bomb at the ThrowPoint
-            GameObject smokeBomb = Instantiate(SmokeBombPrefab, ThrowPoint.position, ThrowPoint.rotation);
+            GameObject Granade = Instantiate(GranadePrefab, ThrowPoint.position, ThrowPoint.rotation);
 
             // Calculate the throw direction based on the camera's angle
             Vector3 throwDirection = CalculateThrowDirection();
 
             // Get the Rigidbody component of the smoke bomb
-            Rigidbody smokeBombRb = smokeBomb.GetComponent<Rigidbody>();
+            Rigidbody GranadeRb = Granade.GetComponent<Rigidbody>();
 
-            if (smokeBombRb != null)
+            if (GranadeRb != null)
             {
       
                 float throwForce = BaseThrowForce;
@@ -56,10 +58,10 @@ public class ThrowGranade : MonoBehaviour
                     throwForce *= JumpThrowMultiplier;
                 }
 
-                smokeBombRb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
+                GranadeRb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
             }
 
-            InventoryManager.Instance.Items.Remove(smokeBombItem);
+            InventoryManager.Instance.Items.Remove(GranadeItem);
 
             // Update the inventory UI to reflect the change
             InventoryManager.Instance.ArrangeItems();
@@ -67,7 +69,7 @@ public class ThrowGranade : MonoBehaviour
         else
         {
             // Log a message if there are no smoke bombs in the inventory
-            Debug.Log("No smoke bombs in inventory to throw!");
+            Debug.Log("No Granades in inventory to throw!");
         }
     }
 
