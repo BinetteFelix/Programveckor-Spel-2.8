@@ -78,10 +78,10 @@ public class Gun : MonoBehaviour
             return;
         }
 
-        // Play random shoot sound
-        if (gunData.shootSoundClips != null && gunData.shootSoundClips.Length > 0)
+        // Play shoot sound
+        if (gunData.shootSounds != null && gunData.shootSounds.Length > 0)
         {
-            SoundFXManager.instance.PlayRandomSoundFXclip(gunData.shootSoundClips, transform, 1f);
+            SoundFXManager.instance.PlayRandomSoundFXclip(gunData.shootSounds, transform, 1f);
         }
 
         // Trigger muzzle flash
@@ -130,10 +130,10 @@ public class Gun : MonoBehaviour
 
         reloading = true;
 
-        // Play random reload sound
-        if (gunData.reloadSoundClips != null && gunData.reloadSoundClips.Length > 0)
+        // Play reload sound
+        if (gunData.reloadSound != null)
         {
-            SoundFXManager.instance.PlayRandomSoundFXclip(gunData.reloadSoundClips, transform, 1f);
+            SoundFXManager.instance.PlaySoundFXclip(gunData.reloadSound, transform, 1f);
         }
 
         yield return new WaitForSeconds(gunData.reloadTime);

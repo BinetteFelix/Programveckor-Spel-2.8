@@ -30,10 +30,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float currentSpeed;
     public bool isCrouching { get; private set; }
 
-    [Header("Sound Effects")]
     [SerializeField] private AudioClip[] footstepSounds;
     [SerializeField] private AudioClip[] jumpSounds;
-    [SerializeField] private AudioClip[] landingSounds;
     [SerializeField] private AudioClip[] breathingSounds;
     [SerializeField] private AudioClip[] exhaustedSounds;
     
@@ -101,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         // Jump
         if (Input.GetButtonDown("Jump") && isGrounded && staminaController.canJump)
         {
-            velocity.y = jumpHeight;
+            OnJump();
         }
 
         // Apply gravity
@@ -155,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && staminaController.canSprint;
 
         // Footsteps
-        if (isGrounded && isMoving)
+        if (isGrounded && isMoving && !bikeControls.isRidden)
         {
             footstepTimer += Time.deltaTime;
             float currentStepInterval = isSprinting ? sprintStepInterval : walkStepInterval;
@@ -164,14 +162,14 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (footstepSounds != null && footstepSounds.Length > 0)
                 {
-                    SoundFXManager.instance.PlayRandomSoundFXclip(footstepSounds, transform, 0.01f);
+                    SoundFXManager.instance.PlayRandomSoundFXclip(footstepSounds, transform, 0.001f);
                 }
                 footstepTimer = 0f;
             }
         }
 
         // Handle Sprint Breathing
-        if (isSprinting && isMoving && !isCurrentlyBreathing)
+        if (isSprinting && isMoving && !isCurrentlyBreathing && !bikeControls.isRidden)
         {
             StartCoroutine(HandleSprintBreathing());
         }
@@ -182,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Exhausted sounds when stamina is depleted
-        if (staminaController.currentStamina <= 0 && wasSprintingLastFrame)
+        if (staminaController.currentStamina <= 0 && wasSprintingLastFrame && !bikeControls.isRidden)
         {
             if (exhaustedSounds != null && exhaustedSounds.Length > 0)
             {
@@ -195,17 +193,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump()
     {
+        velocity.y = jumpHeight;
         if (jumpSounds != null && jumpSounds.Length > 0)
         {
             SoundFXManager.instance.PlayRandomSoundFXclip(jumpSounds, transform, 1f);
-        }
-    }
-
-    private void OnLand()
-    {
-        if (landingSounds != null && landingSounds.Length > 0)
-        {
-            SoundFXManager.instance.PlayRandomSoundFXclip(landingSounds, transform, 1f);
         }
     }
 

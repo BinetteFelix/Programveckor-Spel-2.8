@@ -23,7 +23,7 @@ public class GunData : ScriptableObject
     public float reloadTime = 1f;
     public int ammoInMag;
 
-    public AudioClip[] shootSoundClips;
-    public AudioClip[] reloadSoundClips;
+    public AudioClip[] shootSounds;      // For variation in shooting sounds
+    public AudioClip reloadSound;
     public AudioClip emptyMagSound;
 }

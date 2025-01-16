@@ -19,13 +19,13 @@ MonoBehaviour:
   damage: 100
   headshotMultiplier: 3
   fireRate: 2
-  projectileSpeed: 80
+  projectileSpeed: 200
   maxDistance: 400
   hipFireSpread: 4
   aimDownSightsSpread: 0.001
   magSize: 6
   reloadTime: 4
-  ammoInMag: 3
-  shootSoundClips: []
-  reloadSoundClips: []
+  ammoInMag: 5
+  shootSounds: []
+  reloadSound: {fileID: 0}
   emptyMagSound: {fileID: 0}
