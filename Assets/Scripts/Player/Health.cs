@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour
@@ -34,6 +35,7 @@ public class Health : MonoBehaviour
     void Die()
     {
         Destroy(gameObject);
+        SceneManager.LoadSceneAsync(2);
     }
 
     void RegenHealth()
