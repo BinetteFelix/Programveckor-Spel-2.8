@@ -4065,6 +4065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraController: {fileID: 140207662}
+  ReticlePanel: {fileID: 0}
 --- !u!114 &1393917120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4106,9 +4107,7 @@ MonoBehaviour:
   isGrounded: 0
   currentSpeed: 0
   footstepSounds: []
-  sprintFootstepSounds: []
   jumpSounds: []
-  landingSounds: []
   breathingSounds: []
   exhaustedSounds: []
 --- !u!143 &1393917122
@@ -4456,7 +4455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f68f1b1c4e931488c640bc651feea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GranadePrefab: {fileID: 0}
+  GranadePrefab: {fileID: 2865135688356637917, guid: bd31dcfba9159694b9a6ace56b56c834, type: 3}
   ThrowPoint: {fileID: 410528528}
   BaseThrowForce: 10
   JumpThrowMultiplier: 1.5

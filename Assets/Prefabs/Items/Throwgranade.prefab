@@ -78,8 +78,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 919012036561475446, guid: 946ad571aa0a33646bc6c0949139179e, type: 3}
-    - {fileID: 183081938367603341, guid: 946ad571aa0a33646bc6c0949139179e, type: 3}
     - {fileID: 8258132818608333278, guid: 946ad571aa0a33646bc6c0949139179e, type: 3}
+    - {fileID: 183081938367603341, guid: 946ad571aa0a33646bc6c0949139179e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -184,3 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa6bc1e1a697fda42a2a837ff996ae4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ExplosionEffect: {fileID: 739751666996843708, guid: 27af3e3e3c868d64cbcc3d3452f91b33, type: 3}
+  ExplosionRadius: 4
+  ExplosionForce: 500
+  ExplosionDuration: 2
