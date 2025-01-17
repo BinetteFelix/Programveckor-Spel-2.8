@@ -2597,7 +2597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTime: 12.8
-  timeSpeed: 0
+  timeSpeed: 0.5
   currentTimeString: 
   sunLight: {fileID: 1102420168}
   sunLatitude: 65.6

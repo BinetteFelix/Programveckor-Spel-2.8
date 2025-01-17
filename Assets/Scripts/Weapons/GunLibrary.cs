@@ -36,14 +36,15 @@ public class GunLibrary : MonoBehaviour, ISaveable
 
     public void EquipGun(string gunName)
     {
-        GunData newGun = availableGuns.Find(gun => gun.gunName == gunName);
-        if (newGun == null)
+        GunData originalGun = availableGuns.Find(gun => gun.gunName == gunName);
+        if (originalGun == null)
         {
             Debug.LogError($"Gun with name {gunName} not found in GunLibrary!");
             return;
         }
 
-        equippedGun = newGun;
+        // Create a new instance of GunData to avoid sharing the same data between weapons
+        equippedGun = ScriptableObject.Instantiate(originalGun);
         OnGunEquipped?.Invoke(equippedGun);
     }
 
@@ -82,17 +83,14 @@ public class GunLibrary : MonoBehaviour, ISaveable
         GunData savedGun = GetGunByName(saveData.weaponData.equippedGunName);
         if (savedGun != null)
         {
-            EquipGun(savedGun.gunName);
-        }
-
-        // Load ammo counts
-        foreach (var gunAmmo in saveData.weaponData.gunAmmoData)
-        {
-            GunData gun = GetGunByName(gunAmmo.Key);
-            if (gun != null)
+            // Create a new instance and set its ammo before equipping
+            GunData newGun = ScriptableObject.Instantiate(savedGun);
+            if (saveData.weaponData.gunAmmoData.TryGetValue(savedGun.gunName, out int savedAmmo))
             {
-                gun.ammoInMag = gunAmmo.Value;
+                newGun.ammoInMag = savedAmmo;
             }
+            equippedGun = newGun;
+            OnGunEquipped?.Invoke(equippedGun);
         }
     }
 
