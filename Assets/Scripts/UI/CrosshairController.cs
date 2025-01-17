@@ -112,8 +112,7 @@ public class CrosshairController : MonoBehaviour
     {
         if (currentGunData == null) return;
 
-        bool canAim = !weaponSwitcher.IsSwitching();
-        float spreadValue = Player_ADS.Instance.IsAiming && canAim
+        float spreadValue = Player_ADS.Instance.IsAiming
             ? currentGunData.aimDownSightsSpread
             : currentGunData.hipFireSpread;
 
