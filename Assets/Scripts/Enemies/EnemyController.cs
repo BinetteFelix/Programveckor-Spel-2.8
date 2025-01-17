@@ -47,4 +47,11 @@ public class EnemyController : MonoBehaviour
             agent.SetDestination(hit.position);
         }
     }
+
+    // Draw Gizmo to show the patrol range
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green; // Choose a color for the patrol range visualization
+        Gizmos.DrawWireSphere(transform.position, patrolRange); // Draw a wireframe sphere to represent patrol range
+    }
 }
