@@ -98,6 +98,7 @@ public class PlayerShoot : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) || gunData.ammoInMag <= 0)
         {
             StartCoroutine(equippedGun.Reload());
+
         }
     }
 }
