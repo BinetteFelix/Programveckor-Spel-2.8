@@ -47,7 +47,6 @@ public class WeaponSwitcher : MonoBehaviour
     private Camera mainCamera;
 
     private int currentWeaponIndex = 0;
-    private bool isSwitching = false;
     private float lastSwitchTime;
 
     private void Start()
@@ -71,7 +70,7 @@ public class WeaponSwitcher : MonoBehaviour
                 if (slot.type == WeaponType.Gun)
                 {
                     // Find matching GunData
-                    GunData gunData = GunLibrary.Instance.availableGuns.Find(g => g.gunName == slot.weaponName);
+                    GunData gunData = GunLibrary.Instance.GetGunByName(slot.weaponName);
                     if (gunData == null)
                     {
                         Debug.LogError($"No GunData found for weapon: {slot.weaponName}");
@@ -105,14 +104,6 @@ public class WeaponSwitcher : MonoBehaviour
 
     private void HandleWeaponSwitching()
     {
-        if (isSwitching) return;
-        
-        // Don't allow switching while aiming
-        if (Player_ADS.Instance.IsAiming)
-        {
-            return;
-        }
-
         // Check number keys
         for (int i = 0; i < weaponSlots.Count; i++)
         {
@@ -144,7 +135,7 @@ public class WeaponSwitcher : MonoBehaviour
 
         // Determine target position based on ADS state
         Vector3 targetPos = hipPosition;
-        if (Player_ADS.Instance.IsAiming && IsGunEquipped() && !isSwitching)
+        if (Player_ADS.Instance.IsAiming && IsGunEquipped())
         {
             targetPos = adsPosition;
         }
@@ -162,8 +153,8 @@ public class WeaponSwitcher : MonoBehaviour
 
     private void SwitchToWeapon(int newIndex)
     {
-        if (newIndex == currentWeaponIndex || isSwitching) return;
-        if (Time.time < lastSwitchTime + switchDelay) return;
+        if (newIndex == currentWeaponIndex) return;
+        if (Time.time - lastSwitchTime < switchDelay) return;
 
         // Force unscope if player is aiming
         if (Player_ADS.Instance.IsAiming)
@@ -189,7 +180,6 @@ public class WeaponSwitcher : MonoBehaviour
         }
 
         currentWeaponIndex = newIndex;
-        isSwitching = true;
         lastSwitchTime = Time.time;
 
         WeaponSlot newWeapon = weaponSlots[currentWeaponIndex];
@@ -211,8 +201,6 @@ public class WeaponSwitcher : MonoBehaviour
         {
             newWeapon.weaponObject.SetActive(true);
         }
-
-        Invoke(nameof(FinishSwitch), switchDelay);
     }
 
     private void SwitchToNextWeapon()
@@ -226,13 +214,6 @@ public class WeaponSwitcher : MonoBehaviour
         int newIndex = (currentWeaponIndex - 1 + weaponSlots.Count) % weaponSlots.Count;
         SwitchToWeapon(newIndex);
     }
-
-    private void FinishSwitch()
-    {
-        isSwitching = false;
-    }
-
-    public bool IsSwitching() => isSwitching;
 
     public WeaponType GetCurrentWeaponType() => weaponSlots[currentWeaponIndex].type;
 

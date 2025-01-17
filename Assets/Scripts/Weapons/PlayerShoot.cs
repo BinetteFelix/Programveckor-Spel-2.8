@@ -57,7 +57,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void Update()
     {
-        if (gunData == null || equippedGun == null || !weaponSwitcher.IsGunEquipped() || weaponSwitcher.IsSwitching()) 
+        if (gunData == null || equippedGun == null || !weaponSwitcher.IsGunEquipped()) 
             return;
 
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && playerMovement.currentSpeed == playerMovement.sprintSpeed;
