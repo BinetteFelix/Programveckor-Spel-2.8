@@ -12,7 +12,6 @@ public class Gun : MonoBehaviour
     private bool reloading;
     private Vector3 aimPoint;
     private float timeSinceLastShot;
-    private GunData gunData;
     private bool isAiming = false;
     [SerializeField] private MuzzleFlash muzzleFlash;
     private float spreadMultiplier = 1f;
@@ -34,14 +33,6 @@ public class Gun : MonoBehaviour
             return;
         }
 
-        gunData = GunLibrary.Instance.GetEquippedGun();
-        if (gunData == null)
-        {
-            Debug.LogError("No gun data available!");
-            enabled = false;
-            return;
-        }
-
         initialWeaponPosition = weapon.localPosition;
         targetWeaponPosition = initialWeaponPosition;
         cameraHolder = transform.root.Find("CameraHolder");
@@ -57,13 +48,15 @@ public class Gun : MonoBehaviour
         timeSinceLastShot += Time.deltaTime;
 
         //check aiming state
-        isAiming = Input.GetButton("Fire2") && gunData.canAimDownSights;
+        isAiming = Input.GetButton("Fire2") && GunLibrary.Instance.GetEquippedGun().canAimDownSights;
 
         HandleWeaponSway();
     }
 
     public void Shoot()
     {
+        GunData gunData = GunLibrary.Instance.GetEquippedGun();
+
         if (!CanShoot())
         {
             if (gunData.ammoInMag <= 0 && !reloading)
@@ -121,11 +114,13 @@ public class Gun : MonoBehaviour
 
     public bool CanShoot()
     {
-        return !reloading && timeSinceLastShot > gunData.fireRate;
+        return !reloading && timeSinceLastShot > GunLibrary.Instance.GetEquippedGun().fireRate;
     }
 
     public IEnumerator Reload()
     {
+        GunData gunData = GunLibrary.Instance.GetEquippedGun();
+
         if (reloading) yield break;
 
         reloading = true;
@@ -143,6 +138,7 @@ public class Gun : MonoBehaviour
 
     private Vector3 GetAimPoint()
     {
+        GunData gunData = GunLibrary.Instance.GetEquippedGun();
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, gunData.maxDistance))
@@ -184,31 +180,6 @@ public class Gun : MonoBehaviour
                 Time.deltaTime * smoothing * 2
             );
         }
-    }
-
-    private void OnEnable()
-    {
-        if (GunLibrary.Instance != null)
-        {
-            GunLibrary.Instance.OnGunEquipped += UpdateGunData;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (GunLibrary.Instance != null)
-        {
-            GunLibrary.Instance.OnGunEquipped -= UpdateGunData;
-        }
-    }
-
-    private void UpdateGunData(GunData newGunData)
-    {
-        gunData = newGunData;
-        // Reset shooting timer when switching weapons
-        timeSinceLastShot = gunData.fireRate;  // This ensures we can shoot immediately after switching
-        // Reset reloading state
-        reloading = false;
     }
 
     public void SetSpreadMultiplier(float multiplier)

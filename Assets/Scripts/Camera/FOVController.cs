@@ -54,7 +54,7 @@ public class FPSFOVController : MonoBehaviour
 
         float targetFOV;
 
-        if (isAiming && !weaponSwitcher.IsSwitching())
+        if (isAiming)
         {
             targetFOV = currentGunData.adsZoomFOV;
         }

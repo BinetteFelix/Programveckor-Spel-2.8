@@ -49,7 +49,6 @@ public class Player_ADS : MonoBehaviour
             GunData currentGun = GunLibrary.Instance?.GetEquippedGun();
             
             bool canAim = weaponSwitcher.IsGunEquipped() && 
-                         !weaponSwitcher.IsSwitching() && 
                          currentGun != null && 
                          currentGun.canAimDownSights;
 

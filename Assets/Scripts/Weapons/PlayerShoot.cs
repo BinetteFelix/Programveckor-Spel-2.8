@@ -57,7 +57,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void Update()
     {
-        if (gunData == null || equippedGun == null || !weaponSwitcher.IsGunEquipped() || weaponSwitcher.IsSwitching()) 
+        if (gunData == null || equippedGun == null || !weaponSwitcher.IsGunEquipped()) 
             return;
 
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && playerMovement.currentSpeed == playerMovement.sprintSpeed;
@@ -98,6 +98,7 @@ public class PlayerShoot : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) || gunData.ammoInMag <= 0)
         {
             StartCoroutine(equippedGun.Reload());
+
         }
     }
 }
