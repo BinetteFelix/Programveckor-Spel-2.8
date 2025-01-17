@@ -13,11 +13,6 @@ public class EnemyAi : MonoBehaviour
     private NavMeshAgent agent;
     private bool playerInSightRange, playerInAttackRange;
 
-    // Attacking
-    public float timeBetweenAttacks = 1f; 
-    private bool alreadyAttacked;
-    public GameObject projectilePrefab;
-
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -53,29 +48,9 @@ public class EnemyAi : MonoBehaviour
 
     private void AttackPlayer()
     {
-        // Makes sure enemy doesn't move
+        // Stop movement and attack behavior here
         agent.SetDestination(transform.position);
-
         transform.LookAt(player);
-
-        if (!alreadyAttacked)
-        {
-            // Attack code here
-            GameObject projectile = Instantiate(projectilePrefab, transform.position + transform.forward, Quaternion.identity);
-            ProjectileController projectileScript = projectile.GetComponent<ProjectileController>();
-            if (projectileScript != null)
-            {
-                projectileScript.Initialize(player);
-            }
-
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
-        }
-    }
-
-    private void ResetAttack()
-    {
-        alreadyAttacked = false;
     }
 
     // Gizmos to visualize sight and attack range in the Editor
