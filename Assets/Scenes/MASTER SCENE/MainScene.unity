@@ -1309,6 +1309,14 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: -90, z: 0}
   swingSpeed: 15
   swingRotation: {x: 45, y: -60, z: 30}
+  swingSounds:
+  - {fileID: 8300000, guid: 8d4ed5fd76a2af84db4ac9980ab2d142, type: 3}
+  - {fileID: 8300000, guid: 180c107aa315e0b48a5d4f5ac983617c, type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: 6aca4a2990ad5fd49b7ce96fa59ff78b, type: 3}
+  - {fileID: 8300000, guid: 7548054f47f871b428d74c8b41b867b0, type: 3}
+  swingVolume: 1
+  hitVolume: 1
 --- !u!1001 &235372495
 PrefabInstance:
   m_ObjectHideFlags: 0
