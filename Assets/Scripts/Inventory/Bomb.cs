@@ -1,5 +1,3 @@
-using Unity.VisualScripting;
-using UnityEditor.Rendering.Analytics;
 using UnityEngine;
 
 public class bomb : MonoBehaviour

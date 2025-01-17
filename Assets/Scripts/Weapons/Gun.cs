@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 //andv�nd GunLibrary.Instance.EquipGun("GunName") f�r att lyckas equippa en ny pistol...
 
