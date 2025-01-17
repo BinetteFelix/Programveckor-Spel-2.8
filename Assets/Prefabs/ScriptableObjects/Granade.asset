@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c38a856bff86b48a6d9fb6a9c73472, type: 3}
+  m_Name: Granade
+  m_EditorClassIdentifier: 
+  Type: Weapon
+  Name: Granade
+  Description: A granade that Explodes on impact. Click [G] to use it!
+  InventoryImage: {fileID: 21300000, guid: 4a4fe0e462eb3394cbf1286fd4b1f147, type: 3}

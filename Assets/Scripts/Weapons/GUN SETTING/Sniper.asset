@@ -14,18 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunName: Sniper
   isAutomatic: 0
-  damage: 100
-  magSize: 6
-  ammoInMag: 3
-  fireRate: 2
-  reloadTime: 4
-  maxDistance: 400
-  projectileSpeed: 80
-  bulletArc: 0
   canAimDownSights: 1
   adsZoomFOV: 20
-  aimDownSightsSpread: 0.001
-  hipFireSpread: 4
+  damage: 105
   headshotMultiplier: 3
-  shootSFX: {fileID: 0}
-  reloadSFX: {fileID: 0}
+  fireRate: 2
+  projectileSpeed: 200
+  maxDistance: 400
+  hipFireSpread: 4
+  aimDownSightsSpread: 0.001
+  magSize: 6
+  reloadTime: 6
+  ammoInMag: 5
+  shootSounds:
+  - {fileID: 8300000, guid: 3120bb2ed71212b43922ca81a35447f5, type: 3}
+  reloadSound: {fileID: 8300000, guid: 574afcda0c5d75c44973b5b6ef1681d7, type: 3}
+  emptyMagSound: {fileID: 8300000, guid: 7da05da3702e946489b03884d1c9fe48, type: 3}

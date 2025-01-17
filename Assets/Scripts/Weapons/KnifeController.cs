@@ -9,7 +9,6 @@ public class KnifeController : MonoBehaviour
     
     [Header("Position Settings")]
     [SerializeField] private Transform knifeModel;
-    [SerializeField] private Vector3 positionOffset = new Vector3(0.2f, -0.1f, 0.4f);
     [SerializeField] private Vector3 rotationOffset = new Vector3(0f, -90f, 0f);
     
     [Header("Swing Settings")]
@@ -31,9 +30,6 @@ public class KnifeController : MonoBehaviour
     private void Update()
     {
         if (mainCamera == null) return;
-
-        // Update knife position and rotation to follow camera
-        UpdateKnifeTransform();
 
         // Handle attack input
         if (Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackRate)
@@ -57,18 +53,6 @@ public class KnifeController : MonoBehaviour
             // Smooth return to default rotation
             knifeModel.localRotation = Quaternion.Lerp(knifeModel.localRotation, defaultRotation, Time.deltaTime * swingSpeed);
         }
-    }
-
-    private void UpdateKnifeTransform()
-    {
-        // Update position relative to camera
-        transform.position = mainCamera.transform.position + 
-                           mainCamera.transform.right * positionOffset.x +
-                           mainCamera.transform.up * positionOffset.y +
-                           mainCamera.transform.forward * positionOffset.z;
-
-        // Update rotation to match camera
-        transform.rotation = mainCamera.transform.rotation;
     }
 
     private void Swing()

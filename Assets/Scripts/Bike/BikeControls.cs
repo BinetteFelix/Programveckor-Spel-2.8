@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using UnityEngine;
 
 public class BikeControls : MonoBehaviour
@@ -20,13 +19,24 @@ public class BikeControls : MonoBehaviour
     public float smoothTiltSpeed = 5f;
     public float smoothTurnSpeed = 10f;
     public float driftMultiplier = 3f;
-    public float driftDeceleration = 8f; 
+    public float driftDeceleration = 8f;
 
-
+    
     private float currentTilt = 0f;
     private float targetRotationY = 0f;
-
+    
     private float timer = 0.1f;
+
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            Debug.LogError("No Rigidbody found on the bike.");
+        }
+    }
 
     void Update()
     {
@@ -38,17 +48,15 @@ public class BikeControls : MonoBehaviour
             }
             HandleBicycleControls();
 
-            // Lets the player jump of the bike
+            // Lets the player jump off the bike
             if (Input.GetKeyDown(KeyCode.E) && timer <= 0)
             {
-                currentTilt = Mathf.Lerp(currentTilt,0,0); // Resets the players tilt
-               
-                SmoothRotation();
-                 Dismount();
+                currentTilt = Mathf.Lerp(currentTilt, 0, Time.deltaTime * smoothTiltSpeed); // Resets the player's tilt
+                Dismount();
             }
         }
-
     }
+
     void HandleBicycleControls()
     {
         if (Input.GetKey(KeyCode.W))
@@ -70,42 +78,50 @@ public class BikeControls : MonoBehaviour
             StopDrifting();
         }
 
-        if (speed > 0.5)
+        if (speed > 0.5f)
         {
             float turn = Input.GetAxis("Horizontal") * turnSpeed * Time.deltaTime;
             if (isDrifting)
             {
-                // turns faster when drifting
+                // Turns faster when drifting
                 turn *= driftMultiplier;
 
                 // Adjusts the speed during drift
                 speed -= driftDeceleration * Time.deltaTime;
                 speed = Mathf.Max(speed, 0);
             }
+
             if (turn != 0)
             {
                 Turn(turn);
             }
-            else  
+            else
+            {
                 ResetTilt();
-            
+            }
         }
         else
+        {
             ResetTilt();
+        }
 
         if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             NaturalDeceleration();
         }
 
-    
-        Vector3 forwardMovement = transform.forward;
-        forwardMovement.y = 0; // Ensure the Y-axis does not affect the movement
-        forwardMovement.Normalize();
-        transform.position += forwardMovement * speed * Time.deltaTime;
+        ApplyMovement();
+    }
+
+    void ApplyMovement()
+    {
+        Vector3 forwardMovement = transform.forward * speed;
+        forwardMovement.y = rb.linearVelocity.y; // Maintain vertical velocity for gravity
+        rb.linearVelocity = forwardMovement;
 
         SmoothRotation();
     }
+
     public void Mount(GameObject player)
     {
         isRidden = true;
@@ -116,8 +132,8 @@ public class BikeControls : MonoBehaviour
         player.transform.position = seatPosition.position;
         player.transform.rotation = transform.rotation;
         player.transform.parent = transform;
-     
     }
+
     public void Dismount()
     {
         if (currentPlayer != null)
@@ -127,9 +143,7 @@ public class BikeControls : MonoBehaviour
             timer = 0.1f;
             speed = 0;
 
- 
-
-            // Puts the player besides the bike, rotates the player corect and removes the player from being a child of the bike.
+            // Puts the player besides the bike, rotates the player correctly, and removes the player as a child of the bike.
             currentPlayer.transform.position = transform.position + transform.right * 2f;
             Quaternion uprightRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
             currentPlayer.transform.rotation = uprightRotation;
@@ -144,16 +158,19 @@ public class BikeControls : MonoBehaviour
             currentPlayer = null;
         }
     }
+
     void Pedal()
     {
         speed += acceleration * Time.deltaTime;
         speed = Mathf.Clamp(speed, 0, maxSpeed);
     }
+
     void Brake()
     {
         speed -= deceleration * Time.deltaTime;
         speed = Mathf.Clamp(speed, 0, maxSpeed);
     }
+
     void NaturalDeceleration()
     {
         if (speed > 0)
@@ -168,7 +185,6 @@ public class BikeControls : MonoBehaviour
         if (!isDrifting)
         {
             isDrifting = true;
-           
         }
     }
 
@@ -180,7 +196,6 @@ public class BikeControls : MonoBehaviour
         }
     }
 
-
     void Turn(float turnAmount)
     {
         // Adjust the target rotation for horizontal alignment
@@ -190,17 +205,15 @@ public class BikeControls : MonoBehaviour
         currentTilt = Mathf.Lerp(currentTilt, -Mathf.Sign(turnAmount) * tiltAmount, Time.deltaTime * smoothTiltSpeed);
     }
 
-    // Resets the players tilt
     void ResetTilt()
     {
-        currentTilt = Mathf.Lerp(currentTilt, 0, Time.deltaTime * smoothTiltSpeed); 
+        currentTilt = Mathf.Lerp(currentTilt, 0, Time.deltaTime * smoothTiltSpeed);
     }
 
-    // Rotates the bike more smooth
     void SmoothRotation()
     {
         Quaternion targetRotation = Quaternion.Euler(0, targetRotationY, currentTilt);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * smoothTurnSpeed);
+        rb.MoveRotation(Quaternion.Lerp(rb.rotation, targetRotation, Time.deltaTime * smoothTurnSpeed));
     }
 
     void OnTriggerStay(Collider other)
@@ -210,7 +223,4 @@ public class BikeControls : MonoBehaviour
             Mount(other.gameObject);
         }
     }
-
 }
-
-

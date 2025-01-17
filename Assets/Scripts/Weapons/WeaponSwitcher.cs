@@ -3,6 +3,24 @@ using UnityEngine;
 
 public class WeaponSwitcher : MonoBehaviour
 {
+    private static WeaponSwitcher instance;
+    public static WeaponSwitcher Instance 
+    { 
+        get { return instance; } 
+    }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     [System.Serializable]
     public enum WeaponType
     {
@@ -20,10 +38,13 @@ public class WeaponSwitcher : MonoBehaviour
         public string weaponName; // Used for guns to match GunData
     }
 
-    [Header("References")]
     [SerializeField] private Transform weaponHolder;  // Reference to the weapon holder object
-    [SerializeField] private List<WeaponSlot> weaponSlots = new List<WeaponSlot>();
+    [SerializeField] public List<WeaponSlot> weaponSlots = new List<WeaponSlot>();
     [SerializeField] private float switchDelay = 0.5f;
+    [SerializeField] private Vector3 hipPosition = new Vector3(0.2f, -0.1f, 0.4f);
+    [SerializeField] private Vector3 adsPosition = new Vector3(0f, -0.1f, 0.3f);
+    [SerializeField] private float positionSmoothing = 12f;
+    private Camera mainCamera;
 
     private int currentWeaponIndex = 0;
     private bool isSwitching = false;
@@ -31,6 +52,12 @@ public class WeaponSwitcher : MonoBehaviour
 
     private void Start()
     {
+        mainCamera = Camera.main;
+        if (mainCamera == null)
+        {
+            Debug.LogError("Main camera not found!");
+        }
+
         InitializeWeapons();
     }
 
@@ -72,7 +99,19 @@ public class WeaponSwitcher : MonoBehaviour
 
     private void Update()
     {
+        HandleWeaponSwitching();
+        UpdateWeaponPosition();
+    }
+
+    private void HandleWeaponSwitching()
+    {
         if (isSwitching) return;
+        
+        // Don't allow switching while aiming
+        if (Player_ADS.Instance.IsAiming)
+        {
+            return;
+        }
 
         // Check number keys
         for (int i = 0; i < weaponSlots.Count; i++)
@@ -99,10 +138,38 @@ public class WeaponSwitcher : MonoBehaviour
         }
     }
 
+    private void UpdateWeaponPosition()
+    {
+        if (mainCamera == null || weaponHolder == null) return;
+
+        // Determine target position based on ADS state
+        Vector3 targetPos = hipPosition;
+        if (Player_ADS.Instance.IsAiming && IsGunEquipped() && !isSwitching)
+        {
+            targetPos = adsPosition;
+        }
+
+        // Calculate final position relative to camera
+        Vector3 targetPosition = mainCamera.transform.position +
+                               mainCamera.transform.right * targetPos.x +
+                               mainCamera.transform.up * targetPos.y +
+                               mainCamera.transform.forward * targetPos.z;
+
+        // Update position and rotation smoothly
+        weaponHolder.position = Vector3.Lerp(weaponHolder.position, targetPosition, Time.deltaTime * positionSmoothing);
+        weaponHolder.rotation = mainCamera.transform.rotation;
+    }
+
     private void SwitchToWeapon(int newIndex)
     {
         if (newIndex == currentWeaponIndex || isSwitching) return;
         if (Time.time < lastSwitchTime + switchDelay) return;
+
+        // Force unscope if player is aiming
+        if (Player_ADS.Instance.IsAiming)
+        {
+            Player_ADS.Instance.ForceUnscope();
+        }
 
         // Deactivate current weapon
         if (currentWeaponIndex < weaponSlots.Count && weaponSlots[currentWeaponIndex].weaponObject != null)
@@ -120,10 +187,10 @@ public class WeaponSwitcher : MonoBehaviour
         switch (newWeapon.type)
         {
             case WeaponType.Gun:
-                GunLibrary.Instance?.EquipGun(newWeapon.weaponName);
-                break;
-            case WeaponType.Throwable:
-                // Future throwable logic here
+                if (GunLibrary.Instance != null)
+                {
+                    GunLibrary.Instance.EquipGun(newWeapon.weaponName);
+                }
                 break;
         }
 
@@ -166,6 +233,19 @@ public class WeaponSwitcher : MonoBehaviour
         if (currentWeaponIndex < weaponSlots.Count)
         {
             return weaponSlots[currentWeaponIndex].weaponObject;
+        }
+        return null;
+    }
+
+    public GunData GetCurrentGunData()
+    {
+        if (currentWeaponIndex >= 0 && currentWeaponIndex < weaponSlots.Count)
+        {
+            WeaponSlot currentSlot = weaponSlots[currentWeaponIndex];
+            if (currentSlot.type == WeaponType.Gun && GunLibrary.Instance != null)
+            {
+                return GunLibrary.Instance.availableGuns.Find(g => g.gunName == currentSlot.weaponName);
+            }
         }
         return null;
     }

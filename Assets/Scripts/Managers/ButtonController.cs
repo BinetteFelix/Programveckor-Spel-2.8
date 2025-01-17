@@ -11,10 +11,11 @@ public class ButtonController : MonoBehaviour
     [SerializeField] GameObject InventoryPanel;
 
     public bool _IsPaused;
+    public bool _Inv_IsActive = false;
     bool _SM_IsActive;
     bool _Cs_IsActive = false;
     bool _Ao_IsActive = true;
-    bool _Inv_IsActive = false;
+    
     private void Awake()
     {
         if (Instance != null)
