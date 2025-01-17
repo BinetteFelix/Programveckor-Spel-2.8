@@ -387,6 +387,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 1542657807996038773, guid: 55856cbabae9e6d43ac736496bc0ca2d, type: 3}
   weapon: {fileID: 0}
   muzzleFlash: {fileID: 2969255929039584842}
-  swayAmount: 0.02
+  swayAmount: 0.06
   smoothing: 8
-  maxSway: 0.06
+  maxSway: 0.08
