@@ -13,7 +13,13 @@ public class KnifeController : MonoBehaviour
     
     [Header("Swing Settings")]
     [SerializeField] private float swingSpeed = 15f;
-    [SerializeField] private Vector3 swingRotation = new Vector3(45f, -60f, 30f); // Diagonal swing angles
+    [SerializeField] private Vector3 swingRotation = new Vector3(45f, -60f, 30f);
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] swingSounds;
+    [SerializeField] private AudioClip[] hitSounds;
+    [SerializeField] private float swingVolume = 1f;
+    [SerializeField] private float hitVolume = 1f;
     
     private bool isSwinging;
     private float lastAttackTime;
@@ -62,6 +68,13 @@ public class KnifeController : MonoBehaviour
         isSwinging = true;
         lastAttackTime = Time.time;
 
+        // Play swing sound
+        if (swingSounds != null && swingSounds.Length > 0)
+        {
+            AudioClip swingSound = swingSounds[Random.Range(0, swingSounds.Length)];
+            SoundFXManager.instance.PlaySoundFXclip(swingSound, transform, swingVolume);
+        }
+
         // Set diagonal swing rotation
         targetRotation = Quaternion.Euler(rotationOffset + swingRotation);
 
@@ -72,6 +85,14 @@ public class KnifeController : MonoBehaviour
             if (hit.collider.TryGetComponent<IDamageable>(out var target))
             {
                 target.TakeDamage(damage);
+                
+                // Play hit sound
+                if (hitSounds != null && hitSounds.Length > 0)
+                {
+                    AudioClip hitSound = hitSounds[Random.Range(0, hitSounds.Length)];
+                    SoundFXManager.instance.PlaySoundFXclip(hitSound, transform, hitVolume);
+                }
+                
                 Debug.Log($"Hit {hit.collider.name} for {damage} damage");
             }
         }

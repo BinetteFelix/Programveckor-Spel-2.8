@@ -171,10 +171,21 @@ public class WeaponSwitcher : MonoBehaviour
             Player_ADS.Instance.ForceUnscope();
         }
 
-        // Deactivate current weapon
+        // Deactivate current weapon and clear its state
         if (currentWeaponIndex < weaponSlots.Count && weaponSlots[currentWeaponIndex].weaponObject != null)
         {
             weaponSlots[currentWeaponIndex].weaponObject.SetActive(false);
+            
+            // If it's a gun, make sure to clear its state
+            if (weaponSlots[currentWeaponIndex].type == WeaponType.Gun)
+            {
+                var gun = weaponSlots[currentWeaponIndex].weaponObject.GetComponent<Gun>();
+                if (gun != null)
+                {
+                    // Force stop any reloading
+                    gun.StopAllCoroutines();
+                }
+            }
         }
 
         currentWeaponIndex = newIndex;
@@ -189,6 +200,7 @@ public class WeaponSwitcher : MonoBehaviour
             case WeaponType.Gun:
                 if (GunLibrary.Instance != null)
                 {
+                    // This will create a fresh instance of GunData and notify all listeners
                     GunLibrary.Instance.EquipGun(newWeapon.weaponName);
                 }
                 break;
