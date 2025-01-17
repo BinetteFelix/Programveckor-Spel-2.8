@@ -78,11 +78,20 @@ public class PlayerShoot : MonoBehaviour
 
         if (!ButtonController.Instance._IsPaused && !ButtonController.Instance._Inv_IsActive)
         {
-            if ((gunData.isAutomatic && Input.GetButton("Fire1") && gunData.ammoInMag > 0) ||
-                (!gunData.isAutomatic && Input.GetButtonDown("Fire1") && gunData.ammoInMag > 0))
+            if (Input.GetMouseButton(0))  // For automatic weapons
             {
-
-                equippedGun.Shoot();
+                if (gunData.isAutomatic && gunData.ammoInMag > 0)
+                {
+                    equippedGun.Shoot();
+                }
+            }
+            
+            if (Input.GetMouseButtonDown(0))  // For semi-automatic weapons
+            {
+                if (!gunData.isAutomatic && gunData.ammoInMag > 0)
+                {
+                    equippedGun.Shoot();
+                }
             }
         }
 

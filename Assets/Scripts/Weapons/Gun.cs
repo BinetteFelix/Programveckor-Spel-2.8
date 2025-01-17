@@ -205,6 +205,10 @@ public class Gun : MonoBehaviour
     private void UpdateGunData(GunData newGunData)
     {
         gunData = newGunData;
+        // Reset shooting timer when switching weapons
+        timeSinceLastShot = gunData.fireRate;  // This ensures we can shoot immediately after switching
+        // Reset reloading state
+        reloading = false;
     }
 
     public void SetSpreadMultiplier(float multiplier)
