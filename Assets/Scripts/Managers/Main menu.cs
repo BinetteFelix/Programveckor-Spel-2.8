@@ -14,6 +14,7 @@ public class Mainmenu : MonoBehaviour
     public void PlayGame()
     {
         SceneManager.LoadSceneAsync(1);
+        ButtonController.Instance.UnpauseGame();
     }
 
     public void QuitGame()
