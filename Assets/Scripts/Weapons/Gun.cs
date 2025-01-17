@@ -49,7 +49,7 @@ public class Gun : MonoBehaviour
             Debug.LogError("CameraHolder not found!");
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         GetAimPoint();
         aimPoint = GetAimPoint();
