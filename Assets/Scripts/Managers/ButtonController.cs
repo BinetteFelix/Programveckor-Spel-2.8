@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ButtonController : MonoBehaviour
 {
@@ -123,4 +124,11 @@ public class ButtonController : MonoBehaviour
             _Inv_IsActive = false;
         }
     }
+
+
+    public void MainMenu()
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
+
 }
