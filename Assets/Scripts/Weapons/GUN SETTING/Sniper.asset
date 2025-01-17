@@ -16,7 +16,7 @@ MonoBehaviour:
   isAutomatic: 0
   canAimDownSights: 1
   adsZoomFOV: 20
-  damage: 100
+  damage: 105
   headshotMultiplier: 3
   fireRate: 2
   projectileSpeed: 200
@@ -24,8 +24,9 @@ MonoBehaviour:
   hipFireSpread: 4
   aimDownSightsSpread: 0.001
   magSize: 6
-  reloadTime: 4
+  reloadTime: 6
   ammoInMag: 5
-  shootSounds: []
-  reloadSound: {fileID: 0}
-  emptyMagSound: {fileID: 0}
+  shootSounds:
+  - {fileID: 8300000, guid: 3120bb2ed71212b43922ca81a35447f5, type: 3}
+  reloadSound: {fileID: 8300000, guid: 574afcda0c5d75c44973b5b6ef1681d7, type: 3}
+  emptyMagSound: {fileID: 8300000, guid: 7da05da3702e946489b03884d1c9fe48, type: 3}

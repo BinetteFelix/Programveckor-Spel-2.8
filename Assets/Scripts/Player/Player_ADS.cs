@@ -75,4 +75,21 @@ public class Player_ADS : MonoBehaviour
         weaponSwitcher.weaponSlots[2].weaponObject.SetActive(false);
         ReticlePanel.SetActive(true);
     }
+
+    public void ForceUnscope()
+    {
+        if (IsAiming)
+        {
+            IsAiming = false;
+            OnAimStateChanged?.Invoke(false);
+            
+            // Handle sniper specific logic
+            GunData currentGun = WeaponSwitcher.Instance.GetCurrentGunData();
+            if (currentGun != null && currentGun.gunName == "Sniper")
+            {
+                weaponSwitcher.weaponSlots[2].weaponObject.SetActive(true);
+                ReticlePanel.SetActive(false);
+            }
+        }
+    }
 }

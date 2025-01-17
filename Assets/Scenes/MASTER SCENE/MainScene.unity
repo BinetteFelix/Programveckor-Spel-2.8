@@ -9003,7 +9003,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4299178103567324719, guid: 3baf58a2b3b6ff24e82e941acf50e5fc, type: 3}
       propertyPath: m_Name
-      value: Anna's Sniper
+      value: Sniper
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

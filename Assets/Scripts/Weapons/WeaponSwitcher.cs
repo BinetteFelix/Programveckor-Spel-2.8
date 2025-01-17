@@ -3,6 +3,24 @@ using UnityEngine;
 
 public class WeaponSwitcher : MonoBehaviour
 {
+    private static WeaponSwitcher instance;
+    public static WeaponSwitcher Instance 
+    { 
+        get { return instance; } 
+    }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     [System.Serializable]
     public enum WeaponType
     {
@@ -88,6 +106,12 @@ public class WeaponSwitcher : MonoBehaviour
     private void HandleWeaponSwitching()
     {
         if (isSwitching) return;
+        
+        // Don't allow switching while aiming
+        if (Player_ADS.Instance.IsAiming)
+        {
+            return;
+        }
 
         // Check number keys
         for (int i = 0; i < weaponSlots.Count; i++)
@@ -141,6 +165,12 @@ public class WeaponSwitcher : MonoBehaviour
         if (newIndex == currentWeaponIndex || isSwitching) return;
         if (Time.time < lastSwitchTime + switchDelay) return;
 
+        // Force unscope if player is aiming
+        if (Player_ADS.Instance.IsAiming)
+        {
+            Player_ADS.Instance.ForceUnscope();
+        }
+
         // Deactivate current weapon
         if (currentWeaponIndex < weaponSlots.Count && weaponSlots[currentWeaponIndex].weaponObject != null)
         {
@@ -157,10 +187,10 @@ public class WeaponSwitcher : MonoBehaviour
         switch (newWeapon.type)
         {
             case WeaponType.Gun:
-                GunLibrary.Instance?.EquipGun(newWeapon.weaponName);
-                break;
-            case WeaponType.Throwable:
-                // Future throwable logic here
+                if (GunLibrary.Instance != null)
+                {
+                    GunLibrary.Instance.EquipGun(newWeapon.weaponName);
+                }
                 break;
         }
 
@@ -203,6 +233,19 @@ public class WeaponSwitcher : MonoBehaviour
         if (currentWeaponIndex < weaponSlots.Count)
         {
             return weaponSlots[currentWeaponIndex].weaponObject;
+        }
+        return null;
+    }
+
+    public GunData GetCurrentGunData()
+    {
+        if (currentWeaponIndex >= 0 && currentWeaponIndex < weaponSlots.Count)
+        {
+            WeaponSlot currentSlot = weaponSlots[currentWeaponIndex];
+            if (currentSlot.type == WeaponType.Gun && GunLibrary.Instance != null)
+            {
+                return GunLibrary.Instance.availableGuns.Find(g => g.gunName == currentSlot.weaponName);
+            }
         }
         return null;
     }
