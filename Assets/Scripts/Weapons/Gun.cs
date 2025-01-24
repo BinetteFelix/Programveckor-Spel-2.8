@@ -1,15 +1,22 @@
+using Cinemachine.Utility;
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 //andv�nd GunLibrary.Instance.EquipGun("GunName") f�r att lyckas equippa en ny pistol...
 
 public class Gun : MonoBehaviour
 {
+    [SerializeField] public List<LayerMask> IgnoreLayers = new List<LayerMask>();
+
     [SerializeField] private Transform muzzle;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform weapon;
     private bool reloading;
     private Vector3 aimPoint;
+    Vector3 lastHitPoint;
     private float timeSinceLastShot;
     private bool isAiming = false;
     [SerializeField] private MuzzleFlash muzzleFlash;
@@ -99,6 +106,7 @@ public class Gun : MonoBehaviour
 
         if (projectile.TryGetComponent<Projectile>(out var projectileComponent))
         {
+
             projectileComponent.Initialize(gunData.damage, gunData.headshotMultiplier);
         }
 
@@ -139,17 +147,21 @@ public class Gun : MonoBehaviour
     {
         GunData gunData = GunLibrary.Instance.GetEquippedGun();
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, gunData.maxDistance))
+        
+        foreach (LayerMask ignoreLayer in IgnoreLayers)
         {
-            return hitInfo.point;
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, gunData.maxDistance, ~ignoreLayer))
+            {
+               lastHitPoint = hitInfo.point;
+                return hitInfo.point;
+            }
+            else
+            {
+                return ray.GetPoint(gunData.maxDistance);
+            }
         }
-        else
-        {
-            return ray.GetPoint(gunData.maxDistance);
-        }
+        return lastHitPoint;
     }
-
     private void HandleWeaponSway()
     {
         // Get mouse input

@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 71802423}
   - component: {fileID: 71802425}
   - component: {fileID: 71802424}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: polySurface8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1411,7 +1411,7 @@ GameObject:
   m_Component:
   - component: {fileID: 232617905}
   - component: {fileID: 232617906}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: KnifeHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1611,7 +1611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5811534f79d40d4388ba53057f05003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 150
 --- !u!114 &246783594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3766,7 +3766,7 @@ GameObject:
   - component: {fileID: 485026401}
   - component: {fileID: 485026403}
   - component: {fileID: 485026402}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CameraHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4618,7 +4618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 564935195}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RIghtPistolGrip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5505,6 +5505,37 @@ Transform:
   - {fileID: 1251093297}
   m_Father: {fileID: 91055145}
   m_LocalEulerAnglesHint: {x: 38.609, y: 14.939, z: 4.5}
+--- !u!1 &751746681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 751746682}
+  m_Layer: 2
+  m_Name: RightSniperGrip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &751746682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751746681}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1889368265}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &764534478
 GameObject:
   m_ObjectHideFlags: 0
@@ -7329,7 +7360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1102158409}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7344,15 +7375,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1102158407}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.486, z: -0.53400004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 232617905}
   - {fileID: 1889368265}
   - {fileID: 1551518727}
-  m_Father: {fileID: 1170512706}
+  m_Father: {fileID: 1487348239}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1102420166
 GameObject:
@@ -7673,7 +7704,7 @@ GameObject:
   - component: {fileID: 1157304410}
   - component: {fileID: 1157304412}
   - component: {fileID: 1157304411}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: polySurface9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7941,7 +7972,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 485026401}
-  - {fileID: 1102158409}
   - {fileID: 1707523205}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8357,7 +8387,7 @@ GameObject:
   - component: {fileID: 1282585469}
   - component: {fileID: 1282585468}
   - component: {fileID: 1282585467}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Knife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9351,6 +9381,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1808826635}
+  - {fileID: 1102158409}
   m_Father: {fileID: 485026401}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1487348240
@@ -9811,7 +9842,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1551518727}
   - component: {fileID: 1551518728}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9854,13 +9885,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20d0add73909d174fb43c0b93e8fe9ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IgnoreLayers:
+  - serializedVersion: 2
+    m_Bits: 128
   muzzle: {fileID: 2104063802}
   projectilePrefab: {fileID: 1542657807996038773, guid: 55856cbabae9e6d43ac736496bc0ca2d, type: 3}
   weapon: {fileID: 1551518727}
   muzzleFlash: {fileID: 2100096335}
-  swayAmount: 0.1
+  swayAmount: -0.1
   smoothing: 1.1
-  maxSway: 0.001
+  maxSway: 0.3
 --- !u!1001 &1569929941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10649,7 +10683,7 @@ GameObject:
   - component: {fileID: 1637476926}
   - component: {fileID: 1637476928}
   - component: {fileID: 1637476927}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: polySurface7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11296,7 +11330,7 @@ GameObject:
   - component: {fileID: 1693767809}
   - component: {fileID: 1693767811}
   - component: {fileID: 1693767810}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pCube2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11532,6 +11566,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1102158409}
     m_Modifications:
+    - target: {fileID: 22757178055734422, guid: 3baf58a2b3b6ff24e82e941acf50e5fc, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2462470622019859494, guid: 3baf58a2b3b6ff24e82e941acf50e5fc, type: 3}
       propertyPath: muzzle
       value: 
@@ -11592,9 +11630,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sniper
       objectReference: {fileID: 0}
+    - target: {fileID: 4299178103567324719, guid: 3baf58a2b3b6ff24e82e941acf50e5fc, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8902365990999430473, guid: 3baf58a2b3b6ff24e82e941acf50e5fc, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3522500014204308629, guid: 3baf58a2b3b6ff24e82e941acf50e5fc, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 751746682}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3baf58a2b3b6ff24e82e941acf50e5fc, type: 3}
 --- !u!1 &1752188647
@@ -11732,7 +11781,7 @@ GameObject:
   - component: {fileID: 1757523789}
   - component: {fileID: 1757523791}
   - component: {fileID: 1757523790}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: polySurface6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12321,7 +12370,7 @@ GameObject:
   - component: {fileID: 1914528157}
   - component: {fileID: 1914528159}
   - component: {fileID: 1914528158}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: polySurface3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12987,7 +13036,7 @@ GameObject:
   - component: {fileID: 2022798868}
   - component: {fileID: 2022798870}
   - component: {fileID: 2022798869}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pCube4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13783,7 +13832,7 @@ GameObject:
   - component: {fileID: 2100096337}
   - component: {fileID: 2100096336}
   - component: {fileID: 2100096335}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14034,7 +14083,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2104063802}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
