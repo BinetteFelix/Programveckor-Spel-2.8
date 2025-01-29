@@ -1,4 +1,5 @@
 using Cinemachine.Utility;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
@@ -58,7 +59,6 @@ public class Gun : MonoBehaviour
 
         HandleWeaponSway();
     }
-
     public void Shoot()
     {
         GunData gunData = GunLibrary.Instance.GetEquippedGun();
