@@ -1,9 +1,5 @@
-using Cinemachine.Utility;
-using JetBrains.Annotations;
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 //andv�nd GunLibrary.Instance.EquipGun("GunName") f�r att lyckas equippa en ny pistol...
@@ -12,6 +8,10 @@ public class Gun : MonoBehaviour
 {
     [SerializeField] public List<LayerMask> IgnoreLayers = new List<LayerMask>();
 
+    [SerializeField] private float BobScale = 0.1f;
+    [SerializeField] private float BobbingSpeed = 0.8f;
+
+    [SerializeField] GameObject Player;
     [SerializeField] private Transform muzzle;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform weapon;
@@ -58,6 +58,7 @@ public class Gun : MonoBehaviour
         isAiming = Input.GetButton("Fire2") && GunLibrary.Instance.GetEquippedGun().canAimDownSights;
 
         HandleWeaponSway();
+        HandleWeaponBob();
     }
     public void Shoot()
     {
@@ -197,4 +198,50 @@ public class Gun : MonoBehaviour
     {
         spreadMultiplier = multiplier;
     }
-}
+
+    public void HandleWeaponBob()
+    {
+        if (PlayerMovement.Instance.isGrounded)
+        {
+            float scale = 1f / (3 - Mathf.Cos(2 * Time.time));
+
+            transform.localPosition = new Vector3(
+            transform.localPosition.x + BobScale * (scale * Mathf.Cos(Time.time * BobbingSpeed) * Time.deltaTime),
+            transform.localPosition.y + BobScale * (scale * Mathf.Sin(2 * Time.time * BobbingSpeed) / 2 * Time.deltaTime),
+            transform.localPosition.z
+            );
+        }
+
+        //Aiming while standing Up
+        if (isAiming && PlayerMovement.Instance.isGrounded &&
+            !PlayerMovement.Instance.isCrouching) {
+            BobbingSpeed = 1.425f; BobScale = 0.1f; }
+
+        //Aiming, standing still and Crouching
+        else if (isAiming && PlayerMovement.Instance.isGrounded &&
+            PlayerMovement.Instance.isCrouching) {
+            BobbingSpeed = 0.85f; BobScale = 0.1f; }
+
+        //Not Aiming but Crouching
+        else if (!isAiming && PlayerMovement.Instance.isGrounded && PlayerMovement.Instance.isCrouching) {
+            BobbingSpeed = 1.15f; BobScale = 0.1f; }
+
+        //Not aiming or crouching, but Sprinting
+        else if (!isAiming && PlayerMovement.Instance.isGrounded &&
+            !PlayerMovement.Instance.isCrouching && PlayerMovement.Instance.wasSprintingLastFrame) { 
+            BobbingSpeed = 9.75f; BobScale = 0.5f; }
+
+        //Not aiming or crouching, but walking
+        if (!isAiming && PlayerMovement.Instance.isGrounded && !PlayerMovement.Instance.isCrouching &&
+             PlayerMovement.Instance.currentSpeed == PlayerMovement.Instance.walkSpeed && 
+             PlayerMovement.Instance.isMoving) {
+            BobbingSpeed = 7.25f; BobScale = 0.1f; }
+            
+            //Not aiming, crouching or moving
+        else if (!isAiming && PlayerMovement.Instance.isGrounded && !PlayerMovement.Instance.isCrouching &&
+            PlayerMovement.Instance.currentSpeed < PlayerMovement.Instance.walkSpeed && 
+            !PlayerMovement.Instance.isMoving) {
+            BobbingSpeed = 1.75f; BobScale = 0.1f; }
+
+    }
+}   

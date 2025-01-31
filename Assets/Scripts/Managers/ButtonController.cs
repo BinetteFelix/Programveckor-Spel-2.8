@@ -129,6 +129,9 @@ public class ButtonController : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadSceneAsync(0);
+        PausePanel.SetActive(false);
+        _IsPaused = false;
+        Time.timeScale = 1.0f;
     }
 
 }

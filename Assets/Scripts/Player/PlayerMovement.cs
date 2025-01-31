@@ -4,8 +4,9 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement Instance;
     [Header("Movement Speeds")]
-    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] public float walkSpeed = 5f;
     public float sprintSpeed { get; private set; } = 7f;
     [SerializeField] private float crouchSpeed = 2.5f;
     [SerializeField] private float adsWalkSpeed = 3f;    // New ADS walking speed
@@ -26,8 +27,10 @@ public class PlayerMovement : MonoBehaviour
     public BikeControls bikeControls;
 
     protected Vector3 velocity;
+    [HideInInspector] public bool isMoving;
     [HideInInspector] public bool isGrounded;
     [HideInInspector] public float currentSpeed;
+    [HideInInspector] public bool isAiming;
     public bool isCrouching { get; private set; }
 
     [SerializeField] private AudioClip[] footstepSounds;
@@ -40,9 +43,12 @@ public class PlayerMovement : MonoBehaviour
     private float sprintStepInterval = 0.3f;
     private float breathingTimer = 2f;
     private float breathingInterval = 2f;
-    private bool wasSprintingLastFrame;
+    [HideInInspector] public bool wasSprintingLastFrame;
     private bool isCurrentlyBreathing;
-
+    public void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         controller.center = new Vector3(0f, 0f, 0f);
@@ -54,7 +60,6 @@ public class PlayerMovement : MonoBehaviour
 
         controller = GetComponent<CharacterController>();
         staminaController = GetComponent<StaminaController>();
-        currentSpeed = walkSpeed;
     }
 
     void Update()
@@ -64,7 +69,6 @@ public class PlayerMovement : MonoBehaviour
             HandleMovement();
             HandleCrouch();
         }
-
         HandleMovementSounds();
     }
 
@@ -130,26 +134,32 @@ public class PlayerMovement : MonoBehaviour
 
     private float DetermineMovementSpeed()
     {
-        bool isAiming = Player_ADS.Instance.IsAiming;
+        isAiming = Player_ADS.Instance.IsAiming;
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && staminaController.canSprint;
-        
-        if (isSprinting && !isCrouching)
+        isMoving = (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0);
+
+        if (isSprinting && !isCrouching && !isAiming && isMoving)
         {
             return sprintSpeed;
         }
-        else if (isCrouching)
+        else if (isCrouching && !isSprinting && isMoving)
         {
             return isAiming ? adsCrouchSpeed : crouchSpeed;
         }
-        else
+        else if (!isSprinting && isMoving && !isCrouching)
         {
             return isAiming ? adsWalkSpeed : walkSpeed;
         }
+        else
+        {
+            return 0;
+        }
+
     }
 
     private void HandleMovementSounds()
     {
-        bool isMoving = (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0);
+        isMoving = (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0);
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && staminaController.canSprint;
 
         // Footsteps

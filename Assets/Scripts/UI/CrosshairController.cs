@@ -37,9 +37,9 @@ public class CrosshairController : MonoBehaviour
 
     private void Start()
     {
-        playerMovement = FindObjectOfType<PlayerMovement>();
-        buttonController = FindObjectOfType<ButtonController>();
-        weaponSwitcher = FindObjectOfType<WeaponSwitcher>();
+        playerMovement = FindFirstObjectByType<PlayerMovement>();
+        buttonController = FindFirstObjectByType<ButtonController>();
+        weaponSwitcher = FindFirstObjectByType<WeaponSwitcher>();
         
         if (crosshairCanvasGroup == null)
         {

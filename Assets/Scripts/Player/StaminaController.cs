@@ -37,10 +37,9 @@ public class StaminaController : MonoBehaviour
         else
             canJump = false;
 
-        if (currentStamina > 10f)
+        if (currentStamina > 10f && !PlayerMovement.Instance.isCrouching && !PlayerMovement.Instance.isAiming)
         {
             canSprint = true;
-            
         }
         else
         {
