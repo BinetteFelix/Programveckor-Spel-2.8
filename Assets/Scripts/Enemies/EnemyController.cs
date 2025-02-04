@@ -29,6 +29,7 @@ public class EnemyController : MonoBehaviour
     {
         // Wait for a moment before selecting the next random point
         Invoke(nameof(SelectRandomPatrolPoint), timeBetweenPatrols);
+        EnemyAnimations.Instance.AnimateWalking(agent.speed);
     }
 
     private void SelectRandomPatrolPoint()

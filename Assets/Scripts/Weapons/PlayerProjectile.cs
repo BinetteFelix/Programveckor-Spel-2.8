@@ -1,29 +1,44 @@
 using UnityEditor;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IProjectile 
 {
-    public float lifeTime = 5f; // Time before the projectile is destroyed
-    private float damage; // Damage value for the projectile
-    private float headshotMultiplier;
-    private bool isInitialized;
+    private float lifeTime = 3.0f;
+    public float LifeTime   // Time before the projectile is destroyed
+    {
+        get { return lifeTime; }
+        set { lifeTime = value; }
+    }
+    private float damage = 15.0f;
+    public float Damage   // Projectile Damage towards object effected
+    {
+        get { return damage; }
+        set { damage = value; }
+    }
+    private float headshotMultiplier = 1.60f;
+    public float HeadshotMultiplier  // Projectile Damage towards object effected
+    {
+        get { return headshotMultiplier; }
+        set { headshotMultiplier = value; }
+    }
+    public bool _IsInitialized { get; set; }
 
     public void Initialize(float projectileDamage, float headMultiplier)
     {
-        damage = projectileDamage;
-        headshotMultiplier = headMultiplier;
-        isInitialized = true;
+        Damage = projectileDamage;
+        HeadshotMultiplier = headMultiplier;
+        _IsInitialized = true;
     }
 
     private void Start()
     {
-        if (!isInitialized)
+        if (!_IsInitialized)
         {
             Debug.LogError("Projectile was not initialized before use!");
             Destroy(gameObject);
             return;
         }
-        Destroy(gameObject, lifeTime);
+        Destroy(gameObject, LifeTime);
     }
 
     private void OnCollisionEnter(Collision collision)

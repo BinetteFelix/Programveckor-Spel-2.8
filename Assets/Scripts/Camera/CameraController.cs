@@ -5,7 +5,7 @@ public class CameraController : MonoBehaviour
     public BikeControls bikeControl;
 
     [HideInInspector] public static CameraController Instance;
-    [HideInInspector] public float mouseSensitivity = 175f;
+    [HideInInspector] public float mouseSensitivity = 150f;
     public Transform playerBody;
 
     public Vector3 offset;

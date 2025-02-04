@@ -62,7 +62,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6288332cd7330e345a5b1278ff8c6daf, type: 3}
       propertyPath: m_Name
-      value: Projectile
+      value: Player_Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6288332cd7330e345a5b1278ff8c6daf, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -95,7 +99,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57f42d92ab8f12e4489bca671ed19f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 5
 --- !u!54 &1593218299410301078
 Rigidbody:
   m_ObjectHideFlags: 0

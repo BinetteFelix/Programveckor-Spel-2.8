@@ -2,34 +2,35 @@ using UnityEngine;
 
 public class EnemyHP : MonoBehaviour, IDamageable
 {
-    public float health = 100f;
+    public float health = 150f;
+    private bool _IsDead = false;
 
-    Animator animator;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
     public void TakeDamage(float amount)
     {
-        // DMG SFX HERE
-
-        health -= amount;
-        Debug.Log($"{gameObject.name} took {amount} damage. Remaining health: {health}");
-
-        if (health <= 0)
+        if (!_IsDead)
         {
-            Die();
+            if (health > 0)
+            {
+                // <<DMG SFX HERE>>
+                _IsDead = false;
+                health -= amount;
+            }
+            else if (health <= 0)
+            {
+                health = 0;
+                _IsDead = true;
+                Die();
+            }
+            Debug.Log($"{gameObject.name} took {amount} damage. Remaining health: {health}");
         }
     }
 
     private void Die()
     {
         //die SFX HERE
-
+        EnemyAnimations.Instance.Die();
         Debug.Log($"{gameObject.name} has died.");
         Invoke("RemoveEnemyObjectFromScene", 3.5f);
-        animator.SetBool("IsDead", true);
     }
 
     private void RemoveEnemyObjectFromScene()

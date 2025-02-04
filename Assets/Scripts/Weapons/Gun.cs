@@ -165,32 +165,35 @@ public class Gun : MonoBehaviour
     }
     private void HandleWeaponSway()
     {
-        // Get mouse input
-        float mouseX = Input.GetAxisRaw("Mouse X") * swayAmount;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * swayAmount;
-
-        // Calculate target position
-        targetWeaponPosition = new Vector3(
-            Mathf.Clamp(mouseX, -maxSway, maxSway),
-            Mathf.Clamp(mouseY, -maxSway, maxSway),
-            initialWeaponPosition.z
-        );
-
-        // Apply sway with smoothing
-        weapon.localPosition = Vector3.Lerp(
-            weapon.localPosition, 
-            initialWeaponPosition + targetWeaponPosition, 
-            Time.deltaTime * smoothing
-        );
-
-        // Reduce sway while aiming
-        if (isAiming)
+        if (!ButtonController.Instance._IsPaused && !ButtonController.Instance._Inv_IsActive)
         {
+            // Get mouse input
+            float mouseX = Input.GetAxisRaw("Mouse X") * swayAmount;
+            float mouseY = Input.GetAxisRaw("Mouse Y") * swayAmount;
+
+            // Calculate target position
+            targetWeaponPosition = new Vector3(
+                Mathf.Clamp(mouseX, -maxSway, maxSway),
+                Mathf.Clamp(mouseY, -maxSway, maxSway),
+                initialWeaponPosition.z
+            );
+
+            // Apply sway with smoothing
             weapon.localPosition = Vector3.Lerp(
                 weapon.localPosition,
-                initialWeaponPosition,
-                Time.deltaTime * smoothing * 2
+                initialWeaponPosition + targetWeaponPosition,
+                Time.deltaTime * smoothing
             );
+
+            // Reduce sway while aiming
+            if (isAiming)
+            {
+                weapon.localPosition = Vector3.Lerp(
+                    weapon.localPosition,
+                    initialWeaponPosition,
+                    Time.deltaTime * smoothing * 2
+                );
+            }
         }
     }
 
@@ -212,36 +215,35 @@ public class Gun : MonoBehaviour
             );
         }
 
-        //Aiming while standing Up
+        //When only Aiming
         if (isAiming && PlayerMovement.Instance.isGrounded &&
             !PlayerMovement.Instance.isCrouching) {
             BobbingSpeed = 1.425f; BobScale = 0.1f; }
 
-        //Aiming, standing still and Crouching
+        //When Crouching and Aiming
         else if (isAiming && PlayerMovement.Instance.isGrounded &&
             PlayerMovement.Instance.isCrouching) {
             BobbingSpeed = 0.85f; BobScale = 0.1f; }
 
-        //Not Aiming but Crouching
+        //When only Crouching
         else if (!isAiming && PlayerMovement.Instance.isGrounded && PlayerMovement.Instance.isCrouching) {
             BobbingSpeed = 1.15f; BobScale = 0.1f; }
 
-        //Not aiming or crouching, but Sprinting
+        //When only Sprinting
         else if (!isAiming && PlayerMovement.Instance.isGrounded &&
             !PlayerMovement.Instance.isCrouching && PlayerMovement.Instance.wasSprintingLastFrame) { 
             BobbingSpeed = 9.75f; BobScale = 0.5f; }
 
-        //Not aiming or crouching, but walking
+        //When only Walking
         if (!isAiming && PlayerMovement.Instance.isGrounded && !PlayerMovement.Instance.isCrouching &&
              PlayerMovement.Instance.currentSpeed == PlayerMovement.Instance.walkSpeed && 
              PlayerMovement.Instance.isMoving) {
             BobbingSpeed = 7.25f; BobScale = 0.1f; }
             
-            //Not aiming, crouching or moving
+            //When only STANDING still
         else if (!isAiming && PlayerMovement.Instance.isGrounded && !PlayerMovement.Instance.isCrouching &&
             PlayerMovement.Instance.currentSpeed < PlayerMovement.Instance.walkSpeed && 
             !PlayerMovement.Instance.isMoving) {
             BobbingSpeed = 1.75f; BobScale = 0.1f; }
-
     }
 }   
