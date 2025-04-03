@@ -94,6 +94,7 @@ public class Gun : MonoBehaviour
         
         // Apply spread
         float currentSpread = (Player_ADS.Instance.IsAiming ? gunData.aimDownSightsSpread : gunData.hipFireSpread) * spreadMultiplier;
+
         Quaternion randomRotation = Quaternion.Euler(
             Random.Range(-currentSpread, currentSpread),
             Random.Range(-currentSpread, currentSpread),

@@ -18,6 +18,7 @@ public class EnemyAi : MonoBehaviour
     [Header("Attacking")]
     [SerializeField] GameObject Projectile;
     [SerializeField] Transform ProjectileSpawnPoint;
+    [SerializeField] private MuzzleFlash muzzleFlash;
     private float ProjectileSpeed = 500f;
     private bool isShooting;
 
@@ -97,12 +98,13 @@ public class EnemyAi : MonoBehaviour
         {
             while (shotIntervals > 0f)
             {
-                GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.position, ProjectileSpawnPoint.rotation);
+                GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.position, gameObject.transform.rotation);
                 EnemyProjectiles projectileComponent = projectile.GetComponent<EnemyProjectiles>();
+
 
                 if (projectile.TryGetComponent<Rigidbody>(out var rb))
                 {
-                    rb.linearVelocity = ProjectileSpawnPoint.position + Vector3.left * ProjectileSpeed;
+                    rb.linearVelocity = ProjectileSpawnPoint.position + ProjectileSpawnPoint.transform.forward * ProjectileSpeed;
 
                 }
                 if (projectile.TryGetComponent<EnemyProjectiles>(out EnemyProjectiles EP))
@@ -110,6 +112,12 @@ public class EnemyAi : MonoBehaviour
                     EP.Initialize(EP.Damage, EP.HeadshotMultiplier);
                 }
                 shotIntervals -= originalShotIntervals;
+
+                // Trigger muzzle flash
+                if (muzzleFlash != null)
+                {
+                    muzzleFlash.Flash();
+                }
             }
 
             yield return new WaitForSeconds(1.25f);

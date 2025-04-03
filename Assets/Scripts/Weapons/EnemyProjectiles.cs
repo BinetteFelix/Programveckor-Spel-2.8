@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class EnemyProjectiles : MonoBehaviour, IProjectile
 {
-    private float lifeTime = 2.0f;
-    public float LifeTime   // Time before the projectile is destroyed
+    private float lifeTime = 5.0f;
+    public float LifeTime // Time before the projectile is destroyed
     {
         get { return lifeTime; }
         set { lifeTime = value; }
     }
-    private float damage = 15.0f;
+    public float damage = 25.0f;
     public float Damage   // Projectile Damage towards object effected
     {
         get { return damage; }
@@ -52,9 +52,16 @@ public class EnemyProjectiles : MonoBehaviour, IProjectile
         }
         Destroy(gameObject, LifeTime);
     }
-
     private void OnCollisionEnter(Collision collision)
     {
+        GameObject Projectile = collision.gameObject;
+        Health Player = Projectile.GetComponent<Health>();
+
+        if(Player != null)
+        {
+            Health.Instance.TakeDamage(damage);
+        }
+        
         if (collision.gameObject.TryGetComponent<IDamageable>(out var target))
         {
             float finalDamage = damage;
@@ -65,8 +72,8 @@ public class EnemyProjectiles : MonoBehaviour, IProjectile
                 finalDamage *= headshotMultiplier;
                 Debug.Log("Headshot!");
             }
+            target.TakeDamage(finalDamage);
 
-//            target.TakeDamage(finalDamage);
             Debug.Log($"Dealt {finalDamage} damage to {collision.gameObject.name}");
         }
         Destroy(gameObject);

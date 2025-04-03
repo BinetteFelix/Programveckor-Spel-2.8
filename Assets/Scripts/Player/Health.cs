@@ -1,10 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IDamageable
 {
+    public static Health Instance;
     public int maxHealth = 100;
     public float currentHealth;
     public float healthRegenRate = 1.5f;
@@ -13,7 +13,10 @@ public class Health : MonoBehaviour
     public Slider healthBar;
 
 
-
+    public void Awake()
+    {
+        Instance = this;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,8 +26,6 @@ public class Health : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
         if (currentHealth <= 0)
             Die();
 
@@ -44,9 +45,9 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
     }
 
-    void TakeDamage()
+    public void TakeDamage(float damage)
     {
-        currentHealth -= 5;
+        currentHealth -= damage;
     }
 
     private void UpdateUI()
@@ -57,7 +58,18 @@ public class Health : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject Player = other.gameObject;
+        EnemyProjectiles Projectile = Player.GetComponent<EnemyProjectiles>();
 
+        if (Projectile != null)
+        {
+            TakeDamage(EnemyProjectiles.Instance.damage);
+            Debug.Log("Player was Damaged!");
+        }
+        Destroy(FindAnyObjectByType<EnemyProjectiles>());
+    }
 
     void OnTriggerStay(Collider other)
     {
@@ -67,7 +79,7 @@ public class Health : MonoBehaviour
         {
             if (other.CompareTag("Enemy"))
             {
-                TakeDamage();
+                TakeDamage(5);
             }
 
             timer = 1;

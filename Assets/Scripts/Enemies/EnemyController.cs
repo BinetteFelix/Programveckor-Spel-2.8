@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+       // EnemyAnimations.Instance.AnimateWalking(7);
         // If the enemy has reached the target point, start a new patrol
         if (agent.remainingDistance <= 0.2f && !agent.pathPending)
         {
@@ -29,7 +30,6 @@ public class EnemyController : MonoBehaviour
     {
         // Wait for a moment before selecting the next random point
         Invoke(nameof(SelectRandomPatrolPoint), timeBetweenPatrols);
-        EnemyAnimations.Instance.AnimateWalking(agent.speed);
     }
 
     private void SelectRandomPatrolPoint()

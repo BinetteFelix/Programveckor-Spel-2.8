@@ -17,6 +17,10 @@ public class EnemyAnimations : MonoBehaviour
 
         animator = GetComponent<Animator>();
     }
+    private void Update()
+    {
+        AnimateWalking(7);
+    }
     public void Die()
     {
         animator.SetBool("IsDead", true);
